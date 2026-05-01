@@ -7,34 +7,49 @@
   <title>White Launch</title>
   <style>
     :root{
-      --bg:#f7f9ff;
+      --bg:#f6f8ff;
       --bg2:#eef3ff;
       --card:rgba(255,255,255,.74);
-      --card2:rgba(255,255,255,.56);
+      --card2:rgba(255,255,255,.58);
       --line:rgba(15,23,42,.10);
-      --line2:rgba(37,99,235,.14);
       --text:#0f172a;
       --muted:#64748b;
       --accent:#2563eb;
       --accent2:#8b5cf6;
       --danger:#ef4444;
-      --ok:#10b981;
       --shadow:0 24px 70px rgba(15,23,42,.09);
       --radius:30px;
     }
 
+    html[data-theme="dark"]{
+      --bg:#07111f;
+      --bg2:#0d1729;
+      --card:rgba(10,16,30,.72);
+      --card2:rgba(10,16,30,.52);
+      --line:rgba(255,255,255,.10);
+      --text:#e6eefc;
+      --muted:#9fb0c7;
+      --shadow:0 24px 70px rgba(0,0,0,.28);
+    }
+
     *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-    html,body{ margin:0; min-height:100%; font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color:var(--text); background:
-      radial-gradient(circle at 12% 8%, rgba(37,99,235,.10), transparent 24%),
-      radial-gradient(circle at 88% 0%, rgba(139,92,246,.10), transparent 22%),
-      radial-gradient(circle at 50% 100%, rgba(14,165,233,.06), transparent 26%),
-      linear-gradient(180deg, #ffffff, var(--bg) 55%, #f4f7ff);
-      overflow-x:hidden; }
+    html,body{
+      margin:0; min-height:100%; overflow-x:hidden;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(37,99,235,.10), transparent 24%),
+        radial-gradient(circle at 88% 0%, rgba(139,92,246,.10), transparent 22%),
+        radial-gradient(circle at 50% 100%, rgba(14,165,233,.06), transparent 26%),
+        linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, white), var(--bg) 55%, var(--bg2));
+    }
 
     body::before{
-      content:""; position:fixed; inset:0; pointer-events:none;
-      background:linear-gradient(120deg, rgba(255,255,255,.8), transparent 26%, rgba(255,255,255,.30));
-      z-index:0;
+      content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+      background:linear-gradient(120deg, rgba(255,255,255,.8), transparent 26%, rgba(255,255,255,.28));
+    }
+    html[data-theme="dark"] body::before{
+      background:linear-gradient(120deg, rgba(255,255,255,.05), transparent 26%, rgba(255,255,255,.03));
     }
 
     canvas{ position:fixed; inset:0; width:100%; height:100%; display:block; pointer-events:none; }
@@ -50,36 +65,37 @@
       backdrop-filter:blur(24px) saturate(180%);
       -webkit-backdrop-filter:blur(24px) saturate(180%);
       box-shadow:var(--shadow);
+      border-radius:30px;
     }
 
-    .hero{
-      border-radius:34px; padding:18px; animation:enter .7s ease both;
-    }
+    .hero{ padding:18px; animation:enter .7s ease both; }
     .heroRow{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
     .brand{ display:flex; align-items:center; gap:14px; min-width:0; }
     .logo{
       width:58px; height:58px; border-radius:18px; display:grid; place-items:center; font-size:25px; color:#fff;
       background:linear-gradient(135deg, #2563eb, #8b5cf6);
       box-shadow:0 14px 28px rgba(37,99,235,.18);
-      flex:0 0 auto;
+      flex:0 0 auto; overflow:hidden;
     }
+    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .brandText{ min-width:0; }
     .brand h1{ margin:0; font-size:1.2rem; line-height:1.1; letter-spacing:.2px; }
     .brand p{ margin:5px 0 0; color:var(--muted); font-size:.94rem; line-height:1.35; }
-    .brandText{ min-width:0; }
 
     .topActions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end; }
-    .pillBtn, .chip, .actionBtn, .iconBtn, .ghostBtn, .primaryBtn, .dangerBtn{
-      border:1px solid transparent; cursor:pointer; transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease, filter .18s ease;
-      font-weight:800; font-family:inherit;
+    .pillBtn,.chip,.ghostBtn,.primaryBtn,.dangerBtn,.themePick{
+      border:1px solid transparent;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease, filter .18s ease;
+      font-weight:800;
+      font-family:inherit;
     }
-    .pillBtn, .chip{
+    .pillBtn,.chip,.themePick{
       border-radius:999px; padding:11px 14px; background:rgba(255,255,255,.76); border-color:rgba(15,23,42,.08); color:var(--text);
       display:inline-flex; align-items:center; gap:8px;
     }
-    .pillBtn:hover, .chip:hover, .actionBtn:hover, .iconBtn:hover, .ghostBtn:hover, .primaryBtn:hover, .dangerBtn:hover{
-      transform:translateY(-1px); filter:brightness(1.01);
-    }
-    .pillBtn.active, .chip.active{
+    .pillBtn:hover,.chip:hover,.ghostBtn:hover,.primaryBtn:hover,.dangerBtn:hover,.themePick:hover{ transform:translateY(-1px); filter:brightness(1.01); }
+    .pillBtn.active,.chip.active,.themePick.active{
       border-color:rgba(37,99,235,.22); background:#fff; box-shadow:0 10px 24px rgba(15,23,42,.08);
     }
 
@@ -100,13 +116,9 @@
       border-radius:999px; background:rgba(255,255,255,.72); border:1px solid rgba(15,23,42,.08);
     }
 
-    .filters{
-      display:flex; flex-wrap:wrap; gap:10px;
-    }
+    .filters{ display:flex; flex-wrap:wrap; gap:10px; }
 
-    .grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; padding-bottom:8px;
-    }
+    .grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; padding-bottom:8px; }
     .card{
       position:relative; overflow:hidden; border-radius:30px; border:1px solid rgba(15,23,42,.10);
       background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.62));
@@ -139,27 +151,22 @@
       display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; color:#334155; font-size:.9rem;
     }
     .meta span{ display:inline-flex; align-items:center; gap:7px; }
-
     .buttonRow{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
-    .launchBtn, .copyBtn, .editBtn, .deleteBtn{
+    .launchBtn, .editBtn, .deleteBtn{
       flex:1 1 140px; border-radius:18px; padding:13px 14px; font-size:.96rem;
       display:inline-flex; align-items:center; justify-content:center; gap:9px; text-decoration:none;
+      border:1px solid transparent;
     }
     .launchBtn{ color:#fff; background:linear-gradient(135deg, #2563eb, #8b5cf6); box-shadow:0 14px 28px rgba(37,99,235,.18); }
-    .copyBtn{ background:rgba(255,255,255,.88); border-color:rgba(15,23,42,.10); color:var(--text); }
     .editBtn{ background:rgba(16,185,129,.10); border-color:rgba(16,185,129,.20); color:#047857; }
     .deleteBtn{ background:rgba(239,68,68,.10); border-color:rgba(239,68,68,.18); color:#b91c1c; }
-
     .adminRow{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
-    .smallBtn{
-      border-radius:16px; padding:10px 12px; font-size:.9rem; min-width:0;
-    }
+    .smallBtn{ border-radius:16px; padding:10px 12px; font-size:.9rem; min-width:0; }
 
     .empty{
       grid-column:1/-1; padding:34px 20px; text-align:center; color:var(--muted);
       border-radius:28px; border:1px dashed rgba(15,23,42,.14); background:rgba(255,255,255,.70); backdrop-filter:blur(16px);
     }
-
     .footer{
       text-align:center; color:rgba(15,23,42,.46); font-size:.84rem; padding:4px 0 10px;
     }
@@ -182,7 +189,6 @@
       width:42px; height:42px; border-radius:14px; border:1px solid rgba(15,23,42,.10); background:rgba(255,255,255,.88);
       color:#0f172a; font-size:20px; cursor:pointer;
     }
-
     .form{
       display:grid; grid-template-columns:1fr 1fr; gap:12px;
     }
@@ -207,18 +213,18 @@
     .primaryBtn{ background:linear-gradient(135deg, #2563eb, #8b5cf6); color:#fff; box-shadow:0 14px 28px rgba(37,99,235,.18); }
     .dangerBtn{ background:rgba(239,68,68,.10); border-color:rgba(239,68,68,.18); color:#b91c1c; }
 
-    .progressBox{
-      margin-top:12px; display:none; gap:10px;
+    .themeBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+    .themePick{ flex:1 1 120px; }
+    .filePreview{
+      display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:16px;
+      border:1px dashed rgba(15,23,42,.14); background:rgba(255,255,255,.70);
     }
-    .progressBox.active{ display:grid; }
-    .progressTop{ display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:.88rem; color:#334155; font-weight:800; }
-    .bar{
-      width:100%; height:12px; border-radius:999px; overflow:hidden; border:1px solid rgba(15,23,42,.10); background:rgba(15,23,42,.06);
+    .filePreview .previewBox{
+      width:46px; height:46px; border-radius:14px; overflow:hidden; display:grid; place-items:center;
+      background:linear-gradient(135deg, rgba(37,99,235,.10), rgba(139,92,246,.10)); flex:0 0 auto; font-size:22px;
     }
-    .bar > span{
-      display:block; height:100%; width:0%; border-radius:inherit;
-      background:linear-gradient(90deg, #2563eb, #06b6d4, #8b5cf6); transition:width .16s linear;
-    }
+    .filePreview img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .filePreview .previewText{ min-width:0; color:var(--muted); font-size:.9rem; line-height:1.35; }
 
     .toastWrap{
       position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:30; display:grid; gap:10px; width:min(94vw, 420px); pointer-events:none;
@@ -233,10 +239,6 @@
     .toast.ok{ border-color:rgba(16,185,129,.18); }
     .toast.err{ border-color:rgba(239,68,68,.18); }
 
-    ::selection{ background:rgba(37,99,235,.18); color:#0f172a; }
-    ::-moz-selection{ background:rgba(37,99,235,.18); color:#0f172a; }
-    img,a,button,input,textarea,select{ -webkit-user-drag:none; }
-
     @keyframes enter{ from{opacity:0;transform:translateY(-10px);} to{opacity:1;transform:translateY(0);} }
     @keyframes cardIn{ to{opacity:1;transform:translateY(0) scale(1);} }
     @keyframes pop{ from{opacity:0;transform:translateY(10px) scale(.96);} to{opacity:1;transform:translateY(0) scale(1);} }
@@ -247,9 +249,10 @@
       .toolbar{ grid-template-columns:1fr; }
       .count{ justify-self:start; }
       .heroRow{ align-items:flex-start; }
-      .topActions{ justify-content:flex-start; }
+      .topActions{ justify-content:flex-start; width:100%; }
+      .pillBtn{ flex:1 1 0; justify-content:center; }
       .form{ grid-template-columns:1fr; }
-      .launchBtn, .copyBtn, .editBtn, .deleteBtn{ flex:1 1 100%; }
+      .launchBtn, .editBtn, .deleteBtn{ flex:1 1 100%; }
     }
   </style>
 </head>
@@ -262,7 +265,7 @@
       <section class="hero panel">
         <div class="heroRow">
           <div class="brand">
-            <div class="logo">⚡</div>
+            <div class="logo" id="brandLogo">⚡</div>
             <div class="brandText">
               <h1 id="appTitle">White Launch</h1>
               <p id="appSubtitle">A clean glassmorphism launcher for apps and games.</p>
@@ -270,6 +273,7 @@
           </div>
 
           <div class="topActions">
+            <button class="pillBtn" id="settingsBtn" type="button">Settings</button>
             <button class="pillBtn" id="loginBtn" type="button">Login</button>
             <button class="pillBtn" id="uploadBtn" type="button" style="display:none;">Upload App</button>
             <button class="pillBtn" id="logoutBtn" type="button" style="display:none;">Logout</button>
@@ -283,28 +287,46 @@
             <path d="M21 21l-4.35-4.35" stroke="rgba(15,23,42,.70)" stroke-width="2" stroke-linecap="round"/>
             <circle cx="11" cy="11" r="7" stroke="rgba(15,23,42,.70)" stroke-width="2"/>
           </svg>
-          <input id="searchInput" type="text" placeholder="Search games, apps, titles, tags, links, descriptions..." autocomplete="off" />
+          <input id="searchInput" type="text" placeholder="Search games, apps, titles, tags, or descriptions..." autocomplete="off" />
         </div>
         <div class="count" id="countBadge">0 items</div>
       </section>
 
-      <section class="toolbar panel" style="grid-template-columns:1fr auto;">
+      <section class="toolbar panel" style="grid-template-columns:1fr;">
         <div class="filters" role="tablist" aria-label="Categories">
           <button class="chip active" data-filter="All" type="button">◎ All</button>
           <button class="chip" data-filter="Games" type="button">🎮 Games</button>
           <button class="chip" data-filter="Apps" type="button">▣ Apps</button>
         </div>
-        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-          <span style="color:var(--muted); font-weight:800; font-size:.92rem;">Data source:</span>
-          <span class="pillBtn" style="pointer-events:none;">Firestore → Manifest fallback</span>
-        </div>
       </section>
 
       <section id="grid" class="grid" aria-live="polite"></section>
 
-      <div class="footer">White Launch uses glassmorphism cards, live filtering, admin editing, and a fake 2–8 second launch flow.</div>
+      <div class="footer">White Launch uses glassmorphism cards, live filtering, admin editing, and a direct launch flow.</div>
     </div>
   </main>
+
+  <div id="settingsModal" class="modal" aria-hidden="true">
+    <div class="modalCard" style="width:min(520px,100%);">
+      <div class="modalHead">
+        <div>
+          <h3 class="modalTitle">Settings</h3>
+          <p class="modalSub">Switch between white and dark mode.</p>
+        </div>
+        <button class="close" data-close="settingsModal" type="button">×</button>
+      </div>
+      <div class="field full">
+        <label>Theme</label>
+        <div class="themeBtns">
+          <button class="themePick" id="themeLightBtn" type="button">White</button>
+          <button class="themePick" id="themeDarkBtn" type="button">Dark</button>
+        </div>
+      </div>
+      <div class="rowBtns">
+        <button class="ghostBtn" data-close="settingsModal" type="button">Close</button>
+      </div>
+    </div>
+  </div>
 
   <div id="authModal" class="modal" aria-hidden="true">
     <div class="modalCard" style="width:min(470px,100%);">
@@ -372,11 +394,20 @@
           </div>
 
           <div class="field">
-            <label for="iconInput">Icon</label>
+            <label for="iconInput">Logo / Icon</label>
             <input id="iconInput" required type="text" placeholder="Emoji or image URL" />
-            <small>Put an emoji like ⚡ or a direct image URL.</small>
+            <small>Use an emoji, image URL, or pick a file below.</small>
           </div>
           <div class="field">
+            <label for="iconFileInput">Media Picker</label>
+            <input id="iconFileInput" type="file" accept="image/*" />
+            <div class="filePreview" style="margin-top:8px;">
+              <div class="previewBox" id="iconPreview">⬡</div>
+              <div class="previewText" id="iconPreviewText">No image selected yet.</div>
+            </div>
+          </div>
+
+          <div class="field full">
             <label for="linkInput">Launch Link</label>
             <input id="linkInput" required type="url" placeholder="https://..." />
           </div>
@@ -405,11 +436,9 @@
         <button class="close" id="launchClose" type="button">×</button>
       </div>
 
-      <div class="progressTop"><span id="stageLabel">Loading manifest</span><span id="stagePct">0%</span></div>
+      <div class="progressTop"><span id="stageLabel">Preparing Link</span><span id="stagePct">0%</span></div>
       <div class="bar"><span id="launchBar"></span></div>
-      <div class="progressBox active" style="margin-top:12px;">
-        <div class="progressTop"><span>Loading Manifest.json → Extracting Folders → Packing Bundles → Copying Link</span></div>
-      </div>
+      <div class="footer" style="padding-top:10px;">Click Launch to go directly to the app link.</div>
     </div>
   </div>
 
@@ -418,15 +447,11 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import {
-      getFirestore,
-      collection,
-      getDocs,
-      doc,
-      addDoc,
-      updateDoc,
-      deleteDoc,
-      serverTimestamp
+      getFirestore, collection, getDocs, doc, addDoc, updateDoc, deleteDoc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+    import {
+      getAuth, signInAnonymously, signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
     const ADMIN = {
       username: "MWKWHWLWIAAKAKOAPQPQOALAKAJ",
@@ -443,19 +468,19 @@
       measurementId: "G-1NFNHE82BP"
     };
 
+    const storageKey = "white_launch_local_apps_v1";
+    const adminKey = "white_launch_admin_session_v1";
+    const themeKey = "white_launch_theme_v1";
+
     const fallbackManifest = {
       appName: "White Launch",
       subtitle: "A clean glassmorphism launcher for apps and games.",
       items: [
         { title: "Aurora Notes", description: "A clean notes app for quick writing, saving, and organizing ideas.", type: "Apps", tag: "Productivity", size: "56 MB", icon: "📝", link: "https://example.com/aurora-notes", date: "2026-05-01" },
-        { title: "Sky Rush", description: "A fast arcade runner with smooth motion and bright visual effects.", type: "Games", tag: "Arcade", size: "1.2 GB", icon: "🎮", link: "https://example.com/sky-rush", date: "2026-05-01" },
         { title: "Pulse Studio", description: "A media tool for previews, edits, and lightweight content work.", type: "Apps", tag: "Creative", size: "312 MB", icon: "✨", link: "https://example.com/pulse-studio", date: "2026-05-01" },
         { title: "Neon Drift", description: "An arcade racer with quick rounds, crisp controls, and city glow style.", type: "Games", tag: "Racing", size: "924 MB", icon: "🏎️", link: "https://example.com/neon-drift", date: "2026-05-01" }
       ]
     };
-
-    const storageKey = "white_launch_local_apps_v1";
-    const adminKey = "white_launch_admin_session_v1";
 
     const $ = (id) => document.getElementById(id);
     const escapeHtml = (v) => String(v ?? "").replace(/[&<>"']/g, (m) => ({
@@ -465,13 +490,14 @@
     const els = {
       appTitle: $("appTitle"),
       appSubtitle: $("appSubtitle"),
-      grid: $("grid"),
       countBadge: $("countBadge"),
       searchInput: $("searchInput"),
+      settingsBtn: $("settingsBtn"),
       loginBtn: $("loginBtn"),
       uploadBtn: $("uploadBtn"),
       logoutBtn: $("logoutBtn"),
       authModal: $("authModal"),
+      settingsModal: $("settingsModal"),
       formModal: $("formModal"),
       launchModal: $("launchModal"),
       usernameInput: $("usernameInput"),
@@ -487,6 +513,9 @@
       sizeInput: $("sizeInput"),
       dateInput: $("dateInput"),
       iconInput: $("iconInput"),
+      iconFileInput: $("iconFileInput"),
+      iconPreview: $("iconPreview"),
+      iconPreviewText: $("iconPreviewText"),
       linkInput: $("linkInput"),
       tagInput: $("tagInput"),
       saveBtn: $("saveBtn"),
@@ -496,18 +525,21 @@
       stageLabel: $("stageLabel"),
       stagePct: $("stagePct"),
       launchClose: $("launchClose"),
-      toastWrap: $("toastWrap")
+      toastWrap: $("toastWrap"),
+      themeLightBtn: $("themeLightBtn"),
+      themeDarkBtn: $("themeDarkBtn"),
+      grid: $("grid"),
+      brandLogo: $("brandLogo"),
     };
 
     const state = {
       filter: "All",
-      query: "",
       items: [],
       localMode: false,
       db: null,
+      auth: null,
       isAdmin: sessionStorage.getItem(adminKey) === "1",
       launchBusy: false,
-      activeLaunchTimer: null
     };
 
     const filters = [...document.querySelectorAll(".chip")];
@@ -516,13 +548,7 @@
     function toast(title, message, kind = "ok") {
       const node = document.createElement("div");
       node.className = `toast ${kind}`;
-      node.innerHTML = `
-        <div>⚡</div>
-        <div>
-          <strong>${escapeHtml(title)}</strong>
-          <p>${escapeHtml(message)}</p>
-        </div>
-      `;
+      node.innerHTML = `<div>⚡</div><div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(message)}</p></div>`;
       els.toastWrap.appendChild(node);
       setTimeout(() => {
         node.style.opacity = "0";
@@ -531,31 +557,20 @@
       }, 2600);
     }
 
-    function openModal(modal) {
-      modal.classList.add("active");
-      modal.setAttribute("aria-hidden", "false");
+    function openModal(modal) { modal.classList.add("active"); modal.setAttribute("aria-hidden", "false"); }
+    function closeModal(modal) { modal.classList.remove("active"); modal.setAttribute("aria-hidden", "true"); }
+
+    function getStoredTheme() { return localStorage.getItem(themeKey) || "white"; }
+    function applyTheme(theme) {
+      const value = theme === "dark" ? "dark" : "white";
+      document.documentElement.dataset.theme = value === "dark" ? "dark" : "white";
+      localStorage.setItem(themeKey, value);
+      els.themeLightBtn.classList.toggle("active", value === "white");
+      els.themeDarkBtn.classList.toggle("active", value === "dark");
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", value === "dark" ? "#07111f" : "#f8fbff");
     }
 
-    function closeModal(modal) {
-      modal.classList.remove("active");
-      modal.setAttribute("aria-hidden", "true");
-    }
-
-    closeButtons.forEach(btn => {
-      btn.addEventListener("click", () => closeModal($(btn.dataset.close)));
-    });
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        closeModal(els.authModal);
-        closeModal(els.formModal);
-        closeModal(els.launchModal);
-      }
-    });
-
-    function todayString() {
-      return new Date().toISOString().slice(0, 10);
-    }
+    function todayString() { return new Date().toISOString().slice(0, 10); }
 
     function normalizeItem(raw, id = null) {
       return {
@@ -568,8 +583,6 @@
         icon: raw.icon || "⬡",
         link: raw.link || "#",
         date: raw.date || todayString(),
-        createdAt: raw.createdAt || null,
-        updatedAt: raw.updatedAt || null
       };
     }
 
@@ -577,47 +590,38 @@
       try {
         const parsed = JSON.parse(localStorage.getItem(storageKey) || "null");
         if (Array.isArray(parsed) && parsed.length) {
-          return parsed.map(i => normalizeItem(i, i.id));
+          return parsed.filter(item => String(item.title || "").toLowerCase() !== "sky rush").map(i => normalizeItem(i, i.id));
         }
       } catch {}
       return fallbackManifest.items.map(i => normalizeItem(i));
     }
 
-    function saveLocalItems(items) {
-      localStorage.setItem(storageKey, JSON.stringify(items));
-    }
+    function saveLocalItems(items) { localStorage.setItem(storageKey, JSON.stringify(items)); }
 
-    function getVisibleItems() {
+    function visibleItems() {
       const q = els.searchInput.value.trim().toLowerCase();
       return state.items.filter(item => {
         const typeOk = state.filter === "All" || item.type === state.filter;
         const text = [item.title, item.description, item.type, item.tag, item.size, item.date, item.link].join(" ").toLowerCase();
-        const queryOk = !q || text.includes(q);
-        return typeOk && queryOk;
+        return typeOk && (!q || text.includes(q)) && String(item.title || "").toLowerCase() !== "sky rush";
       });
     }
 
     function cardIconHTML(icon) {
-      const value = String(icon || "").trim();
-      if (/^https?:\/\//i.test(value)) {
-        return `<img src="${escapeHtml(value)}" alt="">`;
-      }
-      return escapeHtml(value || "⬡");
+      const v = String(icon || "").trim();
+      if (/^data:image\//i.test(v) || /^https?:\/\//i.test(v)) return `<img src="${escapeHtml(v)}" alt="">`;
+      return escapeHtml(v || "⬡");
     }
 
     function fmtDate(dateStr) {
-      try {
-        return new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "numeric" }).format(new Date(dateStr));
-      } catch {
-        return escapeHtml(dateStr || "");
-      }
+      try { return new Intl.DateTimeFormat(undefined, { year:"numeric", month:"short", day:"numeric" }).format(new Date(dateStr)); }
+      catch { return escapeHtml(dateStr || ""); }
     }
 
     function render() {
-      const items = getVisibleItems();
-      els.grid.innerHTML = "";
+      const items = visibleItems();
       els.countBadge.textContent = `${items.length} item${items.length === 1 ? "" : "s"}`;
-
+      els.grid.innerHTML = "";
       if (!items.length) {
         els.grid.innerHTML = `<div class="empty">No matching items found.</div>`;
         return;
@@ -627,7 +631,6 @@
         const card = document.createElement("article");
         card.className = "card";
         card.style.animationDelay = `${index * 55}ms`;
-
         card.innerHTML = `
           <div class="shine"></div>
           <div class="head">
@@ -646,7 +649,6 @@
           </div>
           <div class="buttonRow">
             <button class="launchBtn" type="button">Launch</button>
-            <button class="copyBtn" type="button">Copy link</button>
           </div>
           ${state.isAdmin ? `
             <div class="adminRow">
@@ -656,16 +658,9 @@
           ` : ""}
         `;
 
-        const launchBtn = card.querySelector(".launchBtn");
-        const copyBtn = card.querySelector(".copyBtn");
-        const editBtn = card.querySelector(".editBtn");
-        const deleteBtn = card.querySelector(".deleteBtn");
-
-        launchBtn.addEventListener("click", () => launchItem(item));
-        copyBtn.addEventListener("click", () => copyLink(item.link));
-        if (editBtn) editBtn.addEventListener("click", () => openEdit(item));
-        if (deleteBtn) deleteBtn.addEventListener("click", () => removeItem(item));
-
+        card.querySelector(".launchBtn").addEventListener("click", () => launchItem(item));
+        card.querySelector(".editBtn")?.addEventListener("click", () => openEdit(item));
+        card.querySelector(".deleteBtn")?.addEventListener("click", () => removeItem(item));
         els.grid.appendChild(card);
       });
     }
@@ -677,11 +672,7 @@
     }
 
     filters.forEach(btn => btn.addEventListener("click", () => setFilter(btn.dataset.filter)));
-
-    els.searchInput.addEventListener("input", () => {
-      state.query = els.searchInput.value;
-      render();
-    });
+    els.searchInput.addEventListener("input", render);
 
     function syncAdminUI() {
       els.loginBtn.style.display = state.isAdmin ? "none" : "inline-flex";
@@ -690,19 +681,31 @@
       render();
     }
 
-    function copyLink(link) {
-      const value = String(link || "").trim();
-      if (!value) return toast("No link", "This card does not have a launch link.", "err");
-      navigator.clipboard.writeText(value).then(() => {
-        toast("Copied", "Launch link copied to clipboard.");
-      }).catch(() => {
-        prompt("Copy this link:", value);
-      });
+    async function ensureAnonymousAuth() {
+      if (!state.auth) return;
+      try { await signInAnonymously(state.auth); }
+      catch { toast("Auth unavailable", "Anonymous sign-in failed, so saving may fall back locally.", "err"); }
+    }
+
+    function setIconPreview(value) {
+      const v = String(value || "").trim();
+      if (!v) {
+        els.iconPreview.textContent = "⬡";
+        els.iconPreviewText.textContent = "No image selected yet.";
+        return;
+      }
+      if (/^data:image\//i.test(v) || /^https?:\/\//i.test(v)) {
+        els.iconPreview.innerHTML = `<img src="${escapeHtml(v)}" alt="">`;
+        els.iconPreviewText.textContent = "Image selected.";
+      } else {
+        els.iconPreview.textContent = v;
+        els.iconPreviewText.textContent = "Emoji/icon text selected.";
+      }
     }
 
     function openForm(mode, item = null) {
       els.formTitle.textContent = mode === "edit" ? "Edit App" : "Upload App";
-      els.formSub.textContent = mode === "edit" ? "Update the selected app in Firestore." : "Create a new app card.";
+      els.formSub.textContent = mode === "edit" ? "Update the selected app." : "Create a new app card.";
       els.saveBtn.textContent = mode === "edit" ? "Update" : "Save";
       els.docId.value = item?.id || "";
       els.appForm.dataset.mode = mode;
@@ -715,23 +718,17 @@
       els.iconInput.value = item?.icon || "⬡";
       els.linkInput.value = item?.link || "";
       els.tagInput.value = item?.tag || "";
-
+      setIconPreview(els.iconInput.value);
       openModal(els.formModal);
     }
 
-    function openEdit(item) {
-      if (!state.isAdmin) return;
-      openForm("edit", item);
-    }
+    function openEdit(item) { if (state.isAdmin) openForm("edit", item); }
+    function openUpload() { if (state.isAdmin) openForm("upload"); }
 
-    function openUpload() {
-      if (!state.isAdmin) return;
-      openForm("upload");
-    }
-
-    function removeItem(item) {
+    async function removeItem(item) {
       if (!state.isAdmin) return;
       if (!confirm(`Delete "${item.title}"?`)) return;
+
       if (state.localMode || !state.db) {
         state.items = state.items.filter(i => i.id !== item.id);
         saveLocalItems(state.items);
@@ -739,69 +736,62 @@
         toast("Deleted", `"${item.title}" removed from local fallback data.`);
         return;
       }
-      deleteDoc(doc(state.db, "apps", item.id))
-        .then(() => {
-          state.items = state.items.filter(i => i.id !== item.id);
-          render();
-          toast("Deleted", `"${item.title}" removed from Firestore.`);
-        })
-        .catch(err => toast("Delete failed", err.message || "Could not delete the item.", "err"));
+
+      try {
+        await deleteDoc(doc(state.db, "apps", item.id));
+        state.items = state.items.filter(i => i.id !== item.id);
+        render();
+        toast("Deleted", `"${item.title}" removed from Firestore.`);
+      } catch (err) {
+        toast("Delete failed", err.message || "Could not delete the item.", "err");
+      }
     }
 
     function launchItem(item) {
       if (state.launchBusy) return;
       state.launchBusy = true;
-      const stages = ["Loading Manifest.json", "Extracting Folders", "Packing Bundles", "Copying Link"];
-      const duration = 2000 + Math.floor(Math.random() * 6001);
-
+      const duration = 850 + Math.floor(Math.random() * 750);
       els.launchTitle.textContent = item.title;
       els.launchSub.textContent = item.description;
       els.launchBar.style.width = "0%";
-      els.stageLabel.textContent = stages[0];
+      els.stageLabel.textContent = "Preparing Link";
       els.stagePct.textContent = "0%";
       openModal(els.launchModal);
 
       const start = performance.now();
       const tick = () => {
-        const elapsed = performance.now() - start;
-        const pct = Math.min(100, Math.round((elapsed / duration) * 100));
-        const stageIndex = Math.min(stages.length - 1, Math.floor((pct / 100) * stages.length));
+        const pct = Math.min(100, Math.round(((performance.now() - start) / duration) * 100));
         els.launchBar.style.width = `${pct}%`;
         els.stagePct.textContent = `${pct}%`;
-        els.stageLabel.textContent = stages[stageIndex];
-
-        if (pct < 100) {
-          requestAnimationFrame(tick);
-          return;
-        }
-
-        setTimeout(() => {
+        els.stageLabel.textContent = pct < 100 ? "Opening App" : "Opening App";
+        if (pct < 100) requestAnimationFrame(tick);
+        else setTimeout(() => {
           closeModal(els.launchModal);
           state.launchBusy = false;
           const link = String(item.link || "").trim();
-          if (link && link !== "#") window.open(link, "_blank", "noopener,noreferrer");
-        }, 350);
+          if (link && link !== "#") window.location.href = link;
+          else toast("Missing link", "This item has no launch link.", "err");
+        }, 180);
       };
       requestAnimationFrame(tick);
     }
 
-    els.launchClose.addEventListener("click", () => {
-      closeModal(els.launchModal);
-      state.launchBusy = false;
-    });
+    els.launchClose.addEventListener("click", () => { closeModal(els.launchModal); state.launchBusy = false; });
 
-    els.loginBtn.addEventListener("click", () => {
-      openModal(els.authModal);
-      els.usernameInput.focus();
-    });
+    els.settingsBtn.addEventListener("click", () => openModal(els.settingsModal));
+    els.themeLightBtn.addEventListener("click", () => applyTheme("white"));
+    els.themeDarkBtn.addEventListener("click", () => applyTheme("dark"));
 
-    els.doLoginBtn.addEventListener("click", () => {
+    els.loginBtn.addEventListener("click", () => { openModal(els.authModal); els.usernameInput.focus(); });
+
+    els.doLoginBtn.addEventListener("click", async () => {
       const user = els.usernameInput.value.trim();
       const pass = els.passwordInput.value;
       if (user === ADMIN.username && pass === ADMIN.password) {
         state.isAdmin = true;
         sessionStorage.setItem(adminKey, "1");
         closeModal(els.authModal);
+        await ensureAnonymousAuth();
         syncAdminUI();
         toast("Admin unlocked", "Upload, edit, and delete buttons are now visible.");
       } else {
@@ -810,17 +800,33 @@
     });
 
     els.uploadBtn.addEventListener("click", openUpload);
-
-    els.logoutBtn.addEventListener("click", () => {
+    els.logoutBtn.addEventListener("click", async () => {
       state.isAdmin = false;
       sessionStorage.removeItem(adminKey);
+      try { if (state.auth) await signOut(state.auth); } catch {}
       syncAdminUI();
       toast("Logged out", "Admin controls hidden.");
     });
 
+    els.iconInput.addEventListener("input", () => setIconPreview(els.iconInput.value));
+    els.iconFileInput.addEventListener("change", () => {
+      const file = els.iconFileInput.files?.[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        toast("Invalid file", "Please pick an image file.", "err");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = String(reader.result || "");
+        els.iconInput.value = dataUrl;
+        setIconPreview(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    });
+
     els.appForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const payload = normalizeItem({
         title: els.titleInput.value.trim(),
         description: els.descriptionInput.value.trim(),
@@ -833,7 +839,6 @@
       }, els.docId.value || null);
 
       const mode = els.appForm.dataset.mode || "upload";
-
       if (!payload.title || !payload.description || !payload.link) {
         toast("Missing fields", "Title, description, and link are required.", "err");
         return;
@@ -890,41 +895,6 @@
       }
     });
 
-    closeButtons.forEach(btn => {
-      btn.addEventListener("click", () => closeModal($(btn.dataset.close)));
-    });
-
-    async function loadFromFirestore() {
-      try {
-        if (!firebaseConfig.projectId) throw new Error("Missing Firebase config");
-        const app = initializeApp(firebaseConfig);
-        state.db = getFirestore(app);
-
-        const snap = await getDocs(collection(state.db, "apps"));
-        const docs = snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() }, d.id));
-
-        if (docs.length) {
-          state.items = docs.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
-          state.localMode = false;
-          els.appTitle.textContent = "White Launch";
-          els.appSubtitle.textContent = "A clean glassmorphism launcher for apps and games.";
-          toast("Firestore connected", `${docs.length} item${docs.length === 1 ? "" : "s"} loaded from cloud.`);
-        } else {
-          throw new Error("empty collection");
-        }
-      } catch (err) {
-        state.localMode = true;
-        state.db = null;
-        const manifest = await loadManifestFallback();
-        state.items = manifest.items.map(i => normalizeItem(i));
-        els.appTitle.textContent = manifest.appName || "White Launch";
-        els.appSubtitle.textContent = manifest.subtitle || "A clean glassmorphism launcher for apps and games.";
-        toast("Fallback mode", "Firestore failed, so manifest.json/local fallback is now active.", "err");
-      }
-      syncAdminUI();
-      render();
-    }
-
     async function loadManifestFallback() {
       try {
         const res = await fetch("./manifest.json", { cache: "no-store" });
@@ -932,12 +902,41 @@
         const data = await res.json();
         if (data && Array.isArray(data.items)) return data;
       } catch {}
-      const local = loadLocalItems();
-      return {
-        appName: fallbackManifest.appName,
-        subtitle: fallbackManifest.subtitle,
-        items: local
-      };
+      return { appName: fallbackManifest.appName, subtitle: fallbackManifest.subtitle, items: loadLocalItems() };
+    }
+
+    async function loadFromFirestore() {
+      try {
+        const app = initializeApp(firebaseConfig);
+        state.db = getFirestore(app);
+        state.auth = getAuth(app);
+        if (state.isAdmin) {
+          try { await signInAnonymously(state.auth); } catch {}
+        }
+
+        const snap = await getDocs(collection(state.db, "apps"));
+        const docs = snap.docs
+          .map(d => normalizeItem({ id: d.id, ...d.data() }, d.id))
+          .filter(item => String(item.title || "").toLowerCase() !== "sky rush");
+
+        if (!docs.length) throw new Error("empty collection");
+
+        state.items = docs.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+        state.localMode = false;
+        els.appTitle.textContent = "White Launch";
+        els.appSubtitle.textContent = "A clean glassmorphism launcher for apps and games.";
+        toast("Firestore connected", `${docs.length} item${docs.length === 1 ? "" : "s"} loaded from cloud.`);
+      } catch {
+        state.localMode = true;
+        state.db = null;
+        const manifest = await loadManifestFallback();
+        state.items = manifest.items.map(i => normalizeItem(i)).filter(item => String(item.title || "").toLowerCase() !== "sky rush");
+        els.appTitle.textContent = manifest.appName || "White Launch";
+        els.appSubtitle.textContent = manifest.subtitle || "A clean glassmorphism launcher for apps and games.";
+        toast("Fallback mode", "Firestore failed, so manifest/local fallback is now active.", "err");
+      }
+      syncAdminUI();
+      render();
     }
 
     function initParticles() {
@@ -948,20 +947,11 @@
       let w = 0, h = 0, t = 0;
 
       const bubbles = Array.from({ length: 56 }, () => ({
-        x: Math.random(),
-        y: Math.random(),
-        r: 0.8 + Math.random() * 1.8,
-        a: 0.08 + Math.random() * 0.16,
-        vx: (Math.random() - 0.5) * 0.00022,
-        vy: (Math.random() - 0.5) * 0.00022
+        x: Math.random(), y: Math.random(), r: 0.8 + Math.random() * 1.8,
+        a: 0.08 + Math.random() * 0.16, vx: (Math.random() - 0.5) * 0.00022, vy: (Math.random() - 0.5) * 0.00022
       }));
-
       const particles = Array.from({ length: 74 }, () => ({
-        x: Math.random(),
-        y: Math.random(),
-        vx: (Math.random() - 0.5) * 0.0007,
-        vy: (Math.random() - 0.5) * 0.0007,
-        r: 1 + Math.random() * 2.2
+        x: Math.random(), y: Math.random(), vx: (Math.random() - 0.5) * 0.0007, vy: (Math.random() - 0.5) * 0.0007, r: 1 + Math.random() * 2.2
       }));
 
       function resize() {
@@ -977,7 +967,6 @@
       function draw() {
         const dpr = Math.max(1, devicePixelRatio || 1);
         t += 0.003;
-
         bctx.clearRect(0,0,w,h);
         fctx.clearRect(0,0,w,h);
 
@@ -994,7 +983,6 @@
           if (s.x > 1.05) s.x = -0.05;
           if (s.y < -0.05) s.y = 1.05;
           if (s.y > 1.05) s.y = -0.05;
-
           bctx.beginPath();
           bctx.fillStyle = `rgba(37,99,235,${s.a})`;
           bctx.arc(s.x * w, s.y * h, s.r * dpr, 0, Math.PI * 2);
@@ -1011,7 +999,6 @@
 
           const x = p.x * w;
           const y = p.y * h;
-
           fctx.beginPath();
           fctx.fillStyle = "rgba(37,99,235,.42)";
           fctx.arc(x, y, p.r * dpr, 0, Math.PI * 2);
@@ -1032,24 +1019,23 @@
             }
           }
         }
-
         requestAnimationFrame(draw);
       }
       draw();
     }
 
     document.addEventListener("contextmenu", e => e.preventDefault());
-
-    // Keep forms friendly on first open.
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", getStoredTheme() === "dark" ? "#07111f" : "#f8fbff");
     els.dateInput.value = todayString();
-
+    applyTheme(getStoredTheme());
+    closeButtons.forEach(btn => btn.addEventListener("click", () => closeModal($(btn.dataset.close))));
     initParticles();
     setFilter("All");
     loadFromFirestore();
     syncAdminUI();
   </script>
 
-  <!-- Optional Firestore rules for public read + authenticated write:
+  <!-- Firestore rules for public read + authenticated write:
   rules_version = '2';
   service cloud.firestore {
     match /databases/{database}/documents {

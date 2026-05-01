@@ -399,11 +399,11 @@
         </div>
         <div class="titleWrap">
           <h1 class="title">Among Us Hosting</h1>
-          <p class="desc">A website free-hosting lobby code, easier and cleaner!</p>
+          <p class="desc">A website free-hosting lobby code, easier, cleaner, and live-synced!</p>
         </div>
       </div>
       <div class="pillRow">
-        <div class="pill"><span class="statusDot"></span><span>Local lobby board</span></div>
+        <div class="pill"><span class="statusDot"></span><span>Live lobby feed</span></div>
       </div>
     </div>
 
@@ -542,7 +542,7 @@
         </div>
 
         <div class="noteBox">
-          Hosted lobbies save inside this browser. If you set an expiration, the lobby auto-removes after that time.
+          Hosted lobbies sync live for everyone. If you set an expiration, the lobby auto-removes after that time.
         </div>
       </div>
     </div>
@@ -550,10 +550,42 @@
 
   <div class="toastWrap" id="toastWrap"></div>
 
-  <script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      doc,
+      onSnapshot,
+      addDoc,
+      updateDoc,
+      deleteDoc,
+      query,
+      orderBy,
+      serverTimestamp,
+      Timestamp,
+      runTransaction,
+      increment,
+      arrayUnion,
+      arrayRemove,
+      getDoc,
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDJk89nG7r3cbWdHnwHZp22Ia1wEvvqiRU",
+      authDomain: "amongushost-33077.firebaseapp.com",
+      projectId: "amongushost-33077",
+      storageBucket: "amongushost-33077.firebasestorage.app",
+      messagingSenderId: "147346762296",
+      appId: "1:147346762296:web:6b65b8c1de513437b154cd"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     const STORAGE = {
-      ownerKey: 'amongus_hosting_owner_key_v4',
-      lobbies: 'amongus_hosting_lobbies_v4'
+      ownerKey: 'amongus_hosting_owner_key_live_v1'
     };
 
     const DEFAULT_THUMB = 'media/Thumbnail.png';
@@ -587,7 +619,8 @@
     const state = {
       ownerKey: null,
       lobbies: [],
-      selectedThumbDataURL: ''
+      selectedThumbDataURL: '',
+      unsubLobbies: null
     };
 
     function escapeHtml(str=''){
@@ -605,6 +638,19 @@
         const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
       });
+    }
+
+    function getOwnerKey(){
+      try{
+        let key = localStorage.getItem(STORAGE.ownerKey);
+        if (!key){
+          key = safeUUID();
+          localStorage.setItem(STORAGE.ownerKey, key);
+        }
+        return key;
+      }catch{
+        return safeUUID();
+      }
     }
 
     function genLobbyCode(len=6){
@@ -635,35 +681,9 @@
       }, ms);
     }
 
-    function loadJSON(key, fallback){
-      try{
-        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
-      }catch{
-        return fallback;
-      }
-    }
-    function saveJSON(key, value){
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-
-    function getOwnerKey(){
-      let key = localStorage.getItem(STORAGE.ownerKey);
-      if (!key){
-        key = safeUUID();
-        localStorage.setItem(STORAGE.ownerKey, key);
-      }
-      return key;
-    }
-
-    function getLobbies(){
-      return loadJSON(STORAGE.lobbies, []);
-    }
-    function setLobbies(v){
-      saveJSON(STORAGE.lobbies, v);
-    }
-
-    function nowISO(){
-      return new Date().toISOString();
+    function setLiveStatus(text){
+      const pillText = document.querySelector('.pillRow .pill span:last-child');
+      if (pillText) pillText.textContent = text;
     }
 
     function readFileAsDataURL(file){
@@ -675,16 +695,27 @@
       });
     }
 
+    function toDate(value){
+      if (!value) return null;
+      if (value?.toDate) return value.toDate();
+      if (typeof value === 'string' || typeof value === 'number'){
+        const d = new Date(value);
+        return Number.isNaN(d.getTime()) ? null : d;
+      }
+      if (typeof value === 'object' && typeof value.seconds === 'number') return new Date(value.seconds * 1000);
+      return null;
+    }
+
     function formatDate(value){
-      if (!value) return 'Never';
-      const d = new Date(value);
-      if (Number.isNaN(d.getTime())) return 'Never';
+      const d = toDate(value);
+      if (!d) return 'Never';
       return d.toLocaleString([], { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
     }
 
     function formatRemaining(expiresAt){
-      if (!expiresAt) return 'Never';
-      const diff = new Date(expiresAt).getTime() - Date.now();
+      const d = toDate(expiresAt);
+      if (!d) return 'Never';
+      const diff = d.getTime() - Date.now();
       if (diff <= 0) return 'Expired';
       const totalMins = Math.floor(diff / 60000);
       const h = Math.floor(totalMins / 60);
@@ -692,10 +723,15 @@
       return h > 0 ? `${h}h ${m}m` : `${m}m`;
     }
 
+    function isExpired(lobby){
+      const d = toDate(lobby.expiresAt);
+      return !!d && d.getTime() <= Date.now();
+    }
+
     function normalizeLobby(lobby){
       return {
         id: lobby.id || safeUUID(),
-        ownerKey: lobby.ownerKey || state.ownerKey,
+        ownerKey: lobby.ownerKey || '',
         public: !!lobby.public,
         name: lobby.name || '',
         type: lobby.type || 'Regular',
@@ -707,44 +743,18 @@
         active: lobby.active !== false,
         heartCount: Math.max(0, parseInt(lobby.heartCount || 0, 10)),
         hearts: Array.isArray(lobby.hearts) ? lobby.hearts : [],
-        createdAt: lobby.createdAt || nowISO(),
-        updatedAt: lobby.updatedAt || nowISO(),
+        createdAt: lobby.createdAt || null,
+        updatedAt: lobby.updatedAt || null,
         expiresAt: lobby.expiresAt || null
       };
-    }
-
-    function cleanupExpiredLobbies(){
-      const before = state.lobbies.length;
-      const now = Date.now();
-      state.lobbies = state.lobbies.filter(l => !l.expiresAt || new Date(l.expiresAt).getTime() > now);
-      if (before !== state.lobbies.length) setLobbies(state.lobbies);
-    }
-
-    function loadLobbies(){
-      state.lobbies = getLobbies().map(normalizeLobby);
-      cleanupExpiredLobbies();
-    }
-
-    function syncDisplayThumbnails(dataURL){
-      if (dataURL){
-        els.lobbyThumbPreview.src = dataURL;
-        els.pickerThumbImg.src = dataURL;
-      } else {
-        els.lobbyThumbPreview.src = DEFAULT_THUMB;
-        els.pickerThumbImg.src = DEFAULT_THUMB;
-      }
     }
 
     function updateExpirationFields(){
       els.expirationFields.classList.toggle('hidden', els.expirationMode.value !== 'set');
     }
 
-    function requiresActiveCodeCopy(lobby){
-      return !!lobby.active;
-    }
-
     function isOwner(lobby){
-      return lobby.ownerKey === state.ownerKey;
+      return !!state.ownerKey && lobby.ownerKey === state.ownerKey;
     }
 
     function hasLiked(lobby){
@@ -752,8 +762,8 @@
     }
 
     async function copyCode(text, lobby){
-      if (!requiresActiveCodeCopy(lobby)){
-        showToast('Inactive lobby', 'Active lobbies can be copied only.', 'err');
+      if (!lobby.active){
+        showToast('Inactive lobby', 'Active lobbies only can be copied.', 'err');
         return;
       }
       try{
@@ -785,19 +795,27 @@
           l.name, l.description, l.lobbyCode, l.type,
           l.public ? 'public' : 'private',
           l.isStreamer ? 'streamer' : '',
-          l.active ? 'active' : 'inactive'
+          l.active ? 'active' : 'inactive',
+          l.ownerKey || ''
         ].join(' ').toLowerCase();
         return hay.includes(term);
       });
     }
 
+    async function cleanupExpiredLobbies(list=state.lobbies){
+      const expired = list.filter(isExpired);
+      if (!expired.length) return;
+      await Promise.allSettled(expired.map(lobby => deleteDoc(doc(db, 'lobbies', lobby.id))));
+    }
+
     function renderLobbies(){
-      cleanupExpiredLobbies();
-      const visible = filterLobbies(state.lobbies).sort((a, b) => {
-        const aT = new Date(a.createdAt).getTime() || 0;
-        const bT = new Date(b.createdAt).getTime() || 0;
-        return bT - aT;
-      });
+      const visible = filterLobbies(state.lobbies)
+        .filter(lobby => !isExpired(lobby))
+        .sort((a, b) => {
+          const aT = toDate(a.createdAt)?.getTime() || 0;
+          const bT = toDate(b.createdAt)?.getTime() || 0;
+          return bT - aT;
+        });
 
       els.lobbyCountText.textContent = `${visible.length} lobby${visible.length === 1 ? '' : 'ies'}`;
       els.lobbyList.innerHTML = '';
@@ -834,7 +852,7 @@
               <div class="lobbyCode">
                 <span>Code:</span>
                 <span class="codeText">${escapeHtml(lobby.lobbyCode || '------')}</span>
-                <button class="codeBtn" ${requiresActiveCodeCopy(lobby) ? '' : 'disabled'} data-code="${escapeHtml(lobby.lobbyCode || '')}" type="button">${requiresActiveCodeCopy(lobby) ? 'Copy' : 'Inactive'}</button>
+                <button class="codeBtn" ${lobby.active ? '' : 'disabled'} data-code="${escapeHtml(lobby.lobbyCode || '')}" type="button">${lobby.active ? 'Copy' : 'Inactive'}</button>
               </div>
 
               <div class="pillToggleRow" style="display:flex;gap:10px;flex-wrap:wrap">
@@ -847,7 +865,6 @@
             <div class="smallMutedBlock">Expiration date: ${escapeHtml(formatDate(lobby.expiresAt))}</div>
           </div>
         `;
-        lobby.__card = card;
         els.lobbyList.appendChild(card);
       });
 
@@ -871,6 +888,20 @@
       });
     }
 
+    function startLiveListener(){
+      if (state.unsubLobbies) state.unsubLobbies();
+      const q = query(collection(db, 'lobbies'), orderBy('createdAt', 'desc'));
+      state.unsubLobbies = onSnapshot(q, async snap => {
+        state.lobbies = snap.docs.map(d => normalizeLobby({ id: d.id, ...d.data() }));
+        renderLobbies();
+        cleanupExpiredLobbies().catch(() => {});
+      }, err => {
+        console.error(err);
+        setLiveStatus('Live feed error');
+        showToast('Feed error', err.message || 'Unknown error', 'err');
+      });
+    }
+
     async function hostLobby(){
       const publicValue = els.publicInput.value === 'yes';
       const name = els.lobbyNameInput.value.trim() || 'Lobby';
@@ -885,10 +916,10 @@
       if (els.expirationMode.value === 'set'){
         const hours = Math.max(0, parseInt(els.expireHours.value || '0', 10));
         const mins = Math.max(1, parseInt(els.expireMinutes.value || '30', 10));
-        expiresAt = new Date(Date.now() + ((hours * 60) + mins) * 60000).toISOString();
+        expiresAt = Timestamp.fromDate(new Date(Date.now() + ((hours * 60) + mins) * 60000));
       }
 
-      const lobby = normalizeLobby({
+      await addDoc(collection(db, 'lobbies'), {
         ownerKey: state.ownerKey,
         public: publicValue,
         name,
@@ -901,54 +932,59 @@
         active: true,
         heartCount: 0,
         hearts: [],
-        createdAt: nowISO(),
-        updatedAt: nowISO(),
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
         expiresAt
       });
 
-      state.lobbies.push(lobby);
-      setLobbies(state.lobbies);
-      renderLobbies();
+      els.lobbyThumbInput.value = '';
+      state.selectedThumbDataURL = '';
+      els.lobbyThumbPreview.src = DEFAULT_THUMB;
+      els.pickerThumbImg.src = DEFAULT_THUMB;
       showToast('Lobby hosted', `${name} is live now.`, 'ok');
       closeModal(els.hostModal);
     }
 
-    function toggleHeart(lobbyId){
-      const lobby = state.lobbies.find(x => x.id === lobbyId);
-      if (!lobby) return;
-
-      lobby.hearts = Array.isArray(lobby.hearts) ? lobby.hearts : [];
-      const idx = lobby.hearts.indexOf(state.ownerKey);
-      if (idx >= 0){
-        lobby.hearts.splice(idx, 1);
-        lobby.heartCount = Math.max(0, (lobby.heartCount || 0) - 1);
-      } else {
-        lobby.hearts.push(state.ownerKey);
-        lobby.heartCount = (lobby.heartCount || 0) + 1;
-      }
-      lobby.updatedAt = nowISO();
-      setLobbies(state.lobbies);
-      renderLobbies();
+    async function toggleHeart(lobbyId){
+      const lobbyRef = doc(db, 'lobbies', lobbyId);
+      await runTransaction(db, async tx => {
+        const snap = await tx.get(lobbyRef);
+        if (!snap.exists()) return;
+        const data = snap.data();
+        const hearts = Array.isArray(data.hearts) ? data.hearts : [];
+        const already = hearts.includes(state.ownerKey);
+        tx.update(lobbyRef, {
+          hearts: already ? arrayRemove(state.ownerKey) : arrayUnion(state.ownerKey),
+          heartCount: increment(already ? -1 : 1),
+          updatedAt: serverTimestamp()
+        });
+      });
     }
 
-    function toggleActive(lobbyId){
+    async function toggleActive(lobbyId){
       const lobby = state.lobbies.find(x => x.id === lobbyId);
       if (!lobby || !isOwner(lobby)) return;
-      lobby.active = !lobby.active;
-      lobby.updatedAt = nowISO();
-      setLobbies(state.lobbies);
-      renderLobbies();
-      showToast('Updated', lobby.active ? 'Lobby is active.' : 'Lobby is inactive.', 'ok');
+      await updateDoc(doc(db, 'lobbies', lobbyId), {
+        active: !lobby.active,
+        updatedAt: serverTimestamp()
+      });
     }
 
-    function deleteLobby(lobbyId){
-      const before = state.lobbies.length;
-      state.lobbies = state.lobbies.filter(x => x.id !== lobbyId);
-      if (state.lobbies.length !== before){
-        setLobbies(state.lobbies);
-        renderLobbies();
-        showToast('Deleted', 'Lobby removed.', 'ok');
-      }
+    async function deleteLobby(lobbyId){
+      const lobby = state.lobbies.find(x => x.id === lobbyId);
+      if (!lobby || !isOwner(lobby)) return;
+      await deleteDoc(doc(db, 'lobbies', lobbyId));
+      showToast('Deleted', 'Lobby removed.', 'ok');
+    }
+
+    async function cleanupOneExpiredNow(){
+      const expired = state.lobbies.filter(isExpired);
+      if (!expired.length) return;
+      await Promise.allSettled(expired.map(lobby => deleteDoc(doc(db, 'lobbies', lobby.id))));
+    }
+
+    async function copyDefaultCodeIfNeeded(){
+      if (!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
     }
 
     function startBackground(){
@@ -1009,15 +1045,17 @@
         const file = e.target.files?.[0] || null;
         if (file){
           state.selectedThumbDataURL = await readFileAsDataURL(file);
-          syncDisplayThumbnails(state.selectedThumbDataURL);
+          els.lobbyThumbPreview.src = state.selectedThumbDataURL;
+          els.pickerThumbImg.src = state.selectedThumbDataURL;
         } else {
           state.selectedThumbDataURL = '';
-          syncDisplayThumbnails('');
+          els.lobbyThumbPreview.src = DEFAULT_THUMB;
+          els.pickerThumbImg.src = DEFAULT_THUMB;
         }
       });
 
-      els.hostBtn.addEventListener('click', () => {
-        if (!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
+      els.hostBtn.addEventListener('click', async () => {
+        await copyDefaultCodeIfNeeded();
         if (!els.lobbyNameInput.value.trim()) els.lobbyNameInput.value = 'Lobby';
         openModal(els.hostModal);
       });
@@ -1044,36 +1082,24 @@
 
     function seedInitialState(){
       state.ownerKey = getOwnerKey();
-      loadLobbies();
-      syncDisplayThumbnails('');
-      renderLobbies();
+      setLiveStatus('Live feed connected');
       updateExpirationFields();
-      if (!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
-      if (!els.lobbyNameInput.value.trim()) els.lobbyNameInput.value = 'Lobby';
+      copyDefaultCodeIfNeeded();
     }
 
-    function bindCrossTabSync(){
-      window.addEventListener('storage', e => {
-        if (e.key === STORAGE.lobbies){
-          loadLobbies();
-          renderLobbies();
-        }
-      });
-      setInterval(() => {
-        cleanupExpiredLobbies();
-        renderLobbies();
-      }, 60000);
-    }
-
-    function boot(){
+    async function boot(){
       startBackground();
       setupGlobalErrorHandling();
       bindEvents();
       seedInitialState();
-      bindCrossTabSync();
+      startLiveListener();
+      setInterval(() => {
+        cleanupOneExpiredNow().catch(() => {});
+      }, 60000);
     }
 
     boot();
   </script>
+
 </body>
 </html>

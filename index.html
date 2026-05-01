@@ -1,132 +1,1401 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#05070d" />
   <title>Among Us Hosting</title>
   <style>
-    :root{--bg:#05070d;--stroke:rgba(255,255,255,.10);--text:#f3f6fb;--muted:rgba(243,246,251,.72);--accent:#25EDC6;--danger:#ff6b81;--shadow:0 18px 60px rgba(0,0,0,.45);--radius:24px}
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 20% 10%, rgba(37,237,198,.12), transparent 18%),radial-gradient(circle at 80% 20%, rgba(255,255,255,.08), transparent 16%),radial-gradient(circle at 50% 80%, rgba(37,237,198,.08), transparent 18%),linear-gradient(180deg,#060912 0%,#04050a 100%);color:var(--text);overflow-x:hidden;-webkit-tap-highlight-color:transparent;user-select:none}
-    ::selection{background:transparent;color:inherit}::-moz-selection{background:transparent;color:inherit} *{-webkit-tap-highlight-color:transparent}
-    body::before{content:"";position:fixed;inset:0;background-image:radial-gradient(circle at 15% 20%, rgba(255,255,255,.06) 0 1px, transparent 1px),radial-gradient(circle at 65% 75%, rgba(255,255,255,.05) 0 1px, transparent 1px),radial-gradient(circle at 35% 55%, rgba(255,255,255,.05) 0 1px, transparent 1px);background-size:280px 280px;opacity:.35;pointer-events:none;z-index:-3}
-    #bgCanvas{position:fixed;inset:0;z-index:-2;width:100%;height:100%}
-    .wrap{width:min(1200px, calc(100% - 20px));margin:0 auto;padding:18px 0 40px}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border:1px solid var(--stroke);background:linear-gradient(180deg, rgba(12,16,28,.76), rgba(6,8,14,.72));box-shadow:var(--shadow);border-radius:28px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);position:sticky;top:12px;z-index:20}
-    .brand{display:flex;align-items:center;gap:14px;min-width:0}.logoBox{width:54px;height:54px;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 25px rgba(0,0,0,.35);flex:none;background:#111}.logoBox img{width:100%;height:100%;object-fit:cover;display:block}.titleWrap{min-width:0}.title{margin:0;font-size:clamp(1.2rem,2.6vw,1.8rem);line-height:1.05;color:var(--accent);text-shadow:0 0 20px rgba(37,237,198,.25)}.desc{margin:6px 0 0;color:var(--muted);font-size:.92rem;line-height:1.35}.pillRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.pill{padding:10px 14px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.04);color:var(--muted);font-size:.86rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
-    .card{border-radius:var(--radius);background:linear-gradient(180deg, rgba(10,13,22,.78), rgba(4,6,10,.66));border:1px solid var(--stroke);box-shadow:var(--shadow);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:hidden;position:relative}.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}.cardHead{padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}.cardTitle{margin:0;font-size:1.02rem;font-weight:700;color:#fff;letter-spacing:.2px}.cardBody{padding:18px}.containerGrid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}.gridTop{display:grid;grid-template-columns:1fr;gap:16px}.sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.sectionTitle h3{margin:0;font-size:1rem;color:#fff}.sectionTitle span{color:var(--muted);font-size:.86rem}.actionBar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .btn,.btnGhost,.btnDanger,.btnMini,.switchBtn,.codeBtn,.heartBtn{border:none;outline:none;cursor:pointer;border-radius:16px;font-weight:700;transition:.18s ease;-webkit-tap-highlight-color:transparent;user-select:none}.btn{padding:14px 18px;background:linear-gradient(180deg,var(--accent),#14caaa);color:#02130f;box-shadow:0 12px 28px rgba(37,237,198,.18)}.btn:hover{transform:translateY(-1px);filter:brightness(1.03)}.btn:active{transform:translateY(1px) scale(.99)}.btnGhost,.btnMini{background:rgba(255,255,255,.04);color:#fff;border:1px solid rgba(255,255,255,.10)}.btnGhost:hover,.btnMini:hover{background:rgba(255,255,255,.07)}.btnDanger{background:rgba(255,107,129,.16);color:#ffd6dc;border:1px solid rgba(255,107,129,.26)}.btnDanger:hover{background:rgba(255,107,129,.22)}.btnMini{padding:10px 12px;border-radius:14px;font-size:.88rem}
-    .searchRow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.input,.select,.textarea{width:100%;border:none;outline:none;color:#fff;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);padding:14px 15px;font-size:1rem;resize:none;transition:.18s ease;user-select:text}.input:focus,.select:focus,.textarea:focus{border-color:rgba(37,237,198,.48);box-shadow:0 0 0 3px rgba(37,237,198,.08)}.textarea{min-height:100px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.fieldLabel{display:block;margin:0 0 7px;font-size:.86rem;color:var(--muted)}.hint{font-size:.84rem;color:var(--muted);line-height:1.45}
-    .lobbyList{display:flex;flex-direction:column;gap:14px}.lobbyCard{display:grid;grid-template-columns:116px 1fr;gap:14px;padding:14px;border-radius:22px;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08)}.lobbyThumb{width:116px;height:116px;border-radius:18px;overflow:hidden;background:#0f1218;border:1px solid rgba(255,255,255,.08);flex:none}.lobbyThumb img{width:100%;height:100%;object-fit:cover;display:block}.lobbyMain{min-width:0}.lobbyTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}.lobbyName{margin:0;font-size:1.12rem;font-weight:800;line-height:1.2;color:#fff;user-select:text}.lobbyMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.tag{padding:7px 10px;border-radius:999px;font-size:.8rem;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04);color:#fff}.tag.accent{border-color:rgba(37,237,198,.24);color:var(--accent)}.tag.danger{border-color:rgba(255,107,129,.25);color:#ffb5c0}.lobbyDesc{margin:10px 0 0;color:var(--muted);line-height:1.5;font-size:.93rem;white-space:pre-wrap;word-break:break-word;user-select:text}.lobbyFooter{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.lobbyCode{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;font-weight:700}.codeText{padding:9px 12px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.08);border-radius:14px;letter-spacing:.8px;user-select:text}.codeBtn{padding:9px 12px;border-radius:14px;border:1px solid rgba(37,237,198,.18);background:rgba(37,237,198,.10);color:var(--accent);font-weight:800}.switchBtn{padding:10px 13px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:#fff}.switchBtn.on{border-color:rgba(37,237,198,.35);background:rgba(37,237,198,.12);color:var(--accent)}.switchBtn.off{border-color:rgba(255,107,129,.28);background:rgba(255,107,129,.10);color:#ffb6c2}.heartBtn{padding:9px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:#fff;display:inline-flex;align-items:center;gap:7px}.heartBtn.liked{border-color:rgba(37,237,198,.25);background:rgba(37,237,198,.10);color:var(--accent)}.smallMuted{font-size:.82rem;color:var(--muted)}.emptyState{padding:28px;text-align:center;color:var(--muted);border-radius:22px;border:1px dashed rgba(255,255,255,.10);background:rgba(255,255,255,.03)}
-    .modalBack{position:fixed;inset:0;background:rgba(2,4,8,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modalBack.show{display:flex}.modal{width:min(720px,100%);max-height:min(92vh,900px);overflow:auto;border-radius:28px;background:linear-gradient(180deg, rgba(13,17,28,.96), rgba(6,8,13,.96));border:1px solid rgba(255,255,255,.10);box-shadow:0 24px 80px rgba(0,0,0,.6)}.modalHead{padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(13,17,28,.92));z-index:1}.modalTitle{margin:0;font-size:1.08rem;color:#fff}.modalBody{padding:18px}.fileBox{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.preview{width:74px;height:74px;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#111;flex:none}.preview img{width:100%;height:100%;object-fit:cover;display:block}.toastWrap{position:fixed;right:14px;bottom:14px;display:flex;flex-direction:column;gap:10px;z-index:120}.toast{min-width:240px;max-width:320px;border-radius:18px;background:rgba(9,13,22,.92);border:1px solid rgba(255,255,255,.10);box-shadow:var(--shadow);padding:12px 14px;color:#fff;transform:translateY(10px);opacity:0;animation:toastIn .22s ease forwards}.toast.ok{border-color:rgba(37,237,198,.24)}.toast.err{border-color:rgba(255,107,129,.28)}.toast .t1{font-weight:800;font-size:.95rem;margin-bottom:3px}.toast .t2{font-size:.86rem;color:var(--muted);line-height:1.35}@keyframes toastIn{to{transform:translateY(0);opacity:1}}.hidden{display:none !important}.loginHero{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:center;margin-bottom:10px}.loginHero .heroPic{width:88px;height:88px;border-radius:24px;overflow:hidden;background:#111;border:1px solid rgba(255,255,255,.10)}.loginHero .heroPic img{width:100%;height:100%;object-fit:cover}.loginHero h2{margin:0 0 6px;font-size:1.3rem;color:var(--accent)}.loginHero p{margin:0;color:var(--muted);line-height:1.45}.authActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.statusDot{width:10px;height:10px;border-radius:999px;background:var(--accent);box-shadow:0 0 12px rgba(37,237,198,.45)}.subtleLine{height:1px;background:linear-gradient(90deg, transparent, rgba(37,237,198,.20), transparent);margin:14px 0}.ownerFlag{padding:6px 10px;border-radius:999px;border:1px solid rgba(37,237,198,.2);color:var(--accent);background:rgba(37,237,198,.08);font-size:.78rem;font-weight:800}.authFeedback{margin-top:12px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:.92rem;line-height:1.45;user-select:text}.authFeedback.ok{border-color:rgba(37,237,198,.18);color:#d8fff8;background:rgba(37,237,198,.08)}.authFeedback.err{border-color:rgba(255,107,129,.22);color:#ffd6dc;background:rgba(255,107,129,.08)}.hostFeedback{margin-top:12px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:.92rem;line-height:1.45;user-select:text}.hostFeedback.ok{border-color:rgba(37,237,198,.18);color:#d8fff8;background:rgba(37,237,198,.08)}.hostFeedback.err{border-color:rgba(255,107,129,.22);color:#ffd6dc;background:rgba(255,107,129,.08)}
-    @media (min-width:880px){.gridTop{grid-template-columns:.95fr 1.2fr}} @media (max-width:760px){.topbar{padding:14px}.logoBox{width:48px;height:48px;border-radius:16px}.cardBody,.modalBody{padding:14px}.lobbyCard{grid-template-columns:1fr}.lobbyThumb{width:100%;height:180px}.grid2,.grid3{grid-template-columns:1fr}.modal{max-height:94vh}.brand{align-items:flex-start}.pillRow{justify-content:flex-start}} *::-webkit-scrollbar{width:10px;height:10px} *::-webkit-scrollbar-track{background:rgba(255,255,255,.04)} *::-webkit-scrollbar-thumb{background:rgba(37,237,198,.30);border-radius:999px;border:2px solid rgba(0,0,0,.2)} *::-webkit-scrollbar-thumb:hover{background:rgba(37,237,198,.42)}
+    :root{
+      --bg:#05070d;
+      --panel:rgba(10,13,22,.74);
+      --panel-2:rgba(255,255,255,.04);
+      --stroke:rgba(255,255,255,.10);
+      --text:#f4f7fb;
+      --muted:rgba(244,247,251,.70);
+      --accent:#25EDC6;
+      --danger:#ff6b81;
+      --shadow:0 22px 60px rgba(0,0,0,.48);
+      --radius:26px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(37,237,198,.12), transparent 16%),
+        radial-gradient(circle at 85% 18%, rgba(255,255,255,.08), transparent 16%),
+        radial-gradient(circle at 50% 86%, rgba(37,237,198,.08), transparent 18%),
+        linear-gradient(180deg, #060912 0%, #04050a 100%);
+      overflow-x:hidden;
+      -webkit-tap-highlight-color: transparent;
+      user-select:none;
+      overscroll-behavior: none;
+    }
+    ::selection{background:transparent;color:inherit}
+    ::-moz-selection{background:transparent;color:inherit}
+    *{
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout:none;
+    }
+    button, input, textarea, select {
+      font:inherit;
+    }
+    button {
+      cursor:pointer;
+    }
+    #bgCanvas{
+      position:fixed; inset:0; width:100%; height:100%;
+      z-index:-2;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background-image:
+        radial-gradient(circle at 20% 25%, rgba(255,255,255,.05) 0 1px, transparent 1px),
+        radial-gradient(circle at 60% 70%, rgba(255,255,255,.05) 0 1px, transparent 1px),
+        radial-gradient(circle at 35% 45%, rgba(255,255,255,.04) 0 1px, transparent 1px);
+      background-size: 280px 280px;
+      opacity:.3;
+      pointer-events:none;
+      z-index:-3;
+    }
+    .wrap{
+      width:min(1220px, calc(100% - 20px));
+      margin:0 auto;
+      padding:16px 0 40px;
+    }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:16px 18px;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(12,16,28,.82), rgba(5,7,12,.72));
+      border:1px solid var(--stroke);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      position:sticky;
+      top:12px;
+      z-index:20;
+    }
+    .brand{display:flex; align-items:center; gap:14px; min-width:0}
+    .logoBox{
+      width:54px; height:54px; border-radius:18px; overflow:hidden;
+      background:#111; border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 10px 25px rgba(0,0,0,.35);
+      flex:none;
+    }
+    .logoBox img{width:100%;height:100%;object-fit:cover;display:block}
+    .titleWrap{min-width:0}
+    .title{
+      margin:0;
+      font-size:clamp(1.2rem, 2.6vw, 1.85rem);
+      line-height:1.05;
+      color:var(--accent);
+      text-shadow:0 0 20px rgba(37,237,198,.22);
+    }
+    .desc{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.35;
+    }
+    .pillRow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .pill{
+      display:flex; align-items:center; gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:.86rem;
+      white-space:nowrap;
+    }
+    .statusDot{
+      width:10px; height:10px; border-radius:999px; background:var(--accent);
+      box-shadow:0 0 12px rgba(37,237,198,.45);
+      flex:none;
+    }
+
+    .card{
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(10,13,22,.80), rgba(4,6,10,.66));
+      border:1px solid var(--stroke);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      overflow:hidden;
+      position:relative;
+    }
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      pointer-events:none;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .cardHead{
+      padding:18px 18px 12px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .cardTitle{margin:0; font-size:1.02rem; font-weight:800; color:#fff}
+    .smallMuted{font-size:.83rem; color:var(--muted)}
+    .cardBody{padding:18px}
+    .containerGrid{display:grid; grid-template-columns:1fr; gap:16px; margin-top:18px}
+    .gridTop{display:grid; grid-template-columns:1fr; gap:16px}
+    .actionBar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .sectionTitle{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+    .sectionTitle h3{margin:0; font-size:1rem; color:#fff}
+    .sectionTitle span{color:var(--muted); font-size:.86rem}
+    .hint{font-size:.84rem; color:var(--muted); line-height:1.45}
+
+    .btn,.btnGhost,.btnDanger,.btnMini,.switchBtn,.codeBtn,.heartBtn{
+      border:none; outline:none;
+      border-radius:16px;
+      transition:.18s ease;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn{
+      padding:14px 18px;
+      background:linear-gradient(180deg, var(--accent), #14caaa);
+      color:#02130f;
+      font-weight:800;
+      box-shadow:0 12px 28px rgba(37,237,198,.16);
+    }
+    .btn:hover{transform:translateY(-1px); filter:brightness(1.03)}
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btnGhost,.btnMini{
+      background:rgba(255,255,255,.05);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .btnGhost:hover,.btnMini:hover{background:rgba(255,255,255,.08)}
+    .btnDanger{
+      background:rgba(255,107,129,.14);
+      color:#ffd6dc;
+      border:1px solid rgba(255,107,129,.22);
+    }
+    .btnDanger:hover{background:rgba(255,107,129,.20)}
+    .btnMini{padding:10px 12px; border-radius:14px; font-weight:700; font-size:.88rem}
+    .input,.select,.textarea{
+      width:100%;
+      border:none;
+      outline:none;
+      color:#fff;
+      border-radius:16px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+      padding:14px 15px;
+      font-size:1rem;
+      resize:none;
+      transition:.18s ease;
+      user-select:text;
+      -webkit-user-select:text;
+    }
+    .input:focus,.select:focus,.textarea:focus{
+      border-color:rgba(37,237,198,.48);
+      box-shadow:0 0 0 3px rgba(37,237,198,.08);
+    }
+    .textarea{min-height:100px}
+    .grid2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+    .grid3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
+    .fieldLabel{display:block; margin:0 0 7px; color:var(--muted); font-size:.86rem}
+    .searchRow{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    .subtleLine{height:1px; background:linear-gradient(90deg, transparent, rgba(37,237,198,.20), transparent); margin:14px 0}
+
+    .lobbyList{display:flex; flex-direction:column; gap:14px}
+    .lobbyCard{
+      display:grid;
+      grid-template-columns:116px 1fr;
+      gap:14px;
+      padding:14px;
+      border-radius:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .lobbyThumb{
+      width:116px; height:116px;
+      border-radius:18px;
+      overflow:hidden;
+      background:#0f1218;
+      border:1px solid rgba(255,255,255,.08);
+      flex:none;
+    }
+    .lobbyThumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .lobbyMain{min-width:0}
+    .lobbyTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .lobbyName{
+      margin:0;
+      font-size:1.12rem;
+      font-weight:900;
+      line-height:1.2;
+      color:var(--accent);
+      user-select:text;
+      -webkit-user-select:text;
+      text-shadow:0 0 16px rgba(37,237,198,.08);
+    }
+    .lobbyMeta{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+    .tag{
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:.8rem;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.04);
+      color:#fff;
+    }
+    .tag.accent{border-color:rgba(37,237,198,.24); color:var(--accent)}
+    .tag.danger{border-color:rgba(255,107,129,.25); color:#ffb5c0}
+    .lobbyDesc{
+      margin:10px 0 0;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:.93rem;
+      white-space:pre-wrap;
+      word-break:break-word;
+      user-select:text;
+      -webkit-user-select:text;
+    }
+    .lobbyFooter{
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .lobbyCode{
+      display:flex; align-items:center; gap:8px; flex-wrap:wrap; color:#fff; font-weight:700;
+    }
+    .codeText{
+      padding:9px 12px;
+      background:rgba(0,0,0,.30);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      letter-spacing:.8px;
+      user-select:text;
+      -webkit-user-select:text;
+    }
+    .codeBtn{
+      padding:9px 12px;
+      border-radius:14px;
+      border:1px solid rgba(37,237,198,.18);
+      background:rgba(37,237,198,.10);
+      color:var(--accent);
+      font-weight:800;
+    }
+    .codeBtn:active{transform:scale(.99)}
+    .switchBtn{
+      padding:10px 13px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.05);
+      color:#fff;
+      font-weight:800;
+    }
+    .switchBtn.on{
+      border-color:rgba(37,237,198,.36);
+      background:rgba(37,237,198,.12);
+      color:var(--accent);
+    }
+    .switchBtn.off{
+      border-color:rgba(255,107,129,.28);
+      background:rgba(255,107,129,.10);
+      color:#ffb6c2;
+    }
+    .heartBtn{
+      padding:9px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:#fff;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      font-weight:800;
+    }
+    .heartBtn.liked{
+      border-color:rgba(37,237,198,.25);
+      background:rgba(37,237,198,.10);
+      color:var(--accent);
+    }
+    .ownerFlag{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(37,237,198,.20);
+      color:var(--accent);
+      background:rgba(37,237,198,.08);
+      font-size:.78rem;
+      font-weight:800;
+      user-select:text;
+      -webkit-user-select:text;
+    }
+    .emptyState{
+      padding:28px;
+      text-align:center;
+      color:var(--muted);
+      border-radius:22px;
+      border:1px dashed rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+    }
+
+    .modalBack{
+      position:fixed; inset:0;
+      background:rgba(2,4,8,.72);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:100;
+    }
+    .modalBack.show{display:flex}
+    .modal{
+      width:min(760px, 100%);
+      max-height:min(92vh, 900px);
+      overflow:auto;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(13,17,28,.96), rgba(6,8,13,.96));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 24px 80px rgba(0,0,0,.6);
+    }
+    .modalHead{
+      padding:18px 18px 12px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      position:sticky;
+      top:0;
+      background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(13,17,28,.92));
+      z-index:1;
+    }
+    .modalTitle{margin:0; font-size:1.08rem; color:#fff}
+    .modalBody{padding:18px}
+    .loginHero{
+      display:grid;
+      grid-template-columns:88px 1fr;
+      gap:14px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .loginHero .heroPic{
+      width:88px;height:88px;border-radius:24px;overflow:hidden;
+      background:#111;border:1px solid rgba(255,255,255,.10)
+    }
+    .loginHero .heroPic img{width:100%;height:100%;object-fit:cover}
+    .loginHero h2{margin:0 0 6px;font-size:1.3rem;color:var(--accent)}
+    .loginHero p{margin:0;color:var(--muted);line-height:1.45}
+    .authActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .noteBox{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:rgba(37,237,198,.08);
+      border:1px solid rgba(37,237,198,.16);
+      color:#d8fff8;
+      font-size:.9rem;
+      line-height:1.45;
+    }
+    .authFeedback{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.45;
+      user-select:text;
+      -webkit-user-select:text;
+    }
+    .authFeedback.ok{border-color:rgba(37,237,198,.18); color:#d8fff8; background:rgba(37,237,198,.08)}
+    .authFeedback.err{border-color:rgba(255,107,129,.22); color:#ffd6dc; background:rgba(255,107,129,.08)}
+    .fileBox{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    .preview{
+      width:74px;height:74px;border-radius:20px;overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);background:#111;flex:none
+    }
+    .preview img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .toastWrap{
+      position:fixed; right:14px; bottom:14px;
+      display:flex; flex-direction:column; gap:10px;
+      z-index:120;
+    }
+    .toast{
+      min-width:240px; max-width:330px;
+      border-radius:18px;
+      background:rgba(9,13,22,.94);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);
+      padding:12px 14px;
+      color:#fff;
+      transform:translateY(10px);
+      opacity:0;
+      animation:toastIn .22s ease forwards;
+    }
+    .toast.ok{border-color:rgba(37,237,198,.24)}
+    .toast.err{border-color:rgba(255,107,129,.28)}
+    .toast .t1{font-weight:900;font-size:.95rem;margin-bottom:3px}
+    .toast .t2{font-size:.86rem;color:var(--muted);line-height:1.35}
+    @keyframes toastIn{to{transform:translateY(0);opacity:1}}
+    .hidden{display:none !important}
+
+    *::-webkit-scrollbar{width:10px;height:10px}
+    *::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
+    *::-webkit-scrollbar-thumb{background:rgba(37,237,198,.30);border-radius:999px;border:2px solid rgba(0,0,0,.2)}
+    *::-webkit-scrollbar-thumb:hover{background:rgba(37,237,198,.42)}
+
+    @media (min-width: 880px){
+      .gridTop{grid-template-columns:.92fr 1.2fr}
+    }
+    @media (max-width: 760px){
+      .topbar{padding:14px}
+      .logoBox{width:48px;height:48px;border-radius:16px}
+      .cardBody,.modalBody{padding:14px}
+      .lobbyCard{grid-template-columns:1fr}
+      .lobbyThumb{width:100%;height:180px}
+      .grid2,.grid3{grid-template-columns:1fr}
+      .modal{max-height:94vh}
+      .brand{align-items:flex-start}
+      .pillRow{justify-content:flex-start}
+    }
   </style>
 </head>
 <body>
   <canvas id="bgCanvas"></canvas>
+
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
-        <div class="logoBox"><img id="topLogo" src="media/Thumbnail.png" alt="Among Us Hosting" onerror="this.src='https://placehold.co/200x200/111111/25EDC6?text=AU'" /></div>
-        <div class="titleWrap"><h1 class="title">Among Us Hosting</h1><p class="desc">A website free-hosting lobby code, easier and cleaner!</p></div>
+        <div class="logoBox">
+          <img id="topLogo" src="media/Thumbnail.png" alt="Among Us Hosting" onerror="this.src='https://placehold.co/200x200/111111/25EDC6?text=AU'" />
+        </div>
+        <div class="titleWrap">
+          <h1 class="title">Among Us Hosting</h1>
+          <p class="desc">A website free-hosting lobby code, easier and cleaner!</p>
+        </div>
       </div>
       <div class="pillRow">
-        <div class="pill"><span class="statusDot"></span><span id="authStateText">Checking login...</span></div>
-        <button class="btnGhost btnMini" id="logoutBtn" style="display:none;" type="button">Logout</button>
+        <div class="pill"><span class="statusDot"></span><span id="authStateText">Not logged in</span></div>
+        <button class="btnGhost btnMini" id="signInOpenBtn" type="button">Sign In</button>
+        <button class="btnGhost btnMini" id="logoutBtn" type="button" style="display:none;">Logout</button>
       </div>
-    </div><div class="containerGrid">
-  <div class="card"><div class="cardBody actionBar"><div><div class="sectionTitle" style="margin-bottom:6px;"><h3>Main</h3><span>Host your lobby</span></div><div class="hint">Open the host form after logging in.</div></div><button class="btn" id="hostBtn" type="button">Host</button></div></div>
-  <div class="gridTop">
-    <div class="card"><div class="cardHead"><h2 class="cardTitle">Search</h2><span class="smallMuted" id="lobbyCountText">0 lobbies</span></div><div class="cardBody"><div class="searchRow"><input id="searchInput" class="input" type="text" placeholder="Search lobby name, code, description, type, username..." /></div><div class="subtleLine"></div><div class="hint">Live lobby search.</div></div></div>
-    <div class="card"><div class="cardHead"><h2 class="cardTitle">Hosting Lobbies</h2><span class="smallMuted">Live feed</span></div><div class="cardBody"><div id="lobbyList" class="lobbyList"></div><div id="emptyState" class="emptyState hidden">No lobbies yet. Host one first.</div></div></div>
-  </div>
-</div>
+    </div>
 
-  </div>  <div class="modalBack" id="authModal">
+    <div class="containerGrid">
+      <div class="card">
+        <div class="cardBody actionBar">
+          <div>
+            <div class="sectionTitle" style="margin-bottom:6px;"><h3>Main</h3><span>Host your lobby</span></div>
+            <div class="hint">You need to be logged in before hosting.</div>
+          </div>
+          <button class="btn" id="hostBtn" type="button">Host</button>
+        </div>
+      </div>
+
+      <div class="gridTop">
+        <div class="card">
+          <div class="cardHead"><h2 class="cardTitle">Search</h2><span class="smallMuted" id="lobbyCountText">0 lobbies</span></div>
+          <div class="cardBody">
+            <div class="searchRow">
+              <input id="searchInput" class="input" type="text" placeholder="Search lobby name, code, description, type, username..." />
+            </div>
+            <div class="subtleLine"></div>
+            <div class="hint">Live lobby search.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="cardHead"><h2 class="cardTitle">Hosting Lobbies</h2><span class="smallMuted">Live feed</span></div>
+          <div class="cardBody">
+            <div id="lobbyList" class="lobbyList"></div>
+            <div id="emptyState" class="emptyState hidden">No lobbies yet. Host one first.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modalBack" id="authModal">
     <div class="modal">
-      <div class="modalHead"><h3 class="modalTitle">Sign In</h3><button class="btnMini" id="closeAuthBtn" type="button">Close</button></div>
+      <div class="modalHead">
+        <h3 class="modalTitle">Sign In</h3>
+        <button class="btnMini" id="closeAuthBtn" type="button">Close</button>
+      </div>
       <div class="modalBody">
-        <div class="loginHero"><div class="heroPic"><img id="authPreview" src="https://placehold.co/300x300/111111/25EDC6?text=Profile" alt="Profile Preview"></div><div><h2>Welcome back</h2><p>Choose a profile picture, username, display name, and password. Turn on remember me to open directly next time.</p></div></div>
+        <div class="loginHero">
+          <div class="heroPic"><img id="authPreview" src="https://placehold.co/300x300/111111/25EDC6?text=Profile" alt="Profile Preview"></div>
+          <div>
+            <h2>Welcome back</h2>
+            <p>Pick a profile photo, username, display name, and password. Turn on remember me to reopen automatically next time.</p>
+          </div>
+        </div>
+
         <form id="authForm" autocomplete="on">
-          <div class="grid2"><div><label class="fieldLabel">Profile Pick</label><input id="profileFile" class="input" type="file" accept="image/*" /></div><div><label class="fieldLabel">Username</label><input id="usernameInput" class="input" type="text" placeholder="skyemoz" autocomplete="username" /></div></div>
-          <div class="grid2" style="margin-top:12px;"><div><label class="fieldLabel">Display Name</label><input id="displayNameInput" class="input" type="text" placeholder="Sky" autocomplete="name" /></div><div><label class="fieldLabel">Password</label><input id="passwordInput" class="input" type="password" placeholder="••••••••" autocomplete="current-password" /></div></div>
-          <div class="grid2" style="margin-top:12px;align-items:center;"><label class="pill" style="cursor:pointer;justify-content:flex-start;"><input id="rememberMe" type="checkbox" style="accent-color: var(--accent); width: 16px; height: 16px;" /><span>Remember me</span></label><div class="hint">Keeps you signed in on the next open.</div></div>
-          <div class="authActions"><button class="btn" id="signInBtn" type="submit">Sign In</button><button class="btnGhost btnMini" id="useExistingBtn" type="button">Use Saved Login</button></div>
+          <div class="grid2">
+            <div>
+              <label class="fieldLabel">Profile Pick</label>
+              <input id="profileFile" class="input" type="file" accept="image/*" />
+            </div>
+            <div>
+              <label class="fieldLabel">Username</label>
+              <input id="usernameInput" class="input" type="text" placeholder="skyemoz" autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="grid2" style="margin-top:12px;">
+            <div>
+              <label class="fieldLabel">Display Name</label>
+              <input id="displayNameInput" class="input" type="text" placeholder="Sky" autocomplete="name" />
+            </div>
+            <div>
+              <label class="fieldLabel">Password</label>
+              <input id="passwordInput" class="input" type="password" placeholder="••••••••" autocomplete="current-password" />
+            </div>
+          </div>
+
+          <div class="grid2" style="margin-top:12px;align-items:center;">
+            <label class="pill" style="cursor:pointer;justify-content:flex-start;">
+              <input id="rememberMe" type="checkbox" style="accent-color: var(--accent); width: 16px; height: 16px;" />
+              <span>Remember me</span>
+            </label>
+            <div class="hint">Keeps you signed in on the next open.</div>
+          </div>
+
+          <div class="authActions">
+            <button class="btn" id="signInBtn" type="submit">Sign In</button>
+            <button class="btnGhost btnMini" id="useExistingBtn" type="button">Use Saved Login</button>
+          </div>
+
+          <div class="noteBox">
+            Sign in anytime. If the username already exists, the password has to match. If it is a new username, this creates the profile.
+          </div>
+
           <div id="authFeedback" class="authFeedback">Ready.</div>
         </form>
       </div>
     </div>
-  </div>  <div class="modalBack" id="hostModal">
+  </div>
+
+  <div class="modalBack" id="hostModal">
     <div class="modal">
-      <div class="modalHead"><h3 class="modalTitle">Host Lobby</h3><button class="btnMini" id="closeHostBtn" type="button">Close</button></div>
+      <div class="modalHead">
+        <h3 class="modalTitle">Host Lobby</h3>
+        <button class="btnMini" id="closeHostBtn" type="button">Close</button>
+      </div>
       <div class="modalBody">
-        <div class="loginHero" style="grid-template-columns:1fr auto;margin-bottom:14px;align-items:center;"><div><h2 style="margin-bottom:4px;">Create your lobby</h2><p style="margin:0;">Fill out the details and publish it live.</p></div><div class="ownerFlag">Live feed ready</div></div>
-        <div class="grid2"><div><label class="fieldLabel">Public</label><select id="publicInput" class="select"><option value="yes">Yes</option><option value="no">No</option></select></div><div><label class="fieldLabel">Name</label><input id="lobbyNameInput" class="input" type="text" placeholder="(@Username) Lobby" /></div></div>
-        <div class="grid3" style="margin-top:12px;"><div><label class="fieldLabel">Type</label><select id="typeInput" class="select"><option>Modded</option><option>Regular</option><option>Sns</option><option>Hide And Seek</option></select></div><div><label class="fieldLabel">Lobby Code</label><input id="lobbyCodeInput" class="input" type="text" placeholder="AUTO-GEN" maxlength="12" /></div><div><label class="fieldLabel">Max Players</label><input id="maxPlayersInput" class="input" type="number" min="1" max="15" value="10" /></div></div>
-        <div class="grid2" style="margin-top:12px;"><div><label class="fieldLabel">Description</label><textarea id="lobbyDescInput" class="textarea" placeholder="Add lobby details..."></textarea></div><div><label class="fieldLabel">Thumbnail</label><div class="fileBox"><div class="preview"><img id="lobbyThumbPreview" src="media/Thumbnail.png" alt="Lobby Preview" onerror="this.src='https://placehold.co/300x300/111111/25EDC6?text=Thumbnail'" /></div><input id="lobbyThumbInput" class="input" type="file" accept="image/*" /></div></div></div>
-        <div class="grid2" style="margin-top:12px;align-items:center;"><div><label class="fieldLabel">Is Streamer</label><select id="streamerInput" class="select"><option value="yes">Yes</option><option value="no">No</option></select></div><div><label class="fieldLabel">Expiration</label><select id="expirationMode" class="select"><option value="never">Never</option><option value="set">Set Time</option></select></div></div>
-        <div class="grid2" id="expirationFields" style="margin-top:12px;display:none;"><div><label class="fieldLabel">Hours</label><input id="expireHours" class="input" type="number" min="0" value="0" /></div><div><label class="fieldLabel">Minutes</label><input id="expireMinutes" class="input" type="number" min="1" value="30" /></div></div>
-        <div class="authActions"><button class="btn" id="hostNowBtn" type="button">Host Now</button></div>
-        <div id="hostFeedback" class="hostFeedback">Ready to host.</div>
+        <div class="loginHero" style="grid-template-columns:1fr auto; margin-bottom:14px; align-items:center;">
+          <div>
+            <h2 style="margin-bottom:4px;">Create your lobby</h2>
+            <p style="margin:0;">Fill out the details and publish it live.</p>
+          </div>
+          <div class="ownerFlag">Live feed ready</div>
+        </div>
+
+        <div class="grid2">
+          <div>
+            <label class="fieldLabel">Public</label>
+            <select id="publicInput" class="select"><option value="yes">Yes</option><option value="no">No</option></select>
+          </div>
+          <div>
+            <label class="fieldLabel">Name</label>
+            <input id="lobbyNameInput" class="input" type="text" placeholder="(@Username) Lobby" />
+          </div>
+        </div>
+
+        <div class="grid3" style="margin-top:12px;">
+          <div>
+            <label class="fieldLabel">Type</label>
+            <select id="typeInput" class="select">
+              <option>Modded</option>
+              <option>Regular</option>
+              <option>Sns</option>
+              <option>Hide And Seek</option>
+            </select>
+          </div>
+          <div>
+            <label class="fieldLabel">Lobby Code</label>
+            <input id="lobbyCodeInput" class="input" type="text" placeholder="ABC123" maxlength="12" />
+          </div>
+          <div>
+            <label class="fieldLabel">Max Players</label>
+            <input id="maxPlayersInput" class="input" type="number" min="1" max="15" value="10" />
+          </div>
+        </div>
+
+        <div class="grid2" style="margin-top:12px;">
+          <div>
+            <label class="fieldLabel">Description</label>
+            <textarea id="lobbyDescInput" class="textarea" placeholder="Add lobby details..."></textarea>
+          </div>
+          <div>
+            <label class="fieldLabel">Thumbnail</label>
+            <div class="fileBox">
+              <div class="preview"><img id="lobbyThumbPreview" src="media/Thumbnail.png" alt="Lobby Preview" onerror="this.src='https://placehold.co/300x300/111111/25EDC6?text=Thumbnail'" /></div>
+              <input id="lobbyThumbInput" class="input" type="file" accept="image/*" />
+            </div>
+          </div>
+        </div>
+
+        <div class="grid2" style="margin-top:12px;align-items:center;">
+          <div>
+            <label class="fieldLabel">Is Streamer</label>
+            <select id="streamerInput" class="select"><option value="yes">Yes</option><option value="no">No</option></select>
+          </div>
+          <div>
+            <label class="fieldLabel">Expiration</label>
+            <select id="expirationMode" class="select">
+              <option value="never">Never</option>
+              <option value="set">Set Time</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid2" id="expirationFields" style="margin-top:12px;display:none;">
+          <div><label class="fieldLabel">Hours</label><input id="expireHours" class="input" type="number" min="0" value="0" /></div>
+          <div><label class="fieldLabel">Minutes</label><input id="expireMinutes" class="input" type="number" min="1" value="30" /></div>
+        </div>
+
+        <div class="authActions">
+          <button class="btn" id="hostNowBtn" type="button">Host Now</button>
+        </div>
       </div>
     </div>
-  </div>  <div class="toastWrap" id="toastWrap"></div>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp, collection, onSnapshot, query, orderBy, getDocs, runTransaction, increment, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-    import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+  </div>
 
-    const firebaseConfig={apiKey:"AIzaSyDJk89nG7r3cbWdHnwHZp22Ia1wEvvqiRU",authDomain:"amongushost-33077.firebaseapp.com",projectId:"amongushost-33077",storageBucket:"amongushost-33077.firebasestorage.app",messagingSenderId:"147346762296",appId:"1:147346762296:web:6b65b8c1de513437b154cd"};
-    const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app); const storage=getStorage(app);
+  <div class="toastWrap" id="toastWrap"></div>
 
-    const els={authModal:document.getElementById('authModal'),hostModal:document.getElementById('hostModal'),authStateText:document.getElementById('authStateText'),logoutBtn:document.getElementById('logoutBtn'),hostBtn:document.getElementById('hostBtn'),closeAuthBtn:document.getElementById('closeAuthBtn'),closeHostBtn:document.getElementById('closeHostBtn'),authForm:document.getElementById('authForm'),signInBtn:document.getElementById('signInBtn'),useExistingBtn:document.getElementById('useExistingBtn'),hostNowBtn:document.getElementById('hostNowBtn'),searchInput:document.getElementById('searchInput'),lobbyList:document.getElementById('lobbyList'),emptyState:document.getElementById('emptyState'),lobbyCountText:document.getElementById('lobbyCountText'),usernameInput:document.getElementById('usernameInput'),displayNameInput:document.getElementById('displayNameInput'),passwordInput:document.getElementById('passwordInput'),rememberMe:document.getElementById('rememberMe'),profileFile:document.getElementById('profileFile'),authPreview:document.getElementById('authPreview'),authFeedback:document.getElementById('authFeedback'),hostFeedback:document.getElementById('hostFeedback'),publicInput:document.getElementById('publicInput'),lobbyNameInput:document.getElementById('lobbyNameInput'),typeInput:document.getElementById('typeInput'),lobbyCodeInput:document.getElementById('lobbyCodeInput'),maxPlayersInput:document.getElementById('maxPlayersInput'),lobbyDescInput:document.getElementById('lobbyDescInput'),lobbyThumbInput:document.getElementById('lobbyThumbInput'),lobbyThumbPreview:document.getElementById('lobbyThumbPreview'),streamerInput:document.getElementById('streamerInput'),expirationMode:document.getElementById('expirationMode'),expirationFields:document.getElementById('expirationFields'),expireHours:document.getElementById('expireHours'),expireMinutes:document.getElementById('expireMinutes'),toastWrap:document.getElementById('toastWrap')};
-    const DEFAULT_THUMB='media/Thumbnail.png'; const SESSION_KEY='amongus_hosting_session_v3'; const PENDING_KEY='amongus_hosting_pending_lobbies_v1'; let currentUser=null,currentProfile=null,currentAuthUid=''; let selectedProfileFile=null,selectedLobbyThumbFile=null,allLobbies=[],unsubscribeLobbies=null;
+  <script>
+    const STORAGE = {
+      users: 'amongus_hosting_users_v3',
+      session: 'amongus_hosting_session_v3',
+      lobbies: 'amongus_hosting_lobbies_v3'
+    };
 
-    function showToast(title,message,type='ok',ms=2600){const el=document.createElement('div');el.className=`toast ${type}`;el.innerHTML=`<div class="t1">${escapeHtml(title)}</div><div class="t2">${escapeHtml(message)}</div>`;els.toastWrap.appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transform='translateY(10px)';setTimeout(()=>el.remove(),220)},ms)}
-    function setAuthFeedback(message,type='ok'){els.authFeedback.textContent=message;els.authFeedback.className=`authFeedback ${type}`}
-    function setHostFeedback(message,type='ok'){els.hostFeedback.textContent=message;els.hostFeedback.className=`hostFeedback ${type}`}
-    function escapeHtml(str=''){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
-    function slugUsername(name=''){return name.trim().toLowerCase().replace(/[^a-z0-9._-]/g,'').slice(0,32)||'user'}
-    function genLobbyCode(len=6){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<len;i++)s+=chars[Math.floor(Math.random()*chars.length)];return s}
-    function openModal(el){el.classList.add('show')} function closeModal(el){el.classList.remove('show')}
-    function formatDate(value){if(!value)return'Never';const d=value?.toDate?value.toDate():new Date(value);if(Number.isNaN(d.getTime()))return'Never';return d.toLocaleString([], {year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
-    function formatRemaining(value){if(!value)return'Never';const d=value?.toDate?value.toDate():new Date(value);const diff=d.getTime()-Date.now();if(diff<=0)return'Expired';const totalMins=Math.floor(diff/60000);const h=Math.floor(totalMins/60);const m=totalMins%60;return h>0?`${h}h ${m}m`:`${m}m`}
-    async function hashText(text){const data=new TextEncoder().encode(text);const hashBuffer=await crypto.subtle.digest('SHA-256',data);return Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('')}
-    async function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result||''));r.onerror=()=>reject(r.error||new Error('File read failed'));r.readAsDataURL(file)})}
-    async function uploadImage(file,folder='misc'){if(!file)return'';try{const ext=(file.name.split('.').pop()||'png').toLowerCase();const path=`${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;const storageRef=sRef(storage,path);await uploadBytes(storageRef,file);return await getDownloadURL(storageRef)}catch{return await fileToDataURL(file)}}
-    function setImagePreview(file,target){if(!file)return;const reader=new FileReader();reader.onload=e=>target.src=e.target.result;reader.readAsDataURL(file)}
-    function saveSession(obj){if(obj)localStorage.setItem(SESSION_KEY,JSON.stringify(obj));else localStorage.removeItem(SESSION_KEY)}
-    function loadSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{return null}}
-    function getPendingLobbies(){try{return JSON.parse(localStorage.getItem(PENDING_KEY)||'[]')}catch{return[]}} function setPendingLobbies(arr){localStorage.setItem(PENDING_KEY,JSON.stringify(arr))}
-    function mergeLobbies(remote){const pending=getPendingLobbies(); const map=new Map(); remote.forEach(l=>map.set(l.id,{...l,localOnly:false})); pending.forEach(l=>{if(!map.has(l.id)) map.set(l.id,{...l,localOnly:true,pending:true})}); return Array.from(map.values())}
-    function applyUserState(){if(currentUser&&currentProfile){const name=currentProfile.displayName||currentUser.username;els.authStateText.textContent=`Logged in as ${name}`;els.logoutBtn.style.display='inline-flex'}else{els.authStateText.textContent='Not logged in';els.logoutBtn.style.display='none'}}
-    function setLoginProfilePreview(){els.authPreview.src=currentProfile?.profilePic||'https://placehold.co/300x300/111111/25EDC6?text=Profile'}
-    async function getUserDoc(username){return await getDoc(doc(db,'users',username))}
-    async function saveUserProfile(username,profile){await setDoc(doc(db,'users',username),profile,{merge:true})}
+    const DEFAULT_THUMB = 'media/Thumbnail.png';
 
-    async function localSignIn(){const username=slugUsername(els.usernameInput.value);const displayName=els.displayNameInput.value.trim();const password=els.passwordInput.value;if(!username||!displayName||!password){setAuthFeedback('Enter username, display name, and password.','err');showToast('Missing fields','Enter username, display name, and password.','err');return}const passwordHash=await hashText(password);let profilePic='';if(selectedProfileFile)profilePic=await uploadImage(selectedProfileFile,'profilePics');const existingSnap=await getUserDoc(username);if(!existingSnap.exists()){const profile={username,displayName,passwordHash,profilePic:profilePic||'',createdAt:serverTimestamp(),updatedAt:serverTimestamp(),lastLoginAt:serverTimestamp()};await saveUserProfile(username,profile);currentUser={username};currentProfile={...profile,profilePic:profilePic||''};if(els.rememberMe.checked)saveSession({username,passwordHash});else saveSession(null);applyUserState();setLoginProfilePreview();setAuthFeedback(`Signed in as ${displayName}.`,'ok');closeModal(els.authModal);showToast('Signed in',`Welcome, ${displayName}.`,'ok');return}const data=existingSnap.data();if(data.passwordHash!==passwordHash){setAuthFeedback('Wrong password.','err');showToast('Wrong password','Try again.','err');return}const nextData={...data,displayName:displayName||data.displayName||username,profilePic:profilePic||data.profilePic||'',updatedAt:serverTimestamp(),lastLoginAt:serverTimestamp()};await saveUserProfile(username,nextData);currentUser={username};currentProfile=nextData;if(els.rememberMe.checked)saveSession({username,passwordHash});else saveSession(null);applyUserState();setLoginProfilePreview();setAuthFeedback(`Signed in as ${nextData.displayName||username}.`,'ok');closeModal(els.authModal);showToast('Signed in',`Welcome back, ${nextData.displayName||username}.`,'ok')}
-    async function tryAutoLogin(){const session=loadSession();if(!session?.username||!session?.passwordHash)return false;const snap=await getUserDoc(session.username);if(!snap.exists())return false;const existing=snap.data();if(existing.passwordHash!==session.passwordHash)return false;currentUser={username:existing.username};currentProfile=existing;applyUserState();setLoginProfilePreview();setAuthFeedback(`Auto-logged in as ${existing.displayName||existing.username}.`,'ok');closeModal(els.authModal);return true}
-    async function handleLogout(){currentUser=null;currentProfile=null;currentAuthUid='';saveSession(null);applyUserState();setAuthFeedback('Logged out.','ok');openModal(els.authModal)}
-    async function openHostModal(){if(!currentUser){openModal(els.authModal);setAuthFeedback('Log in first.','err');return}if(!els.lobbyCodeInput.value.trim())els.lobbyCodeInput.value=genLobbyCode();if(!els.lobbyNameInput.value.trim())els.lobbyNameInput.value=`(@${currentProfile?.username||currentUser.username}) Lobby`;setHostFeedback('Ready to host.','ok');openModal(els.hostModal)}
-    async function uploadLobbyThumbIfAny(){if(selectedLobbyThumbFile)return await uploadImage(selectedLobbyThumbFile,'lobbyThumbs');return DEFAULT_THUMB}
-    function makeLobbyDoc(ownerUid,name,type,lobbyCode,maxPlayers,description,thumbnailUrl,isStreamer,publicValue,expiresAt){return{ownerUid,ownerUsername:currentProfile?.username||currentUser.username,ownerDisplayName:currentProfile?.displayName||currentUser.username,ownerPhoto:currentProfile?.profilePic||'',public:publicValue,name,type,lobbyCode,maxPlayers,description,thumbnailUrl,isStreamer,active:true,heartCount:0,createdAt:serverTimestamp(),createdAtMs:Date.now(),updatedAt:serverTimestamp(),updatedAtMs:Date.now(),expiresAt:expiresAt||null,expiresAtMs:expiresAt?.toDate?expiresAt.toDate().getTime():null}}
-    async function addPendingLobby(lobby){const arr=getPendingLobbies(); arr.unshift({...lobby, pending:true, localOnly:true}); setPendingLobbies(arr.slice(0,50))}
-    async function removePendingLobby(id){setPendingLobbies(getPendingLobbies().filter(l=>l.id!==id))}
-    async function hostLobby(){if(!currentUser){showToast('Login first','You must sign in before hosting.','err');openModal(els.authModal);return} const publishBtn=els.hostNowBtn; const oldText=publishBtn.textContent; publishBtn.disabled=true; publishBtn.textContent='Hosting...'; setHostFeedback('Publishing lobby...','ok'); try{const publicValue=els.publicInput.value==='yes';const name=els.lobbyNameInput.value.trim()||`(@${currentProfile?.username||currentUser.username}) Lobby`;const type=els.typeInput.value;const lobbyCode=(els.lobbyCodeInput.value.trim()||genLobbyCode()).toUpperCase();const maxPlayers=Math.max(1,Math.min(15,parseInt(els.maxPlayersInput.value||'10',10)));const description=els.lobbyDescInput.value.trim();const isStreamer=els.streamerInput.value==='yes';const thumbUrl=await uploadLobbyThumbIfAny(); const ownerUid=currentAuthUid||currentUser.username; const lobbyId=`${currentUser.username}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`; let expiresAt=null; if(els.expirationMode.value==='set'){const hours=Math.max(0,parseInt(els.expireHours.value||'0',10));const mins=Math.max(1,parseInt(els.expireMinutes.value||'30',10));expiresAt=Timestamp.fromDate(new Date(Date.now()+((hours*60)+mins)*60000))} const lobbyData=makeLobbyDoc(ownerUid,name,type,lobbyCode,maxPlayers,description,thumbUrl,isStreamer,publicValue,expiresAt); lobbyData.id=lobbyId; await addPendingLobby(lobbyData); await setDoc(doc(db,'lobbies',lobbyId),lobbyData); await removePendingLobby(lobbyId); allLobbies=[...allLobbies.filter(l=>l.id!==lobbyId),{id:lobbyId,...lobbyData}]; await renderLobbies(allLobbies); setHostFeedback('Lobby posted.','ok'); showToast('Lobby hosted',`${name} is live now.`,'ok'); closeModal(els.hostModal); selectedLobbyThumbFile=null; els.lobbyThumbInput.value='';}catch(err){console.error(err); setHostFeedback(err?.message||'Host failed.','err'); showToast('Host failed',err?.message||'Could not post lobby.','err')} finally{publishBtn.disabled=false; publishBtn.textContent=oldText}}
-    async function toggleHeart(lobbyId){if(!currentUser){showToast('Login first','Sign in to heart lobbies.','err');openModal(els.authModal);return}const heartRef=doc(db,'lobbies',lobbyId,'hearts',currentUser.username);const lobbyRef=doc(db,'lobbies',lobbyId); try{await runTransaction(db,async(tx)=>{const heartSnap=await tx.get(heartRef); if(heartSnap.exists()){tx.delete(heartRef);tx.update(lobbyRef,{heartCount:increment(-1),updatedAt:serverTimestamp(),updatedAtMs:Date.now()})}else{tx.set(heartRef,{uid:currentUser.username,heartedAt:serverTimestamp(),heartedAtMs:Date.now()});tx.update(lobbyRef,{heartCount:increment(1),updatedAt:serverTimestamp(),updatedAtMs:Date.now()})}})}catch(err){showToast('Heart failed',err?.message||'Could not update heart.','err')}}
-    async function toggleActive(lobby){if(!currentUser||lobby.ownerUsername!==currentUser.username)return; try{if(lobby.localOnly){const arr=getPendingLobbies().map(x=>x.id===lobby.id?{...x,active:!x.active}:x); setPendingLobbies(arr); allLobbies=allLobbies.map(x=>x.id===lobby.id?{...x,active:!x.active}:x); await renderLobbies(allLobbies); return} await updateDoc(doc(db,'lobbies',lobby.id),{active:!lobby.active,updatedAt:serverTimestamp(),updatedAtMs:Date.now()})}catch(err){showToast('Update failed',err?.message||'Could not toggle active.','err')}}
-    async function deleteLobby(lobby){if(!currentUser||lobby.ownerUsername!==currentUser.username)return; try{if(lobby.localOnly){await removePendingLobby(lobby.id); allLobbies=allLobbies.filter(x=>x.id!==lobby.id); await renderLobbies(allLobbies); showToast('Lobby deleted',lobby.name,'ok'); return} const heartsSnap=await getDocs(collection(db,'lobbies',lobby.id,'hearts')); await Promise.allSettled(heartsSnap.docs.map(d=>deleteDoc(d.ref))); await deleteDoc(doc(db,'lobbies',lobby.id)); showToast('Lobby deleted',lobby.name,'ok')}catch(err){showToast('Delete failed',err?.message||'Could not delete lobby.','err')}}
-    async function copyCode(code){try{await navigator.clipboard.writeText(code);showToast('Copied',`Lobby code ${code} copied.`,'ok')}catch{showToast('Copy failed',code,'err')}}
-    async function cleanupExpiredLobbies(){try{const remoteExpired=allLobbies.filter(l=>!l.localOnly&&l.expiresAtMs&&l.expiresAtMs<=Date.now()); for(const lobby of remoteExpired){const heartsSnap=await getDocs(collection(db,'lobbies',lobby.id,'hearts')); await Promise.allSettled(heartsSnap.docs.map(h=>deleteDoc(h.ref))); await deleteDoc(doc(db,'lobbies',lobby.id))} const pending=getPendingLobbies(); const stillPending=pending.filter(l=>!l.expiresAtMs||l.expiresAtMs>Date.now()); if(stillPending.length!==pending.length) setPendingLobbies(stillPending)}catch(e){console.warn('cleanupExpiredLobbies',e)}}
-    function filterLobbies(list){const term=els.searchInput.value.trim().toLowerCase(); if(!term)return list; return list.filter(l=>[l.name,l.description,l.lobbyCode,l.type,l.ownerUsername,l.ownerDisplayName,String(l.maxPlayers??''),l.public?'public':'private',l.isStreamer?'streamer':'',l.pending?'pending':''].join(' ').toLowerCase().includes(term))}
-    async function renderLobbies(list){const visible=filterLobbies(list).filter(l=>!l.expiresAtMs||l.expiresAtMs>Date.now()).sort((a,b)=>(b.createdAtMs||0)-(a.createdAtMs||0)); els.lobbyCountText.textContent=`${visible.length} lobby${visible.length===1?'':'ies'}`; els.lobbyList.innerHTML=''; els.emptyState.classList.toggle('hidden',visible.length!==0); for(const lobby of visible){const likedSnap=currentUser&&!lobby.localOnly?await getDoc(doc(db,'lobbies',lobby.id,'hearts',currentUser.username)):null;const liked=!!likedSnap?.exists?.();const expLabel=formatDate(lobby.expiresAt);const remain=formatRemaining(lobby.expiresAt);const activeClass=lobby.active?'on':'off'; const pendingTag=lobby.localOnly?'<span class="tag danger">Pending</span>':''; const ownerOk=currentUser&&lobby.ownerUsername===currentUser.username; const canEdit=ownerOk; const card=document.createElement('div'); card.className='lobbyCard'; card.innerHTML=`<div class="lobbyThumb"><img src="${escapeHtml(lobby.thumbnailUrl||DEFAULT_THUMB)}" alt="thumbnail" onerror="this.src='https://placehold.co/400x400/111111/25EDC6?text=Lobby'" /></div><div class="lobbyMain"><div class="lobbyTop"><div><h3 class="lobbyName">${escapeHtml(lobby.name||'Untitled Lobby')}</h3><div class="lobbyMeta"><span class="tag accent">${escapeHtml(lobby.type||'Regular')}</span><span class="tag">max: ${escapeHtml(String(lobby.maxPlayers??10))}</span><span class="tag ${lobby.public?'accent':'danger'}">${lobby.public?'Public':'Private'}</span><span class="tag">${lobby.isStreamer?'Streamer':'Normal'}</span><span class="tag">${lobby.active?'Active':'Inactive'}</span><span class="tag">Exp: ${escapeHtml(remain)}</span>${pendingTag}</div></div><div class="pillToggleRow"><span class="ownerFlag">${escapeHtml(lobby.ownerUsername||'user')}</span></div></div><p class="lobbyDesc">${escapeHtml(lobby.description||'No description added.')}</p><div class="lobbyFooter"><div class="lobbyCode"><span>Code:</span><span class="codeText">${escapeHtml(lobby.lobbyCode||'------')}</span><button class="codeBtn clipBtn" data-code="${escapeHtml(lobby.lobbyCode||'')}" type="button">Copy</button></div><div class="pillToggleRow"><button class="heartBtn ${liked?'liked':''}" data-heart="${lobby.id}" type="button">❤ ${Number(lobby.heartCount||0)}</button>${canEdit?`<button class="switchBtn ${activeClass}" data-active="${lobby.id}" type="button">${lobby.active?'🟢 Active':'🔴 Active'}</button>`:''}${canEdit?`<button class="btnDanger btnMini" data-delete="${lobby.id}" type="button">Delete</button>`:''}</div></div><div class="smallMuted" style="margin-top:10px;">Expiration date: ${escapeHtml(expLabel)}</div></div>`; els.lobbyList.appendChild(card)} document.querySelectorAll('[data-heart]').forEach(btn=>btn.addEventListener('click',()=>toggleHeart(btn.getAttribute('data-heart')))); document.querySelectorAll('[data-active]').forEach(btn=>btn.addEventListener('click',async()=>{const lobby=allLobbies.find(x=>x.id===btn.getAttribute('data-active')); if(lobby) await toggleActive(lobby)})); document.querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',async()=>{const lobby=allLobbies.find(x=>x.id===btn.getAttribute('data-delete')); if(lobby&&confirm(`Delete ${lobby.name}?`)) await deleteLobby(lobby)})); document.querySelectorAll('[data-code]').forEach(btn=>btn.addEventListener('click',()=>copyCode(btn.getAttribute('data-code'))))}
-    function startLobbyListener(){if(unsubscribeLobbies)unsubscribeLobbies(); const q=query(collection(db,'lobbies'),orderBy('createdAtMs','desc')); unsubscribeLobbies=onSnapshot(q,async snap=>{allLobbies=snap.docs.map(d=>({id:d.id,...d.data(),localOnly:false})); await cleanupExpiredLobbies(); await renderLobbies(mergeLobbies(allLobbies))}, err=>{console.error(err);showToast('Feed error',err.message||'Unknown error','err')})}
-    function startBackground(){const c=document.getElementById('bgCanvas');const ctx=c.getContext('2d');let w,h,particles=[];const resize=()=>{w=c.width=window.innerWidth*devicePixelRatio;h=c.height=window.innerHeight*devicePixelRatio;c.style.width=window.innerWidth+'px';c.style.height=window.innerHeight+'px';particles=Array.from({length:Math.min(70,Math.floor(window.innerWidth/18))},()=>({x:Math.random()*w,y:Math.random()*h,r:(Math.random()*1.8+.4)*devicePixelRatio,vx:(Math.random()-.5)*.22*devicePixelRatio,vy:(Math.random()-.5)*.22*devicePixelRatio,a:Math.random()*.5+.15}))};window.addEventListener('resize',resize);resize();const tick=()=>{ctx.clearRect(0,0,w,h);for(const p of particles){p.x+=p.vx;p.y+=p.vy;if(p.x<-20)p.x=w+20;if(p.x>w+20)p.x=-20;if(p.y<-20)p.y=h+20;if(p.y>h+20)p.y=-20;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(37,237,198,${p.a})`;ctx.fill()}requestAnimationFrame(tick)};tick()}
-    function setupGlobalErrorHandling(){window.addEventListener('error',e=>{console.error(e.error||e.message);showToast('Script error',e.message||'Unknown error','err',4000)});window.addEventListener('unhandledrejection',e=>{console.error(e.reason);showToast('Promise error',e.reason?.message||String(e.reason||'Unknown error'),'err',4000)})}
+    const els = {
+      authModal: document.getElementById('authModal'),
+      hostModal: document.getElementById('hostModal'),
+      authStateText: document.getElementById('authStateText'),
+      logoutBtn: document.getElementById('logoutBtn'),
+      hostBtn: document.getElementById('hostBtn'),
+      signInOpenBtn: document.getElementById('signInOpenBtn'),
+      closeAuthBtn: document.getElementById('closeAuthBtn'),
+      closeHostBtn: document.getElementById('closeHostBtn'),
+      authForm: document.getElementById('authForm'),
+      signInBtn: document.getElementById('signInBtn'),
+      useExistingBtn: document.getElementById('useExistingBtn'),
+      hostNowBtn: document.getElementById('hostNowBtn'),
+      searchInput: document.getElementById('searchInput'),
+      lobbyList: document.getElementById('lobbyList'),
+      emptyState: document.getElementById('emptyState'),
+      lobbyCountText: document.getElementById('lobbyCountText'),
+      usernameInput: document.getElementById('usernameInput'),
+      displayNameInput: document.getElementById('displayNameInput'),
+      passwordInput: document.getElementById('passwordInput'),
+      rememberMe: document.getElementById('rememberMe'),
+      profileFile: document.getElementById('profileFile'),
+      authPreview: document.getElementById('authPreview'),
+      authFeedback: document.getElementById('authFeedback'),
+      publicInput: document.getElementById('publicInput'),
+      lobbyNameInput: document.getElementById('lobbyNameInput'),
+      typeInput: document.getElementById('typeInput'),
+      lobbyCodeInput: document.getElementById('lobbyCodeInput'),
+      maxPlayersInput: document.getElementById('maxPlayersInput'),
+      lobbyDescInput: document.getElementById('lobbyDescInput'),
+      lobbyThumbInput: document.getElementById('lobbyThumbInput'),
+      lobbyThumbPreview: document.getElementById('lobbyThumbPreview'),
+      streamerInput: document.getElementById('streamerInput'),
+      expirationMode: document.getElementById('expirationMode'),
+      expirationFields: document.getElementById('expirationFields'),
+      expireHours: document.getElementById('expireHours'),
+      expireMinutes: document.getElementById('expireMinutes'),
+      toastWrap: document.getElementById('toastWrap')
+    };
 
-    els.expirationMode.addEventListener('change',()=>{els.expirationFields.style.display=els.expirationMode.value==='set'?'grid':'none'}); els.profileFile.addEventListener('change',e=>{selectedProfileFile=e.target.files?.[0]||null;if(selectedProfileFile)setImagePreview(selectedProfileFile,els.authPreview)}); els.lobbyThumbInput.addEventListener('change',e=>{selectedLobbyThumbFile=e.target.files?.[0]||null;if(selectedLobbyThumbFile)setImagePreview(selectedLobbyThumbFile,els.lobbyThumbPreview)}); els.authForm.addEventListener('submit',async(e)=>{e.preventDefault();try{await localSignIn()}catch(err){console.error(err);setAuthFeedback(err.message||'Sign in failed.','err');showToast('Sign in failed',err.message||'Unknown error','err')}}); els.useExistingBtn.addEventListener('click',async()=>{try{const session=loadSession(); if(session?.username&&session?.passwordHash){const snap=await getUserDoc(session.username); if(snap.exists()&&snap.data().passwordHash===session.passwordHash){currentUser={username:session.username}; currentProfile=snap.data(); applyUserState(); setLoginProfilePreview(); setAuthFeedback(`Logged in as ${currentProfile.displayName||session.username}.`,'ok'); closeModal(els.authModal); showToast('Logged in',`Welcome back, ${currentProfile.displayName||session.username}.`,'ok'); return}} setAuthFeedback('No saved login found.','err'); showToast('No saved login','Sign in and turn on remember me.','err')}catch(err){console.error(err);setAuthFeedback(err.message||'Login failed.','err');showToast('Login failed',err.message||'Unknown error','err')}}); els.logoutBtn.addEventListener('click',handleLogout); els.hostBtn.addEventListener('click',openHostModal); els.closeAuthBtn.addEventListener('click',()=>closeModal(els.authModal)); els.closeHostBtn.addEventListener('click',()=>closeModal(els.hostModal)); els.hostNowBtn.addEventListener('click',async()=>{await hostLobby()}); els.searchInput.addEventListener('input',()=>renderLobbies(mergeLobbies(allLobbies))); window.addEventListener('keydown',(e)=>{if(e.key==='Escape'){closeModal(els.authModal);closeModal(els.hostModal)}});
+    let currentUser = null;
+    let currentProfile = null;
+    let selectedProfileFile = null;
+    let selectedLobbyThumbFile = null;
+    let lobbies = [];
 
-    async function boot(){startBackground();setupGlobalErrorHandling();setAuthFeedback('Ready to sign in.','ok'); setHostFeedback('Ready to host.','ok'); try{await signInAnonymously(auth)}catch(err){console.warn('Anonymous sign-in failed',err)} onAuthStateChanged(auth,user=>{currentAuthUid=user?.uid||''; if(currentUser) applyUserState()}); startLobbyListener(); setInterval(cleanupExpiredLobbies,60000); const authed=await tryAutoLogin(); if(!authed)openModal(els.authModal); else closeModal(els.authModal); applyUserState(); renderLobbies(mergeLobbies(allLobbies)); }
+    const nowISO = () => new Date().toISOString();
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    function escapeHtml(str=''){
+      return String(str)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#039;');
+    }
+    function slugUsername(name=''){
+      return name.trim().toLowerCase().replace(/[^a-z0-9._-]/g,'').slice(0, 32) || 'user';
+    }
+    function genLobbyCode(len=6){
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let s = '';
+      for(let i = 0; i < len; i++) s += chars[Math.floor(Math.random()*chars.length)];
+      return s;
+    }
+    function openModal(el){ el.classList.add('show'); document.body.style.overflow = 'hidden'; }
+    function closeModal(el){
+      el.classList.remove('show');
+      if(!els.authModal.classList.contains('show') && !els.hostModal.classList.contains('show')) document.body.style.overflow = '';
+    }
+
+    function showToast(title, message, type='ok', ms=2600){
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      el.innerHTML = `<div class="t1">${escapeHtml(title)}</div><div class="t2">${escapeHtml(message)}</div>`;
+      els.toastWrap.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+        setTimeout(() => el.remove(), 220);
+      }, ms);
+    }
+
+    function setAuthFeedback(message, type='ok'){
+      els.authFeedback.textContent = message;
+      els.authFeedback.className = `authFeedback ${type}`;
+    }
+
+    function loadJSON(key, fallback){
+      try{
+        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      }catch{
+        return fallback;
+      }
+    }
+    function saveJSON(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function getUsers(){ return loadJSON(STORAGE.users, {}); }
+    function setUsers(v){ saveJSON(STORAGE.users, v); }
+    function getSession(){ return loadJSON(STORAGE.session, null); }
+    function setSession(v){
+      if(v) localStorage.setItem(STORAGE.session, JSON.stringify(v));
+      else localStorage.removeItem(STORAGE.session);
+    }
+    function getLobbies(){ return loadJSON(STORAGE.lobbies, []); }
+    function setLobbies(v){ saveJSON(STORAGE.lobbies, v); }
+
+    async function hashText(text){
+      if(window.crypto?.subtle){
+        const data = new TextEncoder().encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+      }
+      let out = 0;
+      for(let i=0;i<text.length;i++) out = ((out<<5)-out) + text.charCodeAt(i) | 0;
+      return String(out);
+    }
+
+    function readFileAsDataURL(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = () => reject(reader.error || new Error('File read failed'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function setImagePreview(file, target){
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = e => target.src = e.target.result;
+      reader.readAsDataURL(file);
+    }
+
+    function formatDate(value){
+      if(!value) return 'Never';
+      const d = new Date(value);
+      if(Number.isNaN(d.getTime())) return 'Never';
+      return d.toLocaleString([], { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
+
+    function formatRemaining(expiresAt){
+      if(!expiresAt) return 'Never';
+      const diff = new Date(expiresAt).getTime() - Date.now();
+      if(diff <= 0) return 'Expired';
+      const totalMins = Math.floor(diff / 60000);
+      const h = Math.floor(totalMins / 60);
+      const m = totalMins % 60;
+      return h > 0 ? `${h}h ${m}m` : `${m}m`;
+    }
+
+    function applyUserState(){
+      if(currentUser && currentProfile){
+        els.authStateText.textContent = `Logged in as ${currentProfile.displayName || currentUser.username}`;
+        els.logoutBtn.style.display = 'inline-flex';
+      } else {
+        els.authStateText.textContent = 'Not logged in';
+        els.logoutBtn.style.display = 'none';
+      }
+    }
+
+    function setLoginProfilePreview(){
+      if(currentProfile?.profilePic) els.authPreview.src = currentProfile.profilePic;
+      else els.authPreview.src = 'https://placehold.co/300x300/111111/25EDC6?text=Profile';
+    }
+
+    async function uploadProfilePicIfAny(){
+      if(!selectedProfileFile) return '';
+      return await readFileAsDataURL(selectedProfileFile);
+    }
+    async function uploadLobbyThumbIfAny(){
+      if(!selectedLobbyThumbFile) return DEFAULT_THUMB;
+      return await readFileAsDataURL(selectedLobbyThumbFile);
+    }
+
+    async function signIn(){
+      const username = slugUsername(els.usernameInput.value);
+      const displayName = els.displayNameInput.value.trim();
+      const password = els.passwordInput.value;
+
+      if(!username || !displayName || !password){
+        setAuthFeedback('Enter username, display name, and password.', 'err');
+        showToast('Missing fields', 'Enter username, display name, and password.', 'err');
+        return false;
+      }
+
+      const users = getUsers();
+      const passwordHash = await hashText(password);
+      const existing = users[username];
+      const profilePic = await uploadProfilePicIfAny();
+
+      if(existing){
+        if(existing.passwordHash !== passwordHash){
+          setAuthFeedback('Wrong password.', 'err');
+          showToast('Wrong password', 'Try again.', 'err');
+          return false;
+        }
+        existing.displayName = displayName || existing.displayName || username;
+        if(profilePic) existing.profilePic = profilePic;
+        existing.updatedAt = nowISO();
+        existing.lastLoginAt = nowISO();
+        users[username] = existing;
+        setUsers(users);
+        currentUser = { username };
+        currentProfile = existing;
+        if(els.rememberMe.checked) setSession({ username, passwordHash }); else setSession(null);
+        applyUserState();
+        setLoginProfilePreview();
+        setAuthFeedback(`Signed in as ${existing.displayName || username}.`, 'ok');
+        closeModal(els.authModal);
+        showToast('Signed in', `Welcome back, ${existing.displayName || username}.`, 'ok');
+        return true;
+      }
+
+      const created = {
+        username,
+        displayName,
+        passwordHash,
+        profilePic: profilePic || '',
+        createdAt: nowISO(),
+        updatedAt: nowISO(),
+        lastLoginAt: nowISO()
+      };
+      users[username] = created;
+      setUsers(users);
+      currentUser = { username };
+      currentProfile = created;
+      if(els.rememberMe.checked) setSession({ username, passwordHash }); else setSession(null);
+      applyUserState();
+      setLoginProfilePreview();
+      setAuthFeedback(`Signed in as ${displayName}.`, 'ok');
+      closeModal(els.authModal);
+      showToast('Signed in', `Welcome, ${displayName}.`, 'ok');
+      return true;
+    }
+
+    async function tryAutoLogin(){
+      const session = getSession();
+      if(!session?.username || !session?.passwordHash) return false;
+      const users = getUsers();
+      const existing = users[session.username];
+      if(!existing || existing.passwordHash !== session.passwordHash) return false;
+      currentUser = { username: existing.username };
+      currentProfile = existing;
+      applyUserState();
+      setLoginProfilePreview();
+      setAuthFeedback(`Auto-logged in as ${existing.displayName || existing.username}.`, 'ok');
+      return true;
+    }
+
+    function logout(){
+      currentUser = null;
+      currentProfile = null;
+      setSession(null);
+      applyUserState();
+      setAuthFeedback('Logged out.', 'ok');
+      openModal(els.authModal);
+    }
+
+    function requireLogin(){
+      if(currentUser) return true;
+      openModal(els.authModal);
+      setAuthFeedback('Log in first.', 'err');
+      showToast('Login required', 'Sign in before hosting.', 'err');
+      return false;
+    }
+
+    function normalizeLobby(lobby){
+      return {
+        id: lobby.id || crypto.randomUUID(),
+        ownerUid: lobby.ownerUid,
+        ownerUsername: lobby.ownerUsername,
+        ownerDisplayName: lobby.ownerDisplayName,
+        ownerPhoto: lobby.ownerPhoto || '',
+        public: !!lobby.public,
+        name: lobby.name || '',
+        type: lobby.type || 'Regular',
+        lobbyCode: String(lobby.lobbyCode || '').toUpperCase(),
+        maxPlayers: Math.max(1, Math.min(15, parseInt(lobby.maxPlayers || 10, 10))),
+        description: lobby.description || '',
+        thumbnailUrl: lobby.thumbnailUrl || DEFAULT_THUMB,
+        isStreamer: !!lobby.isStreamer,
+        active: lobby.active !== false,
+        heartCount: Math.max(0, parseInt(lobby.heartCount || 0, 10)),
+        hearts: lobby.hearts || [],
+        likes: lobby.likes || {},
+        createdAt: lobby.createdAt || nowISO(),
+        updatedAt: lobby.updatedAt || nowISO(),
+        expiresAt: lobby.expiresAt || null
+      };
+    }
+
+    function saveCurrentLobbies(){
+      setLobbies(lobbies);
+    }
+
+    function cleanupExpiredLobbies(){
+      const before = lobbies.length;
+      const now = Date.now();
+      lobbies = lobbies.filter(l => {
+        if(!l.expiresAt) return true;
+        return new Date(l.expiresAt).getTime() > now;
+      });
+      if(before !== lobbies.length) saveCurrentLobbies();
+    }
+
+    function ensureLobbyDefaults(){
+      lobbies = getLobbies().map(normalizeLobby);
+      cleanupExpiredLobbies();
+    }
+
+    async function hostLobby(){
+      if(!requireLogin()) return;
+
+      const publicValue = els.publicInput.value === 'yes';
+      const name = els.lobbyNameInput.value.trim() || `(@${currentProfile?.username || currentUser.username}) Lobby`;
+      const type = els.typeInput.value;
+      const lobbyCode = (els.lobbyCodeInput.value.trim() || genLobbyCode()).toUpperCase();
+      const maxPlayers = Math.max(1, Math.min(15, parseInt(els.maxPlayersInput.value || '10', 10)));
+      const description = els.lobbyDescInput.value.trim();
+      const isStreamer = els.streamerInput.value === 'yes';
+      const thumbUrl = await uploadLobbyThumbIfAny();
+      let expiresAt = null;
+      if(els.expirationMode.value === 'set'){
+        const hours = Math.max(0, parseInt(els.expireHours.value || '0', 10));
+        const mins = Math.max(1, parseInt(els.expireMinutes.value || '30', 10));
+        expiresAt = new Date(Date.now() + ((hours * 60) + mins) * 60000).toISOString();
+      }
+
+      const lobby = normalizeLobby({
+        ownerUid: currentUser.username,
+        ownerUsername: currentProfile?.username || currentUser.username,
+        ownerDisplayName: currentProfile?.displayName || currentUser.username,
+        ownerPhoto: currentProfile?.profilePic || '',
+        public: publicValue,
+        name,
+        type,
+        lobbyCode,
+        maxPlayers,
+        description,
+        thumbnailUrl: thumbUrl,
+        isStreamer,
+        active: true,
+        heartCount: 0,
+        hearts: [],
+        likes: {},
+        createdAt: nowISO(),
+        updatedAt: nowISO(),
+        expiresAt
+      });
+
+      lobbies.unshift(lobby);
+      saveCurrentLobbies();
+
+      selectedLobbyThumbFile = null;
+      els.lobbyThumbInput.value = '';
+      els.lobbyThumbPreview.src = DEFAULT_THUMB;
+      showToast('Lobby hosted', `${name} is live now.`, 'ok');
+      closeModal(els.hostModal);
+      renderLobbies();
+    }
+
+    function hasLiked(lobby){
+      return !!lobby.likes?.[currentUser?.username];
+    }
+
+    async function toggleHeart(lobbyId){
+      if(!currentUser){
+        showToast('Login first', 'Sign in to heart lobbies.', 'err');
+        openModal(els.authModal);
+        return;
+      }
+      const idx = lobbies.findIndex(l => l.id === lobbyId);
+      if(idx < 0) return;
+      const lobby = lobbies[idx];
+      lobby.likes = lobby.likes || {};
+      if(lobby.likes[currentUser.username]){
+        delete lobby.likes[currentUser.username];
+        lobby.heartCount = Math.max(0, (lobby.heartCount || 0) - 1);
+      } else {
+        lobby.likes[currentUser.username] = true;
+        lobby.heartCount = (lobby.heartCount || 0) + 1;
+      }
+      lobby.updatedAt = nowISO();
+      lobbies[idx] = lobby;
+      saveCurrentLobbies();
+      renderLobbies();
+    }
+
+    async function toggleActive(lobbyId){
+      if(!currentUser) return;
+      const idx = lobbies.findIndex(l => l.id === lobbyId);
+      if(idx < 0) return;
+      const lobby = lobbies[idx];
+      if(lobby.ownerUid !== currentUser.username){
+        showToast('No permission', 'Only the owner can toggle active.', 'err');
+        return;
+      }
+      lobby.active = !lobby.active;
+      lobby.updatedAt = nowISO();
+      lobbies[idx] = lobby;
+      saveCurrentLobbies();
+      renderLobbies();
+      showToast('Updated', lobby.active ? 'Lobby is active.' : 'Lobby is inactive.', 'ok');
+    }
+
+    async function deleteLobby(lobbyId){
+      if(!currentUser) return;
+      const idx = lobbies.findIndex(l => l.id === lobbyId);
+      if(idx < 0) return;
+      const lobby = lobbies[idx];
+      if(lobby.ownerUid !== currentUser.username){
+        showToast('No permission', 'Only the owner can delete.', 'err');
+        return;
+      }
+      lobbies.splice(idx, 1);
+      saveCurrentLobbies();
+      renderLobbies();
+      showToast('Deleted', lobby.name || 'Lobby deleted', 'ok');
+    }
+
+    async function copyCode(code){
+      const text = String(code || '').trim();
+      if(!text){
+        showToast('Nothing to copy', 'Lobby code is empty.', 'err');
+        return;
+      }
+      try{
+        if(navigator.clipboard && window.isSecureContext){
+          await navigator.clipboard.writeText(text);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly','');
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          ta.setSelectionRange(0, ta.value.length);
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          if(!ok) throw new Error('Copy blocked');
+        }
+        showToast('Copied', `Lobby code ${text} copied.`, 'ok');
+      }catch(err){
+        console.warn('Copy failed', err);
+        showToast('Copy failed', text, 'err');
+      }
+    }
+
+    function filterLobbies(list){
+      const term = els.searchInput.value.trim().toLowerCase();
+      if(!term) return list;
+      return list.filter(l => {
+        const hay = [
+          l.name, l.description, l.lobbyCode, l.type, l.ownerUsername, l.ownerDisplayName,
+          String(l.maxPlayers ?? ''), l.public ? 'public' : 'private', l.isStreamer ? 'streamer' : '',
+          l.active ? 'active' : 'inactive'
+        ].join(' ').toLowerCase();
+        return hay.includes(term);
+      });
+    }
+
+    async function renderLobbies(){
+      cleanupExpiredLobbies();
+      const visible = filterLobbies(lobbies)
+        .sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+      els.lobbyCountText.textContent = `${visible.length} lobby${visible.length === 1 ? '' : 's'}`;
+      els.lobbyList.innerHTML = '';
+      els.emptyState.classList.toggle('hidden', visible.length !== 0);
+
+      for(const lobby of visible){
+        const card = document.createElement('div');
+        card.className = 'lobbyCard';
+        const liked = currentUser ? hasLiked(lobby) : false;
+        const activeClass = lobby.active ? 'on' : 'off';
+        card.innerHTML = `
+          <div class="lobbyThumb">
+            <img src="${escapeHtml(lobby.thumbnailUrl || DEFAULT_THUMB)}" alt="thumbnail" onerror="this.src='https://placehold.co/400x400/111111/25EDC6?text=Lobby'" />
+          </div>
+          <div class="lobbyMain">
+            <div class="lobbyTop">
+              <div>
+                <h3 class="lobbyName">${escapeHtml(lobby.name || 'Untitled Lobby')}</h3>
+                <div class="lobbyMeta">
+                  <span class="tag accent">${escapeHtml(lobby.type || 'Regular')}</span>
+                  <span class="tag">max: ${escapeHtml(String(lobby.maxPlayers ?? 10))}</span>
+                  <span class="tag ${lobby.public ? 'accent' : 'danger'}">${lobby.public ? 'Public' : 'Private'}</span>
+                  <span class="tag">${lobby.isStreamer ? 'Streamer' : 'Normal'}</span>
+                  <span class="tag">${lobby.active ? 'Active' : 'Inactive'}</span>
+                  <span class="tag">Exp: ${escapeHtml(formatRemaining(lobby.expiresAt))}</span>
+                </div>
+              </div>
+              <div class="ownerFlag">${escapeHtml(lobby.ownerUsername || 'user')}</div>
+            </div>
+
+            <p class="lobbyDesc">${escapeHtml(lobby.description || 'No description added.')}</p>
+
+            <div class="lobbyFooter">
+              <div class="lobbyCode">
+                <span>Code:</span>
+                <span class="codeText">${escapeHtml(lobby.lobbyCode || '------')}</span>
+                <button class="codeBtn" data-code="${escapeHtml(lobby.lobbyCode || '')}" type="button">Copy</button>
+              </div>
+
+              <div class="pillToggleRow">
+                <button class="heartBtn ${liked ? 'liked' : ''}" data-heart="${lobby.id}" type="button">❤ ${Number(lobby.heartCount || 0)}</button>
+                ${currentUser && lobby.ownerUid === currentUser.username ? `<button class="switchBtn ${activeClass}" data-active="${lobby.id}" type="button">${lobby.active ? '🟢 Active' : '🔴 Active'}</button>` : ''}
+                ${currentUser && lobby.ownerUid === currentUser.username ? `<button class="btnDanger btnMini" data-delete="${lobby.id}" type="button">Delete</button>` : ''}
+              </div>
+            </div>
+
+            <div class="smallMuted" style="margin-top:10px;">Expiration date: ${escapeHtml(formatDate(lobby.expiresAt))}</div>
+          </div>
+        `;
+        els.lobbyList.appendChild(card);
+      }
+
+      document.querySelectorAll('[data-heart]').forEach(btn => btn.addEventListener('click', () => toggleHeart(btn.getAttribute('data-heart'))));
+      document.querySelectorAll('[data-active]').forEach(btn => btn.addEventListener('click', () => toggleActive(btn.getAttribute('data-active'))));
+      document.querySelectorAll('[data-delete]').forEach(btn => btn.addEventListener('click', () => {
+        const lobby = lobbies.find(x => x.id === btn.getAttribute('data-delete'));
+        if(lobby && confirm(`Delete ${lobby.name || 'this lobby'}?`)) deleteLobby(lobby.id);
+      }));
+      document.querySelectorAll('[data-code]').forEach(btn => btn.addEventListener('click', () => copyCode(btn.getAttribute('data-code'))));
+    }
+
+    function startBackground(){
+      const c = document.getElementById('bgCanvas');
+      const ctx = c.getContext('2d');
+      let w = 0, h = 0, particles = [];
+      const resize = () => {
+        w = c.width = window.innerWidth * devicePixelRatio;
+        h = c.height = window.innerHeight * devicePixelRatio;
+        c.style.width = window.innerWidth + 'px';
+        c.style.height = window.innerHeight + 'px';
+        particles = Array.from({length: Math.min(70, Math.floor(window.innerWidth / 18))}, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: (Math.random() * 1.8 + .4) * devicePixelRatio,
+          vx: (Math.random() - .5) * .22 * devicePixelRatio,
+          vy: (Math.random() - .5) * .22 * devicePixelRatio,
+          a: Math.random() * .5 + .15
+        }));
+      };
+      window.addEventListener('resize', resize, { passive:true });
+      resize();
+      const tick = () => {
+        ctx.clearRect(0,0,w,h);
+        for(const p of particles){
+          p.x += p.vx;
+          p.y += p.vy;
+          if(p.x < -20) p.x = w + 20;
+          if(p.x > w + 20) p.x = -20;
+          if(p.y < -20) p.y = h + 20;
+          if(p.y > h + 20) p.y = -20;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(37,237,198,${p.a})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(tick);
+      };
+      tick();
+    }
+
+    function setupGlobalErrorHandling(){
+      window.addEventListener('error', (e) => {
+        console.error(e.error || e.message);
+        showToast('Script error', e.message || 'Unknown error', 'err', 4000);
+      });
+      window.addEventListener('unhandledrejection', (e) => {
+        console.error(e.reason);
+        showToast('Promise error', e.reason?.message || String(e.reason || 'Unknown error'), 'err', 4000);
+      });
+    }
+
+    function bindEvents(){
+      els.expirationMode.addEventListener('change', () => {
+        els.expirationFields.style.display = els.expirationMode.value === 'set' ? 'grid' : 'none';
+      });
+
+      els.profileFile.addEventListener('change', e => {
+        selectedProfileFile = e.target.files?.[0] || null;
+        if(selectedProfileFile) setImagePreview(selectedProfileFile, els.authPreview);
+      });
+      els.lobbyThumbInput.addEventListener('change', e => {
+        selectedLobbyThumbFile = e.target.files?.[0] || null;
+        if(selectedLobbyThumbFile) setImagePreview(selectedLobbyThumbFile, els.lobbyThumbPreview);
+      });
+
+      els.authForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        try{
+          await signIn();
+        }catch(err){
+          console.error(err);
+          setAuthFeedback(err.message || 'Sign in failed.', 'err');
+          showToast('Sign in failed', err.message || 'Unknown error', 'err');
+        }
+      });
+
+      els.useExistingBtn.addEventListener('click', async () => {
+        try{
+          const session = getSession();
+          if(session?.username && session?.passwordHash){
+            const users = getUsers();
+            const existing = users[session.username];
+            if(existing && existing.passwordHash === session.passwordHash){
+              currentUser = { username: existing.username };
+              currentProfile = existing;
+              applyUserState();
+              setLoginProfilePreview();
+              setAuthFeedback(`Logged in as ${existing.displayName || existing.username}.`, 'ok');
+              closeModal(els.authModal);
+              showToast('Logged in', `Welcome back, ${existing.displayName || existing.username}.`, 'ok');
+              return;
+            }
+          }
+          setAuthFeedback('No saved login found.', 'err');
+          showToast('No saved login', 'Sign in once first, then remember me will work.', 'err');
+        }catch(err){
+          console.error(err);
+          setAuthFeedback(err.message || 'Login failed.', 'err');
+          showToast('Login failed', err.message || 'Unknown error', 'err');
+        }
+      });
+
+      els.logoutBtn.addEventListener('click', logout);
+      els.signInOpenBtn.addEventListener('click', () => openModal(els.authModal));
+      els.hostBtn.addEventListener('click', () => {
+        if(!requireLogin()) return;
+        if(!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
+        if(!els.lobbyNameInput.value.trim()) els.lobbyNameInput.value = `(@${currentProfile?.username || currentUser.username}) Lobby`;
+        openModal(els.hostModal);
+      });
+      els.closeAuthBtn.addEventListener('click', () => closeModal(els.authModal));
+      els.closeHostBtn.addEventListener('click', () => closeModal(els.hostModal));
+      els.hostNowBtn.addEventListener('click', async () => {
+        try{
+          await hostLobby();
+        }catch(err){
+          console.error(err);
+          showToast('Host failed', err.message || 'Unknown error', 'err');
+        }
+      });
+      els.searchInput.addEventListener('input', renderLobbies);
+
+      window.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape'){
+          closeModal(els.authModal);
+          closeModal(els.hostModal);
+        }
+      });
+
+      document.addEventListener('pointerdown', (e) => {
+        if(e.target.tagName === 'BUTTON') e.target.blur();
+      });
+    }
+
+    function seedIfEmpty(){
+      if(getLobbies().length) return;
+      const sample = normalizeLobby({
+        ownerUid: 'skye',
+        ownerUsername: 'skye',
+        ownerDisplayName: 'Skye',
+        public: true,
+        name: '(@skye) Lobby',
+        type: 'Regular',
+        lobbyCode: 'ABCD12',
+        maxPlayers: 10,
+        description: 'Sample lobby. Delete it if you want.',
+        thumbnailUrl: DEFAULT_THUMB,
+        isStreamer: false,
+        active: true,
+        heartCount: 0,
+        hearts: [],
+        likes: {},
+        createdAt: nowISO(),
+        updatedAt: nowISO(),
+        expiresAt: null
+      });
+      setLobbies([sample]);
+    }
+
+    async function boot(){
+      startBackground();
+      setupGlobalErrorHandling();
+      bindEvents();
+      seedIfEmpty();
+      ensureLobbyDefaults();
+      setInterval(() => {
+        cleanupExpiredLobbies();
+        renderLobbies();
+      }, 60000);
+
+      els.lobbyCodeInput.value = genLobbyCode();
+      const authed = await tryAutoLogin();
+      if(!authed){
+        setAuthFeedback('Ready to sign in.', 'ok');
+      }
+      applyUserState();
+      renderLobbies();
+    }
+
     boot();
-  </script></body>
+  </script>
+</body>
 </html>

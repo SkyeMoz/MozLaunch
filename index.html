@@ -7,458 +7,368 @@
   <title>Among Us Hosting</title>
   <style>
     :root{
-      --bg:#05070d;
-      --panel:rgba(10,13,22,.74);
-      --panel-2:rgba(255,255,255,.04);
+      --bg:#04060b;
+      --panel:rgba(12,16,24,.74);
+      --panel-2:rgba(9,12,18,.82);
       --stroke:rgba(255,255,255,.10);
-      --text:#f4f7fb;
-      --muted:rgba(244,247,251,.70);
+      --stroke-2:rgba(37,237,198,.22);
+      --text:#f5f8fc;
+      --muted:rgba(245,248,252,.72);
       --accent:#25EDC6;
-      --danger:#ff6b81;
-      --shadow:0 22px 60px rgba(0,0,0,.48);
-      --radius:26px;
+      --accent-2:#12c4a3;
+      --danger:#ff7389;
+      --shadow:0 22px 70px rgba(0,0,0,.45);
+      --radius:24px;
+      --radius-lg:30px;
     }
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{height:100%}
     body{
       margin:0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at 15% 10%, rgba(37,237,198,.12), transparent 16%),
-        radial-gradient(circle at 85% 18%, rgba(255,255,255,.08), transparent 16%),
-        radial-gradient(circle at 50% 86%, rgba(37,237,198,.08), transparent 18%),
-        linear-gradient(180deg, #060912 0%, #04050a 100%);
+        radial-gradient(circle at 15% 10%, rgba(37,237,198,.18), transparent 17%),
+        radial-gradient(circle at 85% 20%, rgba(255,255,255,.08), transparent 14%),
+        radial-gradient(circle at 50% 90%, rgba(37,237,198,.08), transparent 18%),
+        linear-gradient(180deg, #060912 0%, #030409 100%);
       overflow-x:hidden;
-      -webkit-tap-highlight-color: transparent;
-      user-select:none;
-      overscroll-behavior: none;
-    }
-    ::selection{background:transparent;color:inherit}
-    ::-moz-selection{background:transparent;color:inherit}
-    *{
-      -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout:none;
-    }
-    button, input, textarea, select {
-      font:inherit;
-    }
-    button {
-      cursor:pointer;
-    }
-    #bgCanvas{
-      position:fixed; inset:0; width:100%; height:100%;
-      z-index:-2;
-    }
-    body::before{
-      content:"";
-      position:fixed; inset:0;
-      background-image:
-        radial-gradient(circle at 20% 25%, rgba(255,255,255,.05) 0 1px, transparent 1px),
-        radial-gradient(circle at 60% 70%, rgba(255,255,255,.05) 0 1px, transparent 1px),
-        radial-gradient(circle at 35% 45%, rgba(255,255,255,.04) 0 1px, transparent 1px);
-      background-size: 280px 280px;
-      opacity:.3;
-      pointer-events:none;
-      z-index:-3;
-    }
-    .wrap{
-      width:min(1220px, calc(100% - 20px));
-      margin:0 auto;
-      padding:16px 0 40px;
-    }
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:16px 18px;
-      border-radius:28px;
-      background:linear-gradient(180deg, rgba(12,16,28,.82), rgba(5,7,12,.72));
-      border:1px solid var(--stroke);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      position:sticky;
-      top:12px;
-      z-index:20;
-    }
-    .brand{display:flex; align-items:center; gap:14px; min-width:0}
-    .logoBox{
-      width:54px; height:54px; border-radius:18px; overflow:hidden;
-      background:#111; border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 10px 25px rgba(0,0,0,.35);
-      flex:none;
-    }
-    .logoBox img{width:100%;height:100%;object-fit:cover;display:block}
-    .titleWrap{min-width:0}
-    .title{
-      margin:0;
-      font-size:clamp(1.2rem, 2.6vw, 1.85rem);
-      line-height:1.05;
-      color:var(--accent);
-      text-shadow:0 0 20px rgba(37,237,198,.22);
-    }
-    .desc{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:.92rem;
-      line-height:1.35;
-    }
-    .pillRow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
-    .pill{
-      display:flex; align-items:center; gap:8px;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.04);
-      color:var(--muted);
-      font-size:.86rem;
-      white-space:nowrap;
-    }
-    .statusDot{
-      width:10px; height:10px; border-radius:999px; background:var(--accent);
-      box-shadow:0 0 12px rgba(37,237,198,.45);
-      flex:none;
-    }
-
-    .card{
-      border-radius:var(--radius);
-      background:linear-gradient(180deg, rgba(10,13,22,.80), rgba(4,6,10,.66));
-      border:1px solid var(--stroke);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      overflow:hidden;
-      position:relative;
-    }
-    .card::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:inherit;
-      pointer-events:none;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
-    }
-    .cardHead{
-      padding:18px 18px 12px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .cardTitle{margin:0; font-size:1.02rem; font-weight:800; color:#fff}
-    .smallMuted{font-size:.83rem; color:var(--muted)}
-    .cardBody{padding:18px}
-    .containerGrid{display:grid; grid-template-columns:1fr; gap:16px; margin-top:18px}
-    .gridTop{display:grid; grid-template-columns:1fr; gap:16px}
-    .actionBar{
-      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
-    }
-    .sectionTitle{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
-    .sectionTitle h3{margin:0; font-size:1rem; color:#fff}
-    .sectionTitle span{color:var(--muted); font-size:.86rem}
-    .hint{font-size:.84rem; color:var(--muted); line-height:1.45}
-
-    .btn,.btnGhost,.btnDanger,.btnMini,.switchBtn,.codeBtn,.heartBtn{
-      border:none; outline:none;
-      border-radius:16px;
-      transition:.18s ease;
       user-select:none;
       -webkit-user-select:none;
-      -webkit-tap-highlight-color: transparent;
+      -ms-user-select:none;
     }
-    .btn{
-      padding:14px 18px;
-      background:linear-gradient(180deg, var(--accent), #14caaa);
-      color:#02130f;
-      font-weight:800;
-      box-shadow:0 12px 28px rgba(37,237,198,.16);
+    ::selection{background:rgba(37,237,198,.28);color:#fff}
+    ::-moz-selection{background:rgba(37,237,198,.28);color:#fff}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-20%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(37,237,198,.12) 0 10%, transparent 10.5%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,.05) 0 8%, transparent 8.5%),
+        radial-gradient(circle at 50% 75%, rgba(37,237,198,.07) 0 9%, transparent 9.5%);
+      filter:blur(20px);
+      opacity:.65;
+      pointer-events:none;
+      animation: drift 16s ease-in-out infinite alternate;
+      z-index:-3;
     }
-    .btn:hover{transform:translateY(-1px); filter:brightness(1.03)}
-    .btn:active{transform:translateY(1px) scale(.99)}
-    .btnGhost,.btnMini{
-      background:rgba(255,255,255,.05);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.10);
+    #bgCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none}
+    .wrap{width:min(1220px, calc(100% - 20px));margin:0 auto;padding:18px 0 42px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:16px 18px;border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(14,18,28,.78), rgba(5,7,12,.70));
+      border-radius:28px;box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      position:sticky;top:12px;z-index:20;
+      animation: rise .65s ease both;
     }
-    .btnGhost:hover,.btnMini:hover{background:rgba(255,255,255,.08)}
-    .btnDanger{
-      background:rgba(255,107,129,.14);
-      color:#ffd6dc;
-      border:1px solid rgba(255,107,129,.22);
+    .brand{display:flex;align-items:center;gap:14px;min-width:0}
+    .logoBox{
+      width:56px;height:56px;border-radius:18px;overflow:hidden;flex:none;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 14px 30px rgba(0,0,0,.35);
+      background:#0f1218;
     }
-    .btnDanger:hover{background:rgba(255,107,129,.20)}
-    .btnMini{padding:10px 12px; border-radius:14px; font-weight:700; font-size:.88rem}
+    .logoBox img{display:block;width:100%;height:100%;object-fit:cover}
+    .titleWrap{min-width:0}
+    .title{
+      margin:0;font-size:clamp(1.18rem, 2.7vw, 1.85rem);
+      color:var(--accent);
+      text-shadow:0 0 24px rgba(37,237,198,.24);
+      letter-spacing:.2px;
+    }
+    .desc{margin:6px 0 0;color:var(--muted);font-size:.92rem;line-height:1.38}
+    .pillRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{
+      padding:10px 14px;border-radius:999px;border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);color:var(--muted);font-size:.86rem;
+      display:inline-flex;align-items:center;gap:8px;white-space:nowrap
+    }
+    .statusDot{
+      width:10px;height:10px;border-radius:999px;background:var(--accent);
+      box-shadow:0 0 0 6px rgba(37,237,198,.08), 0 0 18px rgba(37,237,198,.45);
+      animation:pulse 1.8s ease-in-out infinite;
+    }
+
+    .containerGrid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
+    .gridTop{display:grid;grid-template-columns:1fr;gap:16px}
+    .card{
+      border-radius:var(--radius-lg);
+      background:linear-gradient(180deg, rgba(12,15,23,.82), rgba(5,7,12,.70));
+      border:1px solid var(--stroke);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      overflow:hidden;
+      position:relative;
+      transform:translateY(8px);
+      opacity:0;
+      animation: rise .65s ease forwards;
+    }
+    .card:nth-child(1){animation-delay:.05s}
+    .card:nth-child(2){animation-delay:.12s}
+    .card:nth-child(3){animation-delay:.18s}
+    .card::after{
+      content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .card:hover{transform:translateY(-2px);border-color:rgba(37,237,198,.18)}
+    .cardHead{
+      padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .cardTitle{
+      margin:0;font-size:1.03rem;font-weight:800;color:#fff;letter-spacing:.2px
+    }
+    .cardBody{padding:18px}
+    .sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .sectionTitle h3{margin:0;font-size:1rem;color:#fff}
+    .sectionTitle span,.smallMuted{color:var(--muted);font-size:.86rem}
+    .hint{font-size:.84rem;color:var(--muted);line-height:1.5}
+    .actionBar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .searchRow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
     .input,.select,.textarea{
       width:100%;
-      border:none;
-      outline:none;
+      border:none;outline:none;
       color:#fff;
-      border-radius:16px;
+      border-radius:18px;
       background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.10);
       padding:14px 15px;
       font-size:1rem;
       resize:none;
-      transition:.18s ease;
+      transition:.22s ease;
       user-select:text;
       -webkit-user-select:text;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
     }
+    .input:hover,.select:hover,.textarea:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.06)}
     .input:focus,.select:focus,.textarea:focus{
-      border-color:rgba(37,237,198,.48);
-      box-shadow:0 0 0 3px rgba(37,237,198,.08);
+      border-color:var(--stroke-2);
+      box-shadow:0 0 0 4px rgba(37,237,198,.10), inset 0 1px 0 rgba(255,255,255,.03);
+      transform:translateY(-1px);
     }
-    .textarea{min-height:100px}
-    .grid2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
-    .grid3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
-    .fieldLabel{display:block; margin:0 0 7px; color:var(--muted); font-size:.86rem}
-    .searchRow{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
-    .subtleLine{height:1px; background:linear-gradient(90deg, transparent, rgba(37,237,198,.20), transparent); margin:14px 0}
-
-    .lobbyList{display:flex; flex-direction:column; gap:14px}
+    .textarea{min-height:102px;line-height:1.5}
+    .fieldLabel{display:block;margin:0 0 8px;font-size:.86rem;color:rgba(245,248,252,.82)}
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .btn,.btnGhost,.btnDanger,.btnMini,.switchBtn,.codeBtn,.heartBtn,.pickerBtn{
+      border:none;outline:none;cursor:pointer;border-radius:16px;font-weight:800;
+      transition:.2s ease;-webkit-tap-highlight-color:transparent;user-select:none;
+      position:relative;overflow:hidden;
+    }
+    .btn::before,.btnGhost::before,.btnDanger::before,.btnMini::before,.switchBtn::before,.codeBtn::before,.heartBtn::before,.pickerBtn::before{
+      content:"";position:absolute;inset:0;background:linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);
+      transform:translateX(-120%);
+      transition:transform .55s ease;
+    }
+    .btn:hover::before,.btnGhost:hover::before,.btnDanger:hover::before,.btnMini:hover::before,.switchBtn:hover::before,.codeBtn:hover::before,.heartBtn:hover::before,.pickerBtn:hover::before{
+      transform:translateX(120%);
+    }
+    .btn{
+      padding:14px 18px;
+      background:linear-gradient(180deg, var(--accent), var(--accent-2));
+      color:#04120f;
+      box-shadow:0 12px 28px rgba(37,237,198,.20);
+      transform:translateY(0);
+    }
+    .btn:hover{transform:translateY(-2px);filter:brightness(1.03)}
+    .btn:active,.btnGhost:active,.btnDanger:active,.btnMini:active,.switchBtn:active,.codeBtn:active,.heartBtn:active,.pickerBtn:active{
+      transform:translateY(1px) scale(.99);
+    }
+    .btnGhost,.btnMini,.pickerBtn{
+      background:rgba(255,255,255,.04);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .btnGhost:hover,.btnMini:hover,.pickerBtn:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
+    .btnDanger{
+      background:rgba(255,115,137,.13);
+      color:#ffd9df;
+      border:1px solid rgba(255,115,137,.26);
+    }
+    .btnDanger:hover{background:rgba(255,115,137,.20)}
+    .btnMini{padding:10px 12px;border-radius:14px;font-size:.88rem}
+    .pickerBtn{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:48px;padding:0 14px;gap:10px
+    }
+    .pickerBtn input{display:none}
+    .pickerTitle{display:flex;align-items:center;gap:10px;font-size:.92rem}
+    .pickerThumb{
+      width:58px;height:58px;border-radius:18px;overflow:hidden;flex:none;
+      border:1px solid rgba(255,255,255,.10);
+      background:#0c1016;
+      box-shadow:0 10px 20px rgba(0,0,0,.22);
+    }
+    .pickerThumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .fileBox{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .preview{
+      width:76px;height:76px;border-radius:20px;overflow:hidden;flex:none;
+      border:1px solid rgba(255,255,255,.12);
+      background:#0c1016;
+      box-shadow:0 12px 24px rgba(0,0,0,.22);
+    }
+    .preview img{width:100%;height:100%;object-fit:cover;display:block}
+    .lobbyList{display:flex;flex-direction:column;gap:14px}
     .lobbyCard{
-      display:grid;
-      grid-template-columns:116px 1fr;
-      gap:14px;
-      padding:14px;
-      border-radius:22px;
+      display:grid;grid-template-columns:124px 1fr;gap:14px;
+      padding:14px;border-radius:24px;
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 12px 32px rgba(0,0,0,.18);
+      transform:translateY(12px) scale(.99);
+      opacity:0;
+      animation: cardIn .55s ease forwards;
+      animation-delay: calc(var(--i) * 75ms);
     }
+    .lobbyCard:hover{border-color:rgba(37,237,198,.18);transform:translateY(-2px)}
     .lobbyThumb{
-      width:116px; height:116px;
-      border-radius:18px;
-      overflow:hidden;
-      background:#0f1218;
-      border:1px solid rgba(255,255,255,.08);
-      flex:none;
+      width:124px;height:124px;border-radius:20px;overflow:hidden;
+      background:#0f1218;border:1px solid rgba(255,255,255,.08);flex:none
     }
     .lobbyThumb img{width:100%;height:100%;object-fit:cover;display:block}
     .lobbyMain{min-width:0}
-    .lobbyTop{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
-    }
+    .lobbyTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
     .lobbyName{
-      margin:0;
-      font-size:1.12rem;
-      font-weight:900;
-      line-height:1.2;
-      color:var(--accent);
-      user-select:text;
-      -webkit-user-select:text;
-      text-shadow:0 0 16px rgba(37,237,198,.08);
+      margin:0;font-size:1.14rem;font-weight:900;line-height:1.2;color:#fff;
+      user-select:text;-webkit-user-select:text
     }
-    .lobbyMeta{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+    .lobbyMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
     .tag{
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:.8rem;
-      border:1px solid rgba(255,255,255,.09);
-      background:rgba(255,255,255,.04);
-      color:#fff;
+      padding:7px 10px;border-radius:999px;font-size:.79rem;border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);color:#fff
     }
     .tag.accent{border-color:rgba(37,237,198,.24); color:var(--accent)}
-    .tag.danger{border-color:rgba(255,107,129,.25); color:#ffb5c0}
+    .tag.danger{border-color:rgba(255,115,137,.26); color:#ffb9c4}
+    .tag.soft{color:rgba(245,248,252,.86)}
     .lobbyDesc{
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.5;
-      font-size:.93rem;
-      white-space:pre-wrap;
-      word-break:break-word;
-      user-select:text;
-      -webkit-user-select:text;
+      margin:10px 0 0;color:rgba(245,248,252,.74);line-height:1.55;font-size:.93rem;
+      white-space:pre-wrap;word-break:break-word;user-select:text;-webkit-user-select:text
     }
     .lobbyFooter{
-      margin-top:12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
+      margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap
     }
-    .lobbyCode{
-      display:flex; align-items:center; gap:8px; flex-wrap:wrap; color:#fff; font-weight:700;
-    }
+    .lobbyCode{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;font-weight:800}
     .codeText{
-      padding:9px 12px;
-      background:rgba(0,0,0,.30);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;
-      letter-spacing:.8px;
-      user-select:text;
-      -webkit-user-select:text;
+      padding:9px 12px;background:rgba(0,0,0,.26);
+      border:1px solid rgba(255,255,255,.08);border-radius:14px;
+      letter-spacing:1px;user-select:text;-webkit-user-select:text
     }
     .codeBtn{
-      padding:9px 12px;
-      border-radius:14px;
-      border:1px solid rgba(37,237,198,.18);
-      background:rgba(37,237,198,.10);
-      color:var(--accent);
-      font-weight:800;
+      padding:9px 12px;border-radius:14px;border:1px solid rgba(37,237,198,.18);
+      background:rgba(37,237,198,.10);color:var(--accent);font-weight:900
     }
-    .codeBtn:active{transform:scale(.99)}
-    .switchBtn{
-      padding:10px 13px;
-      border:1px solid rgba(255,255,255,.10);
+    .codeBtn:disabled{
+      cursor:not-allowed;
+      opacity:.42;
+      filter:saturate(.3);
+      transform:none !important;
       background:rgba(255,255,255,.05);
-      color:#fff;
-      font-weight:800;
+      color:rgba(245,248,252,.55);
+      border-color:rgba(255,255,255,.08);
     }
-    .switchBtn.on{
-      border-color:rgba(37,237,198,.36);
-      background:rgba(37,237,198,.12);
-      color:var(--accent);
+    .switchBtn{
+      padding:10px 13px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:#fff
     }
-    .switchBtn.off{
-      border-color:rgba(255,107,129,.28);
-      background:rgba(255,107,129,.10);
-      color:#ffb6c2;
-    }
+    .switchBtn.on{border-color:rgba(37,237,198,.35);background:rgba(37,237,198,.13);color:var(--accent)}
+    .switchBtn.off{border-color:rgba(255,115,137,.28);background:rgba(255,115,137,.10);color:#ffbcc7}
     .heartBtn{
-      padding:9px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      color:#fff;
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
-      font-weight:800;
+      padding:9px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);color:#fff;display:inline-flex;align-items:center;gap:7px
     }
-    .heartBtn.liked{
-      border-color:rgba(37,237,198,.25);
-      background:rgba(37,237,198,.10);
-      color:var(--accent);
-    }
-    .ownerFlag{
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(37,237,198,.20);
-      color:var(--accent);
-      background:rgba(37,237,198,.08);
-      font-size:.78rem;
-      font-weight:800;
-      user-select:text;
-      -webkit-user-select:text;
-    }
+    .heartBtn.liked{border-color:rgba(37,237,198,.25);background:rgba(37,237,198,.10);color:var(--accent)}
     .emptyState{
-      padding:28px;
-      text-align:center;
-      color:var(--muted);
-      border-radius:22px;
-      border:1px dashed rgba(255,255,255,.10);
-      background:rgba(255,255,255,.03);
+      padding:28px;text-align:center;color:var(--muted);
+      border-radius:22px;border:1px dashed rgba(255,255,255,.10);background:rgba(255,255,255,.03)
     }
-
+    .smallMutedBlock{margin-top:10px;color:var(--muted);font-size:.84rem}
     .modalBack{
-      position:fixed; inset:0;
-      background:rgba(2,4,8,.72);
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:100;
+      position:fixed;inset:0;background:rgba(2,4,8,.72);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      display:none;align-items:center;justify-content:center;padding:18px;z-index:100
     }
-    .modalBack.show{display:flex}
+    .modalBack.show{display:flex;animation: fadeIn .18s ease}
     .modal{
-      width:min(760px, 100%);
-      max-height:min(92vh, 900px);
-      overflow:auto;
-      border-radius:28px;
-      background:linear-gradient(180deg, rgba(13,17,28,.96), rgba(6,8,13,.96));
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 24px 80px rgba(0,0,0,.6);
+      width:min(760px,100%);max-height:min(92vh,900px);overflow:auto;border-radius:30px;
+      background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(6,8,13,.96));
+      border:1px solid rgba(255,255,255,.10);box-shadow:0 24px 80px rgba(0,0,0,.60);
+      transform:translateY(10px) scale(.985);opacity:0;animation: modalUp .25s ease forwards
     }
     .modalHead{
-      padding:18px 18px 12px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      border-bottom:1px solid rgba(255,255,255,.07);
-      position:sticky;
-      top:0;
-      background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(13,17,28,.92));
-      z-index:1;
+      padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;
+      background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(13,17,28,.92));z-index:1
     }
-    .modalTitle{margin:0; font-size:1.08rem; color:#fff}
+    .modalTitle{margin:0;font-size:1.08rem;color:#fff}
     .modalBody{padding:18px}
-    .loginHero{
-      display:grid;
-      grid-template-columns:88px 1fr;
-      gap:14px;
-      align-items:center;
-      margin-bottom:12px;
+    .modalHero{
+      display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:center;margin-bottom:14px
     }
-    .loginHero .heroPic{
-      width:88px;height:88px;border-radius:24px;overflow:hidden;
-      background:#111;border:1px solid rgba(255,255,255,.10)
+    .modalHero .heroPic{
+      width:88px;height:88px;border-radius:24px;overflow:hidden;background:#111;
+      border:1px solid rgba(255,255,255,.10);box-shadow:0 12px 24px rgba(0,0,0,.25)
     }
-    .loginHero .heroPic img{width:100%;height:100%;object-fit:cover}
-    .loginHero h2{margin:0 0 6px;font-size:1.3rem;color:var(--accent)}
-    .loginHero p{margin:0;color:var(--muted);line-height:1.45}
+    .modalHero .heroPic img{width:100%;height:100%;object-fit:cover;display:block}
+    .modalHero h2{margin:0 0 6px;font-size:1.28rem;color:var(--accent)}
+    .modalHero p{margin:0;color:var(--muted);line-height:1.5}
+    .subtleLine{
+      height:1px;background:linear-gradient(90deg, transparent, rgba(37,237,198,.20), transparent);
+      margin:14px 0
+    }
+    .ownerFlag{
+      padding:7px 11px;border-radius:999px;border:1px solid rgba(37,237,198,.20);
+      color:var(--accent);background:rgba(37,237,198,.08);font-size:.78rem;font-weight:900
+    }
     .authActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
     .noteBox{
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:rgba(37,237,198,.08);
-      border:1px solid rgba(37,237,198,.16);
-      color:#d8fff8;
-      font-size:.9rem;
-      line-height:1.45;
+      margin-top:12px;padding:12px 14px;border-radius:16px;
+      background:rgba(37,237,198,.08);border:1px solid rgba(37,237,198,.16);
+      color:#d8fff8;font-size:.9rem;line-height:1.5
     }
-    .authFeedback{
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      color:var(--muted);
-      font-size:.92rem;
-      line-height:1.45;
-      user-select:text;
-      -webkit-user-select:text;
-    }
-    .authFeedback.ok{border-color:rgba(37,237,198,.18); color:#d8fff8; background:rgba(37,237,198,.08)}
-    .authFeedback.err{border-color:rgba(255,107,129,.22); color:#ffd6dc; background:rgba(255,107,129,.08)}
-    .fileBox{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
-    .preview{
-      width:74px;height:74px;border-radius:20px;overflow:hidden;
-      border:1px solid rgba(255,255,255,.10);background:#111;flex:none
-    }
-    .preview img{width:100%;height:100%;object-fit:cover;display:block}
-
-    .toastWrap{
-      position:fixed; right:14px; bottom:14px;
-      display:flex; flex-direction:column; gap:10px;
-      z-index:120;
-    }
+    .toastWrap{position:fixed;right:14px;bottom:14px;display:flex;flex-direction:column;gap:10px;z-index:120}
     .toast{
-      min-width:240px; max-width:330px;
-      border-radius:18px;
-      background:rgba(9,13,22,.94);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:var(--shadow);
-      padding:12px 14px;
-      color:#fff;
-      transform:translateY(10px);
-      opacity:0;
-      animation:toastIn .22s ease forwards;
+      min-width:240px;max-width:340px;border-radius:18px;background:rgba(9,13,22,.94);
+      border:1px solid rgba(255,255,255,.10);box-shadow:var(--shadow);padding:12px 14px;color:#fff;
+      transform:translateY(10px);opacity:0;animation:toastIn .22s ease forwards
     }
     .toast.ok{border-color:rgba(37,237,198,.24)}
-    .toast.err{border-color:rgba(255,107,129,.28)}
+    .toast.err{border-color:rgba(255,115,137,.28)}
     .toast .t1{font-weight:900;font-size:.95rem;margin-bottom:3px}
     .toast .t2{font-size:.86rem;color:var(--muted);line-height:1.35}
-    @keyframes toastIn{to{transform:translateY(0);opacity:1}}
     .hidden{display:none !important}
 
     *::-webkit-scrollbar{width:10px;height:10px}
     *::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
-    *::-webkit-scrollbar-thumb{background:rgba(37,237,198,.30);border-radius:999px;border:2px solid rgba(0,0,0,.2)}
-    *::-webkit-scrollbar-thumb:hover{background:rgba(37,237,198,.42)}
+    *::-webkit-scrollbar-thumb{
+      background:linear-gradient(180deg, rgba(37,237,198,.42), rgba(18,196,163,.30));
+      border-radius:999px;border:2px solid rgba(0,0,0,.22)
+    }
+    *::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, rgba(37,237,198,.54), rgba(18,196,163,.38))}
+
+    @keyframes rise{to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes modalUp{to{transform:translateY(0) scale(1);opacity:1}}
+    @keyframes cardIn{to{transform:translateY(0) scale(1);opacity:1}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+    @keyframes drift{0%{transform:translate3d(-1%, -1%, 0) scale(1)}100%{transform:translate3d(1.5%, 1.5%, 0) scale(1.03)}}
+    @keyframes floaty{
+      0%,100%{transform:translateY(0px) translateX(0px)}
+      50%{transform:translateY(-12px) translateX(8px)}
+    }
+
+    .floatOrb{
+      position:fixed;border-radius:999px;filter:blur(18px);opacity:.3;pointer-events:none;z-index:-4;
+      animation: floaty 8s ease-in-out infinite;
+      background:radial-gradient(circle, rgba(37,237,198,.65), rgba(37,237,198,0) 70%);
+    }
+    .orb1{width:170px;height:170px;top:8%;left:4%}
+    .orb2{width:220px;height:220px;top:65%;right:2%;animation-delay:1.2s}
+    .orb3{width:120px;height:120px;bottom:12%;left:26%;animation-delay:2s}
 
     @media (min-width: 880px){
-      .gridTop{grid-template-columns:.92fr 1.2fr}
+      .gridTop{grid-template-columns:.92fr 1.18fr}
     }
     @media (max-width: 760px){
       .topbar{padding:14px}
@@ -470,10 +380,15 @@
       .modal{max-height:94vh}
       .brand{align-items:flex-start}
       .pillRow{justify-content:flex-start}
+      .modalHero{grid-template-columns:1fr;justify-items:start}
+      .modalHero .heroPic{width:76px;height:76px;border-radius:20px}
     }
   </style>
 </head>
 <body>
+  <div class="floatOrb orb1"></div>
+  <div class="floatOrb orb2"></div>
+  <div class="floatOrb orb3"></div>
   <canvas id="bgCanvas"></canvas>
 
   <div class="wrap">
@@ -488,9 +403,7 @@
         </div>
       </div>
       <div class="pillRow">
-        <div class="pill"><span class="statusDot"></span><span id="authStateText">Not logged in</span></div>
-        <button class="btnGhost btnMini" id="signInOpenBtn" type="button">Sign In</button>
-        <button class="btnGhost btnMini" id="logoutBtn" type="button" style="display:none;">Logout</button>
+        <div class="pill"><span class="statusDot"></span><span>Local lobby board</span></div>
       </div>
     </div>
 
@@ -499,7 +412,7 @@
         <div class="cardBody actionBar">
           <div>
             <div class="sectionTitle" style="margin-bottom:6px;"><h3>Main</h3><span>Host your lobby</span></div>
-            <div class="hint">You need to be logged in before hosting.</div>
+            <div class="hint">Tap Host to publish a lobby with glassy cards, live hearts, and owner controls.</div>
           </div>
           <button class="btn" id="hostBtn" type="button">Host</button>
         </div>
@@ -507,84 +420,29 @@
 
       <div class="gridTop">
         <div class="card">
-          <div class="cardHead"><h2 class="cardTitle">Search</h2><span class="smallMuted" id="lobbyCountText">0 lobbies</span></div>
+          <div class="cardHead">
+            <h2 class="cardTitle">Search</h2>
+            <span class="smallMuted" id="lobbyCountText">0 lobbies</span>
+          </div>
           <div class="cardBody">
             <div class="searchRow">
-              <input id="searchInput" class="input" type="text" placeholder="Search lobby name, code, description, type, username..." />
+              <input id="searchInput" class="input" type="text" placeholder="Search lobby name, code, description, type..." />
             </div>
             <div class="subtleLine"></div>
-            <div class="hint">Live lobby search.</div>
+            <div class="hint">Live search updates while you type.</div>
           </div>
         </div>
 
         <div class="card">
-          <div class="cardHead"><h2 class="cardTitle">Hosting Lobbies</h2><span class="smallMuted">Live feed</span></div>
+          <div class="cardHead">
+            <h2 class="cardTitle">Hosting Lobbies</h2>
+            <span class="smallMuted">Live feed</span>
+          </div>
           <div class="cardBody">
             <div id="lobbyList" class="lobbyList"></div>
             <div id="emptyState" class="emptyState hidden">No lobbies yet. Host one first.</div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modalBack" id="authModal">
-    <div class="modal">
-      <div class="modalHead">
-        <h3 class="modalTitle">Sign In</h3>
-        <button class="btnMini" id="closeAuthBtn" type="button">Close</button>
-      </div>
-      <div class="modalBody">
-        <div class="loginHero">
-          <div class="heroPic"><img id="authPreview" src="https://placehold.co/300x300/111111/25EDC6?text=Profile" alt="Profile Preview"></div>
-          <div>
-            <h2>Welcome back</h2>
-            <p>Pick a profile photo, username, display name, and password. Turn on remember me to reopen automatically next time.</p>
-          </div>
-        </div>
-
-        <form id="authForm" autocomplete="on">
-          <div class="grid2">
-            <div>
-              <label class="fieldLabel">Profile Pick</label>
-              <input id="profileFile" class="input" type="file" accept="image/*" />
-            </div>
-            <div>
-              <label class="fieldLabel">Username</label>
-              <input id="usernameInput" class="input" type="text" placeholder="skyemoz" autocomplete="username" />
-            </div>
-          </div>
-
-          <div class="grid2" style="margin-top:12px;">
-            <div>
-              <label class="fieldLabel">Display Name</label>
-              <input id="displayNameInput" class="input" type="text" placeholder="Sky" autocomplete="name" />
-            </div>
-            <div>
-              <label class="fieldLabel">Password</label>
-              <input id="passwordInput" class="input" type="password" placeholder="••••••••" autocomplete="current-password" />
-            </div>
-          </div>
-
-          <div class="grid2" style="margin-top:12px;align-items:center;">
-            <label class="pill" style="cursor:pointer;justify-content:flex-start;">
-              <input id="rememberMe" type="checkbox" style="accent-color: var(--accent); width: 16px; height: 16px;" />
-              <span>Remember me</span>
-            </label>
-            <div class="hint">Keeps you signed in on the next open.</div>
-          </div>
-
-          <div class="authActions">
-            <button class="btn" id="signInBtn" type="submit">Sign In</button>
-            <button class="btnGhost btnMini" id="useExistingBtn" type="button">Use Saved Login</button>
-          </div>
-
-          <div class="noteBox">
-            Sign in anytime. If the username already exists, the password has to match. If it is a new username, this creates the profile.
-          </div>
-
-          <div id="authFeedback" class="authFeedback">Ready.</div>
-        </form>
       </div>
     </div>
   </div>
@@ -596,22 +454,27 @@
         <button class="btnMini" id="closeHostBtn" type="button">Close</button>
       </div>
       <div class="modalBody">
-        <div class="loginHero" style="grid-template-columns:1fr auto; margin-bottom:14px; align-items:center;">
-          <div>
-            <h2 style="margin-bottom:4px;">Create your lobby</h2>
-            <p style="margin:0;">Fill out the details and publish it live.</p>
+        <div class="modalHero">
+          <div class="heroPic">
+            <img id="lobbyThumbPreview" src="media/Thumbnail.png" alt="Lobby Preview" onerror="this.src='https://placehold.co/300x300/111111/25EDC6?text=Thumbnail'" />
           </div>
-          <div class="ownerFlag">Live feed ready</div>
+          <div>
+            <h2>Create your lobby</h2>
+            <p>Fill out the details and publish it live. Active lobbies can be copied. Inactive ones cannot.</p>
+          </div>
         </div>
 
         <div class="grid2">
           <div>
             <label class="fieldLabel">Public</label>
-            <select id="publicInput" class="select"><option value="yes">Yes</option><option value="no">No</option></select>
+            <select id="publicInput" class="select">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
           </div>
           <div>
             <label class="fieldLabel">Name</label>
-            <input id="lobbyNameInput" class="input" type="text" placeholder="(@Username) Lobby" />
+            <input id="lobbyNameInput" class="input" type="text" placeholder="Lobby" />
           </div>
         </div>
 
@@ -643,8 +506,11 @@
           <div>
             <label class="fieldLabel">Thumbnail</label>
             <div class="fileBox">
-              <div class="preview"><img id="lobbyThumbPreview" src="media/Thumbnail.png" alt="Lobby Preview" onerror="this.src='https://placehold.co/300x300/111111/25EDC6?text=Thumbnail'" /></div>
-              <input id="lobbyThumbInput" class="input" type="file" accept="image/*" />
+              <label class="pickerBtn" for="lobbyThumbInput">
+                <div class="pickerThumb"><img id="pickerThumbImg" src="media/Thumbnail.png" alt="Pick thumbnail" onerror="this.src='https://placehold.co/200x200/111111/25EDC6?text=Pick'" /></div>
+                <div class="pickerTitle">Choose image</div>
+              </label>
+              <input id="lobbyThumbInput" type="file" accept="image/*" class="hidden" />
             </div>
           </div>
         </div>
@@ -652,7 +518,10 @@
         <div class="grid2" style="margin-top:12px;align-items:center;">
           <div>
             <label class="fieldLabel">Is Streamer</label>
-            <select id="streamerInput" class="select"><option value="yes">Yes</option><option value="no">No</option></select>
+            <select id="streamerInput" class="select">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
           </div>
           <div>
             <label class="fieldLabel">Expiration</label>
@@ -663,13 +532,17 @@
           </div>
         </div>
 
-        <div class="grid2" id="expirationFields" style="margin-top:12px;display:none;">
+        <div class="grid2 hidden" id="expirationFields" style="margin-top:12px;">
           <div><label class="fieldLabel">Hours</label><input id="expireHours" class="input" type="number" min="0" value="0" /></div>
           <div><label class="fieldLabel">Minutes</label><input id="expireMinutes" class="input" type="number" min="1" value="30" /></div>
         </div>
 
         <div class="authActions">
           <button class="btn" id="hostNowBtn" type="button">Host Now</button>
+        </div>
+
+        <div class="noteBox">
+          Hosted lobbies save inside this browser. If you set an expiration, the lobby auto-removes after that time.
         </div>
       </div>
     </div>
@@ -679,37 +552,21 @@
 
   <script>
     const STORAGE = {
-      users: 'amongus_hosting_users_v3',
-      session: 'amongus_hosting_session_v3',
-      lobbies: 'amongus_hosting_lobbies_v3'
+      ownerKey: 'amongus_hosting_owner_key_v4',
+      lobbies: 'amongus_hosting_lobbies_v4'
     };
 
     const DEFAULT_THUMB = 'media/Thumbnail.png';
 
     const els = {
-      authModal: document.getElementById('authModal'),
       hostModal: document.getElementById('hostModal'),
-      authStateText: document.getElementById('authStateText'),
-      logoutBtn: document.getElementById('logoutBtn'),
       hostBtn: document.getElementById('hostBtn'),
-      signInOpenBtn: document.getElementById('signInOpenBtn'),
-      closeAuthBtn: document.getElementById('closeAuthBtn'),
       closeHostBtn: document.getElementById('closeHostBtn'),
-      authForm: document.getElementById('authForm'),
-      signInBtn: document.getElementById('signInBtn'),
-      useExistingBtn: document.getElementById('useExistingBtn'),
       hostNowBtn: document.getElementById('hostNowBtn'),
       searchInput: document.getElementById('searchInput'),
       lobbyList: document.getElementById('lobbyList'),
       emptyState: document.getElementById('emptyState'),
       lobbyCountText: document.getElementById('lobbyCountText'),
-      usernameInput: document.getElementById('usernameInput'),
-      displayNameInput: document.getElementById('displayNameInput'),
-      passwordInput: document.getElementById('passwordInput'),
-      rememberMe: document.getElementById('rememberMe'),
-      profileFile: document.getElementById('profileFile'),
-      authPreview: document.getElementById('authPreview'),
-      authFeedback: document.getElementById('authFeedback'),
       publicInput: document.getElementById('publicInput'),
       lobbyNameInput: document.getElementById('lobbyNameInput'),
       typeInput: document.getElementById('typeInput'),
@@ -718,6 +575,7 @@
       lobbyDescInput: document.getElementById('lobbyDescInput'),
       lobbyThumbInput: document.getElementById('lobbyThumbInput'),
       lobbyThumbPreview: document.getElementById('lobbyThumbPreview'),
+      pickerThumbImg: document.getElementById('pickerThumbImg'),
       streamerInput: document.getElementById('streamerInput'),
       expirationMode: document.getElementById('expirationMode'),
       expirationFields: document.getElementById('expirationFields'),
@@ -726,14 +584,11 @@
       toastWrap: document.getElementById('toastWrap')
     };
 
-    let currentUser = null;
-    let currentProfile = null;
-    let selectedProfileFile = null;
-    let selectedLobbyThumbFile = null;
-    let lobbies = [];
-
-    const nowISO = () => new Date().toISOString();
-    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const state = {
+      ownerKey: null,
+      lobbies: [],
+      selectedThumbDataURL: ''
+    };
 
     function escapeHtml(str=''){
       return String(str)
@@ -743,22 +598,32 @@
         .replace(/"/g,'&quot;')
         .replace(/'/g,'&#039;');
     }
-    function slugUsername(name=''){
-      return name.trim().toLowerCase().replace(/[^a-z0-9._-]/g,'').slice(0, 32) || 'user';
+
+    function safeUUID(){
+      if (crypto?.randomUUID) return crypto.randomUUID();
+      return 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxx'.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
     }
+
     function genLobbyCode(len=6){
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       let s = '';
-      for(let i = 0; i < len; i++) s += chars[Math.floor(Math.random()*chars.length)];
+      for (let i = 0; i < len; i++) s += chars[Math.floor(Math.random() * chars.length)];
       return s;
     }
-    function openModal(el){ el.classList.add('show'); document.body.style.overflow = 'hidden'; }
+
+    function openModal(el){
+      el.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
     function closeModal(el){
       el.classList.remove('show');
-      if(!els.authModal.classList.contains('show') && !els.hostModal.classList.contains('show')) document.body.style.overflow = '';
+      if (!els.hostModal.classList.contains('show')) document.body.style.overflow = '';
     }
 
-    function showToast(title, message, type='ok', ms=2600){
+    function showToast(title, message, type='ok', ms=2400){
       const el = document.createElement('div');
       el.className = `toast ${type}`;
       el.innerHTML = `<div class="t1">${escapeHtml(title)}</div><div class="t2">${escapeHtml(message)}</div>`;
@@ -768,11 +633,6 @@
         el.style.transform = 'translateY(10px)';
         setTimeout(() => el.remove(), 220);
       }, ms);
-    }
-
-    function setAuthFeedback(message, type='ok'){
-      els.authFeedback.textContent = message;
-      els.authFeedback.className = `authFeedback ${type}`;
     }
 
     function loadJSON(key, fallback){
@@ -786,25 +646,24 @@
       localStorage.setItem(key, JSON.stringify(value));
     }
 
-    function getUsers(){ return loadJSON(STORAGE.users, {}); }
-    function setUsers(v){ saveJSON(STORAGE.users, v); }
-    function getSession(){ return loadJSON(STORAGE.session, null); }
-    function setSession(v){
-      if(v) localStorage.setItem(STORAGE.session, JSON.stringify(v));
-      else localStorage.removeItem(STORAGE.session);
-    }
-    function getLobbies(){ return loadJSON(STORAGE.lobbies, []); }
-    function setLobbies(v){ saveJSON(STORAGE.lobbies, v); }
-
-    async function hashText(text){
-      if(window.crypto?.subtle){
-        const data = new TextEncoder().encode(text);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+    function getOwnerKey(){
+      let key = localStorage.getItem(STORAGE.ownerKey);
+      if (!key){
+        key = safeUUID();
+        localStorage.setItem(STORAGE.ownerKey, key);
       }
-      let out = 0;
-      for(let i=0;i<text.length;i++) out = ((out<<5)-out) + text.charCodeAt(i) | 0;
-      return String(out);
+      return key;
+    }
+
+    function getLobbies(){
+      return loadJSON(STORAGE.lobbies, []);
+    }
+    function setLobbies(v){
+      saveJSON(STORAGE.lobbies, v);
+    }
+
+    function nowISO(){
+      return new Date().toISOString();
     }
 
     function readFileAsDataURL(file){
@@ -816,153 +675,27 @@
       });
     }
 
-    function setImagePreview(file, target){
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = e => target.src = e.target.result;
-      reader.readAsDataURL(file);
-    }
-
     function formatDate(value){
-      if(!value) return 'Never';
+      if (!value) return 'Never';
       const d = new Date(value);
-      if(Number.isNaN(d.getTime())) return 'Never';
+      if (Number.isNaN(d.getTime())) return 'Never';
       return d.toLocaleString([], { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
     }
 
     function formatRemaining(expiresAt){
-      if(!expiresAt) return 'Never';
+      if (!expiresAt) return 'Never';
       const diff = new Date(expiresAt).getTime() - Date.now();
-      if(diff <= 0) return 'Expired';
+      if (diff <= 0) return 'Expired';
       const totalMins = Math.floor(diff / 60000);
       const h = Math.floor(totalMins / 60);
       const m = totalMins % 60;
       return h > 0 ? `${h}h ${m}m` : `${m}m`;
     }
 
-    function applyUserState(){
-      if(currentUser && currentProfile){
-        els.authStateText.textContent = `Logged in as ${currentProfile.displayName || currentUser.username}`;
-        els.logoutBtn.style.display = 'inline-flex';
-      } else {
-        els.authStateText.textContent = 'Not logged in';
-        els.logoutBtn.style.display = 'none';
-      }
-    }
-
-    function setLoginProfilePreview(){
-      if(currentProfile?.profilePic) els.authPreview.src = currentProfile.profilePic;
-      else els.authPreview.src = 'https://placehold.co/300x300/111111/25EDC6?text=Profile';
-    }
-
-    async function uploadProfilePicIfAny(){
-      if(!selectedProfileFile) return '';
-      return await readFileAsDataURL(selectedProfileFile);
-    }
-    async function uploadLobbyThumbIfAny(){
-      if(!selectedLobbyThumbFile) return DEFAULT_THUMB;
-      return await readFileAsDataURL(selectedLobbyThumbFile);
-    }
-
-    async function signIn(){
-      const username = slugUsername(els.usernameInput.value);
-      const displayName = els.displayNameInput.value.trim();
-      const password = els.passwordInput.value;
-
-      if(!username || !displayName || !password){
-        setAuthFeedback('Enter username, display name, and password.', 'err');
-        showToast('Missing fields', 'Enter username, display name, and password.', 'err');
-        return false;
-      }
-
-      const users = getUsers();
-      const passwordHash = await hashText(password);
-      const existing = users[username];
-      const profilePic = await uploadProfilePicIfAny();
-
-      if(existing){
-        if(existing.passwordHash !== passwordHash){
-          setAuthFeedback('Wrong password.', 'err');
-          showToast('Wrong password', 'Try again.', 'err');
-          return false;
-        }
-        existing.displayName = displayName || existing.displayName || username;
-        if(profilePic) existing.profilePic = profilePic;
-        existing.updatedAt = nowISO();
-        existing.lastLoginAt = nowISO();
-        users[username] = existing;
-        setUsers(users);
-        currentUser = { username };
-        currentProfile = existing;
-        if(els.rememberMe.checked) setSession({ username, passwordHash }); else setSession(null);
-        applyUserState();
-        setLoginProfilePreview();
-        setAuthFeedback(`Signed in as ${existing.displayName || username}.`, 'ok');
-        closeModal(els.authModal);
-        showToast('Signed in', `Welcome back, ${existing.displayName || username}.`, 'ok');
-        return true;
-      }
-
-      const created = {
-        username,
-        displayName,
-        passwordHash,
-        profilePic: profilePic || '',
-        createdAt: nowISO(),
-        updatedAt: nowISO(),
-        lastLoginAt: nowISO()
-      };
-      users[username] = created;
-      setUsers(users);
-      currentUser = { username };
-      currentProfile = created;
-      if(els.rememberMe.checked) setSession({ username, passwordHash }); else setSession(null);
-      applyUserState();
-      setLoginProfilePreview();
-      setAuthFeedback(`Signed in as ${displayName}.`, 'ok');
-      closeModal(els.authModal);
-      showToast('Signed in', `Welcome, ${displayName}.`, 'ok');
-      return true;
-    }
-
-    async function tryAutoLogin(){
-      const session = getSession();
-      if(!session?.username || !session?.passwordHash) return false;
-      const users = getUsers();
-      const existing = users[session.username];
-      if(!existing || existing.passwordHash !== session.passwordHash) return false;
-      currentUser = { username: existing.username };
-      currentProfile = existing;
-      applyUserState();
-      setLoginProfilePreview();
-      setAuthFeedback(`Auto-logged in as ${existing.displayName || existing.username}.`, 'ok');
-      return true;
-    }
-
-    function logout(){
-      currentUser = null;
-      currentProfile = null;
-      setSession(null);
-      applyUserState();
-      setAuthFeedback('Logged out.', 'ok');
-      openModal(els.authModal);
-    }
-
-    function requireLogin(){
-      if(currentUser) return true;
-      openModal(els.authModal);
-      setAuthFeedback('Log in first.', 'err');
-      showToast('Login required', 'Sign in before hosting.', 'err');
-      return false;
-    }
-
     function normalizeLobby(lobby){
       return {
-        id: lobby.id || crypto.randomUUID(),
-        ownerUid: lobby.ownerUid,
-        ownerUsername: lobby.ownerUsername,
-        ownerDisplayName: lobby.ownerDisplayName,
-        ownerPhoto: lobby.ownerPhoto || '',
+        id: lobby.id || safeUUID(),
+        ownerKey: lobby.ownerKey || state.ownerKey,
         public: !!lobby.public,
         name: lobby.name || '',
         type: lobby.type || 'Regular',
@@ -973,56 +706,190 @@
         isStreamer: !!lobby.isStreamer,
         active: lobby.active !== false,
         heartCount: Math.max(0, parseInt(lobby.heartCount || 0, 10)),
-        hearts: lobby.hearts || [],
-        likes: lobby.likes || {},
+        hearts: Array.isArray(lobby.hearts) ? lobby.hearts : [],
         createdAt: lobby.createdAt || nowISO(),
         updatedAt: lobby.updatedAt || nowISO(),
         expiresAt: lobby.expiresAt || null
       };
     }
 
-    function saveCurrentLobbies(){
-      setLobbies(lobbies);
-    }
-
     function cleanupExpiredLobbies(){
-      const before = lobbies.length;
+      const before = state.lobbies.length;
       const now = Date.now();
-      lobbies = lobbies.filter(l => {
-        if(!l.expiresAt) return true;
-        return new Date(l.expiresAt).getTime() > now;
-      });
-      if(before !== lobbies.length) saveCurrentLobbies();
+      state.lobbies = state.lobbies.filter(l => !l.expiresAt || new Date(l.expiresAt).getTime() > now);
+      if (before !== state.lobbies.length) setLobbies(state.lobbies);
     }
 
-    function ensureLobbyDefaults(){
-      lobbies = getLobbies().map(normalizeLobby);
+    function loadLobbies(){
+      state.lobbies = getLobbies().map(normalizeLobby);
       cleanupExpiredLobbies();
     }
 
-    async function hostLobby(){
-      if(!requireLogin()) return;
+    function syncDisplayThumbnails(dataURL){
+      if (dataURL){
+        els.lobbyThumbPreview.src = dataURL;
+        els.pickerThumbImg.src = dataURL;
+      } else {
+        els.lobbyThumbPreview.src = DEFAULT_THUMB;
+        els.pickerThumbImg.src = DEFAULT_THUMB;
+      }
+    }
 
+    function updateExpirationFields(){
+      els.expirationFields.classList.toggle('hidden', els.expirationMode.value !== 'set');
+    }
+
+    function requiresActiveCodeCopy(lobby){
+      return !!lobby.active;
+    }
+
+    function isOwner(lobby){
+      return lobby.ownerKey === state.ownerKey;
+    }
+
+    function hasLiked(lobby){
+      return (lobby.hearts || []).includes(state.ownerKey);
+    }
+
+    async function copyCode(text, lobby){
+      if (!requiresActiveCodeCopy(lobby)){
+        showToast('Inactive lobby', 'Active lobbies can be copied only.', 'err');
+        return;
+      }
+      try{
+        if (navigator.clipboard?.writeText){
+          await navigator.clipboard.writeText(text);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        showToast('Copied', `Lobby code ${text} copied.`, 'ok');
+      }catch(err){
+        console.error(err);
+        showToast('Copy failed', text, 'err');
+      }
+    }
+
+    function filterLobbies(list){
+      const term = els.searchInput.value.trim().toLowerCase();
+      if (!term) return list;
+      return list.filter(l => {
+        const hay = [
+          l.name, l.description, l.lobbyCode, l.type,
+          l.public ? 'public' : 'private',
+          l.isStreamer ? 'streamer' : '',
+          l.active ? 'active' : 'inactive'
+        ].join(' ').toLowerCase();
+        return hay.includes(term);
+      });
+    }
+
+    function renderLobbies(){
+      cleanupExpiredLobbies();
+      const visible = filterLobbies(state.lobbies).sort((a, b) => {
+        const aT = new Date(a.createdAt).getTime() || 0;
+        const bT = new Date(b.createdAt).getTime() || 0;
+        return bT - aT;
+      });
+
+      els.lobbyCountText.textContent = `${visible.length} lobby${visible.length === 1 ? '' : 'ies'}`;
+      els.lobbyList.innerHTML = '';
+      els.emptyState.classList.toggle('hidden', visible.length !== 0);
+
+      visible.forEach((lobby, index) => {
+        const card = document.createElement('div');
+        card.className = 'lobbyCard';
+        card.style.setProperty('--i', index);
+        const liked = hasLiked(lobby);
+        card.innerHTML = `
+          <div class="lobbyThumb">
+            <img src="${escapeHtml(lobby.thumbnailUrl || DEFAULT_THUMB)}" alt="thumbnail" onerror="this.src='https://placehold.co/400x400/111111/25EDC6?text=Lobby'" />
+          </div>
+          <div class="lobbyMain">
+            <div class="lobbyTop">
+              <div>
+                <h3 class="lobbyName">${escapeHtml(lobby.name || 'Untitled Lobby')}</h3>
+                <div class="lobbyMeta">
+                  <span class="tag accent">${escapeHtml(lobby.type || 'Regular')}</span>
+                  <span class="tag soft">max: ${escapeHtml(String(lobby.maxPlayers ?? 10))}</span>
+                  <span class="tag ${lobby.public ? 'accent' : 'danger'}">${lobby.public ? 'Public' : 'Private'}</span>
+                  <span class="tag soft">${lobby.isStreamer ? 'Streamer' : 'Normal'}</span>
+                  <span class="tag ${lobby.active ? 'accent' : 'danger'}">${lobby.active ? '🟢 Active' : '🔴 Inactive'}</span>
+                  <span class="tag soft">Exp: ${escapeHtml(formatRemaining(lobby.expiresAt))}</span>
+                </div>
+              </div>
+              ${isOwner(lobby) ? `<div class="ownerFlag">You</div>` : ''}
+            </div>
+
+            <p class="lobbyDesc">${escapeHtml(lobby.description || 'No description added.')}</p>
+
+            <div class="lobbyFooter">
+              <div class="lobbyCode">
+                <span>Code:</span>
+                <span class="codeText">${escapeHtml(lobby.lobbyCode || '------')}</span>
+                <button class="codeBtn" ${requiresActiveCodeCopy(lobby) ? '' : 'disabled'} data-code="${escapeHtml(lobby.lobbyCode || '')}" type="button">${requiresActiveCodeCopy(lobby) ? 'Copy' : 'Inactive'}</button>
+              </div>
+
+              <div class="pillToggleRow" style="display:flex;gap:10px;flex-wrap:wrap">
+                <button class="heartBtn ${liked ? 'liked' : ''}" data-heart="${lobby.id}" type="button">❤ ${Number(lobby.heartCount || 0)}</button>
+                ${isOwner(lobby) ? `<button class="switchBtn ${lobby.active ? 'on' : 'off'}" data-active="${lobby.id}" type="button">${lobby.active ? '🟢 Active' : '🔴 Active'}</button>` : ''}
+                ${isOwner(lobby) ? `<button class="btnDanger btnMini" data-delete="${lobby.id}" type="button">Delete</button>` : ''}
+              </div>
+            </div>
+
+            <div class="smallMutedBlock">Expiration date: ${escapeHtml(formatDate(lobby.expiresAt))}</div>
+          </div>
+        `;
+        lobby.__card = card;
+        els.lobbyList.appendChild(card);
+      });
+
+      els.lobbyList.querySelectorAll('[data-heart]').forEach(btn => {
+        btn.addEventListener('click', () => toggleHeart(btn.getAttribute('data-heart')));
+      });
+      els.lobbyList.querySelectorAll('[data-active]').forEach(btn => {
+        btn.addEventListener('click', () => toggleActive(btn.getAttribute('data-active')));
+      });
+      els.lobbyList.querySelectorAll('[data-delete]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lobby = state.lobbies.find(x => x.id === btn.getAttribute('data-delete'));
+          if (lobby && confirm(`Delete ${lobby.name || 'this lobby'}?`)) deleteLobby(lobby.id);
+        });
+      });
+      els.lobbyList.querySelectorAll('[data-code]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lobby = state.lobbies.find(x => x.lobbyCode === btn.getAttribute('data-code'));
+          if (lobby) copyCode(lobby.lobbyCode, lobby);
+        });
+      });
+    }
+
+    async function hostLobby(){
       const publicValue = els.publicInput.value === 'yes';
-      const name = els.lobbyNameInput.value.trim() || `(@${currentProfile?.username || currentUser.username}) Lobby`;
+      const name = els.lobbyNameInput.value.trim() || 'Lobby';
       const type = els.typeInput.value;
       const lobbyCode = (els.lobbyCodeInput.value.trim() || genLobbyCode()).toUpperCase();
       const maxPlayers = Math.max(1, Math.min(15, parseInt(els.maxPlayersInput.value || '10', 10)));
       const description = els.lobbyDescInput.value.trim();
       const isStreamer = els.streamerInput.value === 'yes';
-      const thumbUrl = await uploadLobbyThumbIfAny();
+      const thumbUrl = state.selectedThumbDataURL || DEFAULT_THUMB;
+
       let expiresAt = null;
-      if(els.expirationMode.value === 'set'){
+      if (els.expirationMode.value === 'set'){
         const hours = Math.max(0, parseInt(els.expireHours.value || '0', 10));
         const mins = Math.max(1, parseInt(els.expireMinutes.value || '30', 10));
         expiresAt = new Date(Date.now() + ((hours * 60) + mins) * 60000).toISOString();
       }
 
       const lobby = normalizeLobby({
-        ownerUid: currentUser.username,
-        ownerUsername: currentProfile?.username || currentUser.username,
-        ownerDisplayName: currentProfile?.displayName || currentUser.username,
-        ownerPhoto: currentProfile?.profilePic || '',
+        ownerKey: state.ownerKey,
         public: publicValue,
         name,
         type,
@@ -1034,187 +901,54 @@
         active: true,
         heartCount: 0,
         hearts: [],
-        likes: {},
         createdAt: nowISO(),
         updatedAt: nowISO(),
         expiresAt
       });
 
-      lobbies.unshift(lobby);
-      saveCurrentLobbies();
-
-      selectedLobbyThumbFile = null;
-      els.lobbyThumbInput.value = '';
-      els.lobbyThumbPreview.src = DEFAULT_THUMB;
+      state.lobbies.push(lobby);
+      setLobbies(state.lobbies);
+      renderLobbies();
       showToast('Lobby hosted', `${name} is live now.`, 'ok');
       closeModal(els.hostModal);
-      renderLobbies();
     }
 
-    function hasLiked(lobby){
-      return !!lobby.likes?.[currentUser?.username];
-    }
+    function toggleHeart(lobbyId){
+      const lobby = state.lobbies.find(x => x.id === lobbyId);
+      if (!lobby) return;
 
-    async function toggleHeart(lobbyId){
-      if(!currentUser){
-        showToast('Login first', 'Sign in to heart lobbies.', 'err');
-        openModal(els.authModal);
-        return;
-      }
-      const idx = lobbies.findIndex(l => l.id === lobbyId);
-      if(idx < 0) return;
-      const lobby = lobbies[idx];
-      lobby.likes = lobby.likes || {};
-      if(lobby.likes[currentUser.username]){
-        delete lobby.likes[currentUser.username];
+      lobby.hearts = Array.isArray(lobby.hearts) ? lobby.hearts : [];
+      const idx = lobby.hearts.indexOf(state.ownerKey);
+      if (idx >= 0){
+        lobby.hearts.splice(idx, 1);
         lobby.heartCount = Math.max(0, (lobby.heartCount || 0) - 1);
       } else {
-        lobby.likes[currentUser.username] = true;
+        lobby.hearts.push(state.ownerKey);
         lobby.heartCount = (lobby.heartCount || 0) + 1;
       }
       lobby.updatedAt = nowISO();
-      lobbies[idx] = lobby;
-      saveCurrentLobbies();
+      setLobbies(state.lobbies);
       renderLobbies();
     }
 
-    async function toggleActive(lobbyId){
-      if(!currentUser) return;
-      const idx = lobbies.findIndex(l => l.id === lobbyId);
-      if(idx < 0) return;
-      const lobby = lobbies[idx];
-      if(lobby.ownerUid !== currentUser.username){
-        showToast('No permission', 'Only the owner can toggle active.', 'err');
-        return;
-      }
+    function toggleActive(lobbyId){
+      const lobby = state.lobbies.find(x => x.id === lobbyId);
+      if (!lobby || !isOwner(lobby)) return;
       lobby.active = !lobby.active;
       lobby.updatedAt = nowISO();
-      lobbies[idx] = lobby;
-      saveCurrentLobbies();
+      setLobbies(state.lobbies);
       renderLobbies();
       showToast('Updated', lobby.active ? 'Lobby is active.' : 'Lobby is inactive.', 'ok');
     }
 
-    async function deleteLobby(lobbyId){
-      if(!currentUser) return;
-      const idx = lobbies.findIndex(l => l.id === lobbyId);
-      if(idx < 0) return;
-      const lobby = lobbies[idx];
-      if(lobby.ownerUid !== currentUser.username){
-        showToast('No permission', 'Only the owner can delete.', 'err');
-        return;
+    function deleteLobby(lobbyId){
+      const before = state.lobbies.length;
+      state.lobbies = state.lobbies.filter(x => x.id !== lobbyId);
+      if (state.lobbies.length !== before){
+        setLobbies(state.lobbies);
+        renderLobbies();
+        showToast('Deleted', 'Lobby removed.', 'ok');
       }
-      lobbies.splice(idx, 1);
-      saveCurrentLobbies();
-      renderLobbies();
-      showToast('Deleted', lobby.name || 'Lobby deleted', 'ok');
-    }
-
-    async function copyCode(code){
-      const text = String(code || '').trim();
-      if(!text){
-        showToast('Nothing to copy', 'Lobby code is empty.', 'err');
-        return;
-      }
-      try{
-        if(navigator.clipboard && window.isSecureContext){
-          await navigator.clipboard.writeText(text);
-        } else {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.setAttribute('readonly','');
-          ta.style.position = 'fixed';
-          ta.style.left = '-9999px';
-          document.body.appendChild(ta);
-          ta.select();
-          ta.setSelectionRange(0, ta.value.length);
-          const ok = document.execCommand('copy');
-          document.body.removeChild(ta);
-          if(!ok) throw new Error('Copy blocked');
-        }
-        showToast('Copied', `Lobby code ${text} copied.`, 'ok');
-      }catch(err){
-        console.warn('Copy failed', err);
-        showToast('Copy failed', text, 'err');
-      }
-    }
-
-    function filterLobbies(list){
-      const term = els.searchInput.value.trim().toLowerCase();
-      if(!term) return list;
-      return list.filter(l => {
-        const hay = [
-          l.name, l.description, l.lobbyCode, l.type, l.ownerUsername, l.ownerDisplayName,
-          String(l.maxPlayers ?? ''), l.public ? 'public' : 'private', l.isStreamer ? 'streamer' : '',
-          l.active ? 'active' : 'inactive'
-        ].join(' ').toLowerCase();
-        return hay.includes(term);
-      });
-    }
-
-    async function renderLobbies(){
-      cleanupExpiredLobbies();
-      const visible = filterLobbies(lobbies)
-        .sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-      els.lobbyCountText.textContent = `${visible.length} lobby${visible.length === 1 ? '' : 's'}`;
-      els.lobbyList.innerHTML = '';
-      els.emptyState.classList.toggle('hidden', visible.length !== 0);
-
-      for(const lobby of visible){
-        const card = document.createElement('div');
-        card.className = 'lobbyCard';
-        const liked = currentUser ? hasLiked(lobby) : false;
-        const activeClass = lobby.active ? 'on' : 'off';
-        card.innerHTML = `
-          <div class="lobbyThumb">
-            <img src="${escapeHtml(lobby.thumbnailUrl || DEFAULT_THUMB)}" alt="thumbnail" onerror="this.src='https://placehold.co/400x400/111111/25EDC6?text=Lobby'" />
-          </div>
-          <div class="lobbyMain">
-            <div class="lobbyTop">
-              <div>
-                <h3 class="lobbyName">${escapeHtml(lobby.name || 'Untitled Lobby')}</h3>
-                <div class="lobbyMeta">
-                  <span class="tag accent">${escapeHtml(lobby.type || 'Regular')}</span>
-                  <span class="tag">max: ${escapeHtml(String(lobby.maxPlayers ?? 10))}</span>
-                  <span class="tag ${lobby.public ? 'accent' : 'danger'}">${lobby.public ? 'Public' : 'Private'}</span>
-                  <span class="tag">${lobby.isStreamer ? 'Streamer' : 'Normal'}</span>
-                  <span class="tag">${lobby.active ? 'Active' : 'Inactive'}</span>
-                  <span class="tag">Exp: ${escapeHtml(formatRemaining(lobby.expiresAt))}</span>
-                </div>
-              </div>
-              <div class="ownerFlag">${escapeHtml(lobby.ownerUsername || 'user')}</div>
-            </div>
-
-            <p class="lobbyDesc">${escapeHtml(lobby.description || 'No description added.')}</p>
-
-            <div class="lobbyFooter">
-              <div class="lobbyCode">
-                <span>Code:</span>
-                <span class="codeText">${escapeHtml(lobby.lobbyCode || '------')}</span>
-                <button class="codeBtn" data-code="${escapeHtml(lobby.lobbyCode || '')}" type="button">Copy</button>
-              </div>
-
-              <div class="pillToggleRow">
-                <button class="heartBtn ${liked ? 'liked' : ''}" data-heart="${lobby.id}" type="button">❤ ${Number(lobby.heartCount || 0)}</button>
-                ${currentUser && lobby.ownerUid === currentUser.username ? `<button class="switchBtn ${activeClass}" data-active="${lobby.id}" type="button">${lobby.active ? '🟢 Active' : '🔴 Active'}</button>` : ''}
-                ${currentUser && lobby.ownerUid === currentUser.username ? `<button class="btnDanger btnMini" data-delete="${lobby.id}" type="button">Delete</button>` : ''}
-              </div>
-            </div>
-
-            <div class="smallMuted" style="margin-top:10px;">Expiration date: ${escapeHtml(formatDate(lobby.expiresAt))}</div>
-          </div>
-        `;
-        els.lobbyList.appendChild(card);
-      }
-
-      document.querySelectorAll('[data-heart]').forEach(btn => btn.addEventListener('click', () => toggleHeart(btn.getAttribute('data-heart'))));
-      document.querySelectorAll('[data-active]').forEach(btn => btn.addEventListener('click', () => toggleActive(btn.getAttribute('data-active'))));
-      document.querySelectorAll('[data-delete]').forEach(btn => btn.addEventListener('click', () => {
-        const lobby = lobbies.find(x => x.id === btn.getAttribute('data-delete'));
-        if(lobby && confirm(`Delete ${lobby.name || 'this lobby'}?`)) deleteLobby(lobby.id);
-      }));
-      document.querySelectorAll('[data-code]').forEach(btn => btn.addEventListener('click', () => copyCode(btn.getAttribute('data-code'))));
     }
 
     function startBackground(){
@@ -1226,26 +960,27 @@
         h = c.height = window.innerHeight * devicePixelRatio;
         c.style.width = window.innerWidth + 'px';
         c.style.height = window.innerHeight + 'px';
-        particles = Array.from({length: Math.min(70, Math.floor(window.innerWidth / 18))}, () => ({
+        particles = Array.from({length: Math.min(72, Math.floor(window.innerWidth / 17))}, () => ({
           x: Math.random() * w,
           y: Math.random() * h,
           r: (Math.random() * 1.8 + .4) * devicePixelRatio,
           vx: (Math.random() - .5) * .22 * devicePixelRatio,
           vy: (Math.random() - .5) * .22 * devicePixelRatio,
-          a: Math.random() * .5 + .15
+          a: Math.random() * .55 + .12
         }));
       };
       window.addEventListener('resize', resize, { passive:true });
       resize();
+
       const tick = () => {
         ctx.clearRect(0,0,w,h);
-        for(const p of particles){
+        for (const p of particles){
           p.x += p.vx;
           p.y += p.vy;
-          if(p.x < -20) p.x = w + 20;
-          if(p.x > w + 20) p.x = -20;
-          if(p.y < -20) p.y = h + 20;
-          if(p.y > h + 20) p.y = -20;
+          if (p.x < -20) p.x = w + 20;
+          if (p.x > w + 20) p.x = -20;
+          if (p.y < -20) p.y = h + 20;
+          if (p.y > h + 20) p.y = -20;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(37,237,198,${p.a})`;
@@ -1257,76 +992,35 @@
     }
 
     function setupGlobalErrorHandling(){
-      window.addEventListener('error', (e) => {
+      window.addEventListener('error', e => {
         console.error(e.error || e.message);
         showToast('Script error', e.message || 'Unknown error', 'err', 4000);
       });
-      window.addEventListener('unhandledrejection', (e) => {
+      window.addEventListener('unhandledrejection', e => {
         console.error(e.reason);
         showToast('Promise error', e.reason?.message || String(e.reason || 'Unknown error'), 'err', 4000);
       });
     }
 
     function bindEvents(){
-      els.expirationMode.addEventListener('change', () => {
-        els.expirationFields.style.display = els.expirationMode.value === 'set' ? 'grid' : 'none';
-      });
+      els.expirationMode.addEventListener('change', updateExpirationFields);
 
-      els.profileFile.addEventListener('change', e => {
-        selectedProfileFile = e.target.files?.[0] || null;
-        if(selectedProfileFile) setImagePreview(selectedProfileFile, els.authPreview);
-      });
-      els.lobbyThumbInput.addEventListener('change', e => {
-        selectedLobbyThumbFile = e.target.files?.[0] || null;
-        if(selectedLobbyThumbFile) setImagePreview(selectedLobbyThumbFile, els.lobbyThumbPreview);
-      });
-
-      els.authForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        try{
-          await signIn();
-        }catch(err){
-          console.error(err);
-          setAuthFeedback(err.message || 'Sign in failed.', 'err');
-          showToast('Sign in failed', err.message || 'Unknown error', 'err');
+      els.lobbyThumbInput.addEventListener('change', async e => {
+        const file = e.target.files?.[0] || null;
+        if (file){
+          state.selectedThumbDataURL = await readFileAsDataURL(file);
+          syncDisplayThumbnails(state.selectedThumbDataURL);
+        } else {
+          state.selectedThumbDataURL = '';
+          syncDisplayThumbnails('');
         }
       });
 
-      els.useExistingBtn.addEventListener('click', async () => {
-        try{
-          const session = getSession();
-          if(session?.username && session?.passwordHash){
-            const users = getUsers();
-            const existing = users[session.username];
-            if(existing && existing.passwordHash === session.passwordHash){
-              currentUser = { username: existing.username };
-              currentProfile = existing;
-              applyUserState();
-              setLoginProfilePreview();
-              setAuthFeedback(`Logged in as ${existing.displayName || existing.username}.`, 'ok');
-              closeModal(els.authModal);
-              showToast('Logged in', `Welcome back, ${existing.displayName || existing.username}.`, 'ok');
-              return;
-            }
-          }
-          setAuthFeedback('No saved login found.', 'err');
-          showToast('No saved login', 'Sign in once first, then remember me will work.', 'err');
-        }catch(err){
-          console.error(err);
-          setAuthFeedback(err.message || 'Login failed.', 'err');
-          showToast('Login failed', err.message || 'Unknown error', 'err');
-        }
-      });
-
-      els.logoutBtn.addEventListener('click', logout);
-      els.signInOpenBtn.addEventListener('click', () => openModal(els.authModal));
       els.hostBtn.addEventListener('click', () => {
-        if(!requireLogin()) return;
-        if(!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
-        if(!els.lobbyNameInput.value.trim()) els.lobbyNameInput.value = `(@${currentProfile?.username || currentUser.username}) Lobby`;
+        if (!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
+        if (!els.lobbyNameInput.value.trim()) els.lobbyNameInput.value = 'Lobby';
         openModal(els.hostModal);
       });
-      els.closeAuthBtn.addEventListener('click', () => closeModal(els.authModal));
       els.closeHostBtn.addEventListener('click', () => closeModal(els.hostModal));
       els.hostNowBtn.addEventListener('click', async () => {
         try{
@@ -1336,63 +1030,47 @@
           showToast('Host failed', err.message || 'Unknown error', 'err');
         }
       });
+
       els.searchInput.addEventListener('input', renderLobbies);
 
-      window.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape'){
-          closeModal(els.authModal);
-          closeModal(els.hostModal);
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeModal(els.hostModal);
+      });
+
+      document.addEventListener('pointerdown', e => {
+        if (e.target.tagName === 'BUTTON') e.target.blur();
+      });
+    }
+
+    function seedInitialState(){
+      state.ownerKey = getOwnerKey();
+      loadLobbies();
+      syncDisplayThumbnails('');
+      renderLobbies();
+      updateExpirationFields();
+      if (!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
+      if (!els.lobbyNameInput.value.trim()) els.lobbyNameInput.value = 'Lobby';
+    }
+
+    function bindCrossTabSync(){
+      window.addEventListener('storage', e => {
+        if (e.key === STORAGE.lobbies){
+          loadLobbies();
+          renderLobbies();
         }
       });
-
-      document.addEventListener('pointerdown', (e) => {
-        if(e.target.tagName === 'BUTTON') e.target.blur();
-      });
-    }
-
-    function seedIfEmpty(){
-      if(getLobbies().length) return;
-      const sample = normalizeLobby({
-        ownerUid: 'skye',
-        ownerUsername: 'skye',
-        ownerDisplayName: 'Skye',
-        public: true,
-        name: '(@skye) Lobby',
-        type: 'Regular',
-        lobbyCode: 'ABCD12',
-        maxPlayers: 10,
-        description: 'Sample lobby. Delete it if you want.',
-        thumbnailUrl: DEFAULT_THUMB,
-        isStreamer: false,
-        active: true,
-        heartCount: 0,
-        hearts: [],
-        likes: {},
-        createdAt: nowISO(),
-        updatedAt: nowISO(),
-        expiresAt: null
-      });
-      setLobbies([sample]);
-    }
-
-    async function boot(){
-      startBackground();
-      setupGlobalErrorHandling();
-      bindEvents();
-      seedIfEmpty();
-      ensureLobbyDefaults();
       setInterval(() => {
         cleanupExpiredLobbies();
         renderLobbies();
       }, 60000);
+    }
 
-      els.lobbyCodeInput.value = genLobbyCode();
-      const authed = await tryAutoLogin();
-      if(!authed){
-        setAuthFeedback('Ready to sign in.', 'ok');
-      }
-      applyUserState();
-      renderLobbies();
+    function boot(){
+      startBackground();
+      setupGlobalErrorHandling();
+      bindEvents();
+      seedInitialState();
+      bindCrossTabSync();
     }
 
     boot();

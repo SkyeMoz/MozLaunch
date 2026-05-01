@@ -1,0 +1,49 @@
+manifest = {
+    "appName": "Moz Studio",
+    "lists": [
+        {
+            "id": "game-1",
+            "category": "Games",
+            "name": "Sky Forge",
+            "description": "A fast-paced open world adventure with smooth combat and exploration.",
+            "date": "2026-05-01",
+            "size": "1.8 GB",
+            "launchLabel": "Launch",
+            "icon": "🎮",
+            "link": "#sky-forge"
+        },
+        {
+            "id": "game-2",
+            "category": "Games",
+            "name": "Neon Drift",
+            "description": "Arcade racing with clean visuals, quick matches, and responsive controls.",
+            "date": "2026-05-01",
+            "size": "924 MB",
+            "launchLabel": "Launch",
+            "icon": "🏎️",
+            "link": "#neon-drift"
+        },
+        {
+            "id": "app-1",
+            "category": "Apps",
+            "name": "Vault Notes",
+            "description": "Minimal notes and organizer app with instant sync and offline support.",
+            "date": "2026-05-01",
+            "size": "56 MB",
+            "launchLabel": "Launch",
+            "icon": "📝",
+            "link": "#vault-notes"
+        },
+        {
+            "id": "app-2",
+            "category": "Apps",
+            "name": "Pulse Studio",
+            "description": "Creative utility for editing, previewing, and sharing media assets.",
+            "date": "2026-05-01",
+            "size": "312 MB",
+            "launchLabel": "Launch",
+            "icon": "✨",
+            "link": "#pulse-studio"
+        }
+    ]
+}

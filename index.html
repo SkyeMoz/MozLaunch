@@ -22,10 +22,7 @@
       --radius-lg:30px;
     }
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html{
-      height:100%;
-      background:#030409;
-    }
+    html{height:100%;background:#030409}
     body{
       min-height:100%;
       margin:0;
@@ -36,7 +33,7 @@
         radial-gradient(circle at 85% 20%, rgba(255,255,255,.08), transparent 14%),
         radial-gradient(circle at 50% 90%, rgba(37,237,198,.08), transparent 18%),
         linear-gradient(180deg, #060912 0%, #030409 100%);
-      background-attachment: fixed;
+      background-attachment:fixed;
       overflow-x:hidden;
       user-select:none;
       -webkit-user-select:none;
@@ -44,7 +41,6 @@
     }
     ::selection{background:rgba(37,237,198,.28);color:#fff}
     ::-moz-selection{background:rgba(37,237,198,.28);color:#fff}
-
     body::before{
       content:"";
       position:fixed;
@@ -59,120 +55,33 @@
       animation: drift 16s ease-in-out infinite alternate;
       z-index:-3;
     }
-
-    #bgCanvas{
-      position:fixed;
-      inset:0;
-      width:100%;
-      height:100%;
-      z-index:-2;
-      pointer-events:none;
-    }
-
-    .wrap{
-      width:min(1220px, calc(100% - 20px));
-      margin:0 auto;
-      padding:18px 0 42px;
-      position:relative;
-      z-index:1;
-    }
-
+    #bgCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none}
+    .wrap{width:min(1220px, calc(100% - 20px));margin:0 auto;padding:18px 0 42px;position:relative;z-index:1}
     .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:16px 18px;
-      border:1px solid var(--stroke);
-      background:linear-gradient(180deg, rgba(14,18,28,.78), rgba(5,7,12,.70));
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      position:sticky;
-      top:12px;
-      z-index:20;
-      animation: rise .65s ease both;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;
+      border:1px solid var(--stroke);background:linear-gradient(180deg, rgba(14,18,28,.78), rgba(5,7,12,.70));
+      border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      position:sticky;top:12px;z-index:20;animation: rise .65s ease both;
     }
     .brand{display:flex;align-items:center;gap:14px;min-width:0}
-    .logoBox{
-      width:56px;height:56px;border-radius:18px;overflow:hidden;flex:none;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 14px 30px rgba(0,0,0,.35);
-      background:#0f1218;
-    }
+    .logoBox{width:56px;height:56px;border-radius:18px;overflow:hidden;flex:none;border:1px solid rgba(255,255,255,.12);box-shadow:0 14px 30px rgba(0,0,0,.35);background:#0f1218}
     .logoBox img{display:block;width:100%;height:100%;object-fit:cover}
     .titleWrap{min-width:0}
-    .title{
-      margin:0;
-      font-size:clamp(1.18rem, 2.7vw, 1.85rem);
-      color:var(--accent);
-      text-shadow:0 0 24px rgba(37,237,198,.24);
-      letter-spacing:.2px;
-    }
+    .title{margin:0;font-size:clamp(1.18rem, 2.7vw, 1.85rem);color:var(--accent);text-shadow:0 0 24px rgba(37,237,198,.24);letter-spacing:.2px}
     .desc{margin:6px 0 0;color:var(--muted);font-size:.92rem;line-height:1.38}
     .pillRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-    .pill{
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.04);
-      color:var(--muted);
-      font-size:.86rem;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      white-space:nowrap;
-    }
-    .statusDot{
-      width:10px;height:10px;border-radius:999px;background:var(--accent);
-      box-shadow:0 0 0 6px rgba(37,237,198,.08), 0 0 18px rgba(37,237,198,.45);
-      animation:pulse 1.8s ease-in-out infinite;
-    }
-
+    .pill{padding:10px 14px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.04);color:var(--muted);font-size:.86rem;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+    .statusDot{width:10px;height:10px;border-radius:999px;background:var(--accent);box-shadow:0 0 0 6px rgba(37,237,198,.08), 0 0 18px rgba(37,237,198,.45);animation:pulse 1.8s ease-in-out infinite}
     .containerGrid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
     .gridTop{display:grid;grid-template-columns:1fr;gap:16px}
-
-    .card{
-      border-radius:var(--radius-lg);
-      background:linear-gradient(180deg, rgba(12,15,23,.82), rgba(5,7,12,.70));
-      border:1px solid var(--stroke);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      overflow:hidden;
-      position:relative;
-      transform:translateY(8px);
-      opacity:0;
-      animation: rise .65s ease forwards;
-    }
+    .card{border-radius:var(--radius-lg);background:linear-gradient(180deg, rgba(12,15,23,.82), rgba(5,7,12,.70));border:1px solid var(--stroke);box-shadow:var(--shadow);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:hidden;position:relative;transform:translateY(8px);opacity:0;animation: rise .65s ease forwards}
     .card:nth-child(1){animation-delay:.05s}
     .card:nth-child(2){animation-delay:.12s}
     .card:nth-child(3){animation-delay:.18s}
-    .card::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:inherit;
-      pointer-events:none;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
-    }
+    .card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
     .card:hover{transform:translateY(-2px);border-color:rgba(37,237,198,.18)}
-    .cardHead{
-      padding:18px 18px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      border-bottom:1px solid rgba(255,255,255,.06)
-    }
-    .cardTitle{
-      margin:0;
-      font-size:1.03rem;
-      font-weight:800;
-      color:#fff;
-      letter-spacing:.2px
-    }
+    .cardHead{padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+    .cardTitle{margin:0;font-size:1.03rem;font-weight:800;color:#fff;letter-spacing:.2px}
     .cardBody{padding:18px}
     .sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
     .sectionTitle h3{margin:0;font-size:1rem;color:#fff}
@@ -180,375 +89,105 @@
     .hint{font-size:.84rem;color:var(--muted);line-height:1.5}
     .actionBar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .searchRow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-
-    .input,.select,.textarea{
-      width:100%;
-      border:none;
-      outline:none;
-      color:#fff;
-      border-radius:18px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      padding:14px 15px;
-      font-size:1rem;
-      resize:none;
-      transition:.22s ease;
-      user-select:text;
-      -webkit-user-select:text;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
-    }
-    .input:hover,.select:hover,.textarea:hover{
-      border-color:rgba(255,255,255,.16);
-      background:rgba(255,255,255,.06)
-    }
-    .input:focus,.select:focus,.textarea:focus{
-      border-color:var(--stroke-2);
-      box-shadow:0 0 0 4px rgba(37,237,198,.10), inset 0 1px 0 rgba(255,255,255,.03);
-      transform:translateY(-1px);
-    }
+    .input,.select,.textarea{width:100%;border:none;outline:none;color:#fff;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);padding:14px 15px;font-size:1rem;resize:none;transition:.22s ease;user-select:text;-webkit-user-select:text;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+    .input:hover,.select:hover,.textarea:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.06)}
+    .input:focus,.select:focus,.textarea:focus{border-color:var(--stroke-2);box-shadow:0 0 0 4px rgba(37,237,198,.10), inset 0 1px 0 rgba(255,255,255,.03);transform:translateY(-1px)}
     .textarea{min-height:102px;line-height:1.5}
     .fieldLabel{display:block;margin:0 0 8px;font-size:.86rem;color:rgba(245,248,252,.82)}
     .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
     .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-
-    .btn,.btnGhost,.btnDanger,.btnMini,.switchBtn,.codeBtn,.pickerBtn{
-      border:none;
-      outline:none;
-      cursor:pointer;
-      border-radius:16px;
-      font-weight:800;
-      transition:.2s ease;
-      -webkit-tap-highlight-color:transparent;
-      user-select:none;
-      position:relative;
-      overflow:hidden;
-    }
-    .btn::before,.btnGhost::before,.btnDanger::before,.btnMini::before,.switchBtn::before,.codeBtn::before,.pickerBtn::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);
-      transform:translateX(-120%);
-      transition:transform .55s ease;
-    }
-    .btn:hover::before,.btnGhost:hover::before,.btnDanger:hover::before,.btnMini:hover::before,.switchBtn:hover::before,.codeBtn:hover::before,.pickerBtn:hover::before{
-      transform:translateX(120%);
-    }
-    .btn{
-      padding:14px 18px;
-      background:linear-gradient(180deg, var(--accent), var(--accent-2));
-      color:#04120f;
-      box-shadow:0 12px 28px rgba(37,237,198,.20);
-      transform:translateY(0);
-    }
+    .btn,.btnGhost,.btnDanger,.btnMini,.switchBtn,.codeBtn,.pickerBtn,.lobbyTitleBtn,.profileLinkBtn{border:none;outline:none;cursor:pointer;border-radius:16px;font-weight:800;transition:.2s ease;-webkit-tap-highlight-color:transparent;user-select:none;position:relative;overflow:hidden}
+    .btn::before,.btnGhost::before,.btnDanger::before,.btnMini::before,.switchBtn::before,.codeBtn::before,.pickerBtn::before,.lobbyTitleBtn::before,.profileLinkBtn::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);transform:translateX(-120%);transition:transform .55s ease}
+    .btn:hover::before,.btnGhost:hover::before,.btnDanger:hover::before,.btnMini:hover::before,.switchBtn:hover::before,.codeBtn:hover::before,.pickerBtn:hover::before,.lobbyTitleBtn:hover::before,.profileLinkBtn:hover::before{transform:translateX(120%)}
+    .btn{padding:14px 18px;background:linear-gradient(180deg, var(--accent), var(--accent-2));color:#04120f;box-shadow:0 12px 28px rgba(37,237,198,.20);transform:translateY(0)}
     .btn:hover{transform:translateY(-2px);filter:brightness(1.03)}
-    .btn:disabled{
-      cursor:not-allowed;
-      opacity:.55;
-      filter:saturate(.65);
-      transform:none !important;
-    }
-    .btn:active,.btnGhost:active,.btnDanger:active,.btnMini:active,.switchBtn:active,.codeBtn:active,.pickerBtn:active{
-      transform:translateY(1px) scale(.99);
-    }
-    .btnGhost,.btnMini,.pickerBtn{
-      background:rgba(255,255,255,.04);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.10);
-    }
-    .btnGhost:hover,.btnMini:hover,.pickerBtn:hover{
-      background:rgba(255,255,255,.07);
-      border-color:rgba(255,255,255,.16)
-    }
-    .btnDanger{
-      background:rgba(255,115,137,.13);
-      color:#ffd9df;
-      border:1px solid rgba(255,115,137,.26);
-    }
+    .btn:disabled{cursor:not-allowed;opacity:.55;filter:saturate(.65);transform:none !important}
+    .btn:active,.btnGhost:active,.btnDanger:active,.btnMini:active,.switchBtn:active,.codeBtn:active,.pickerBtn:active,.lobbyTitleBtn:active,.profileLinkBtn:active{transform:translateY(1px) scale(.99)}
+    .btnGhost,.btnMini,.pickerBtn,.profileLinkBtn{background:rgba(255,255,255,.04);color:#fff;border:1px solid rgba(255,255,255,.10)}
+    .btnGhost:hover,.btnMini:hover,.pickerBtn:hover,.profileLinkBtn:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
+    .btnDanger{background:rgba(255,115,137,.13);color:#ffd9df;border:1px solid rgba(255,115,137,.26)}
     .btnDanger:hover{background:rgba(255,115,137,.20)}
     .btnMini{padding:10px 12px;border-radius:14px;font-size:.88rem}
-    .pickerBtn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:48px;
-      padding:0 14px;
-      gap:10px
-    }
+    .pickerBtn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 14px;gap:10px}
     .pickerBtn input{display:none}
     .pickerTitle{display:flex;align-items:center;gap:10px;font-size:.92rem}
-    .pickerThumb{
-      width:58px;height:58px;border-radius:18px;overflow:hidden;flex:none;
-      border:1px solid rgba(255,255,255,.10);
-      background:#0c1016;
-      box-shadow:0 10px 20px rgba(0,0,0,.22);
-    }
+    .pickerThumb{width:58px;height:58px;border-radius:18px;overflow:hidden;flex:none;border:1px solid rgba(255,255,255,.10);background:#0c1016;box-shadow:0 10px 20px rgba(0,0,0,.22)}
     .pickerThumb img{width:100%;height:100%;object-fit:cover;display:block}
     .fileBox{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-
     .lobbyList{display:flex;flex-direction:column;gap:14px}
-    .lobbyCard{
-      display:grid;
-      grid-template-columns:124px 1fr;
-      gap:14px;
-      padding:14px;
-      border-radius:24px;
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 12px 32px rgba(0,0,0,.18);
-      transform:translateY(12px) scale(.99);
-      opacity:0;
-      animation: cardIn .55s ease forwards;
-      animation-delay: calc(var(--i) * 75ms);
-    }
+    .lobbyCard{display:grid;grid-template-columns:124px 1fr;gap:14px;padding:14px;border-radius:24px;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 32px rgba(0,0,0,.18);transform:translateY(12px) scale(.99);opacity:0;animation: cardIn .55s ease forwards;animation-delay: calc(var(--i) * 75ms)}
     .lobbyCard:hover{border-color:rgba(37,237,198,.18);transform:translateY(-2px)}
-    .lobbyThumb{
-      width:124px;height:124px;border-radius:20px;overflow:hidden;
-      background:#0f1218;border:1px solid rgba(255,255,255,.08);flex:none
-    }
+    .lobbyThumb{width:124px;height:124px;border-radius:20px;overflow:hidden;background:#0f1218;border:1px solid rgba(255,255,255,.08);flex:none}
     .lobbyThumb img{width:100%;height:100%;object-fit:cover;display:block}
     .lobbyMain{min-width:0}
     .lobbyTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .lobbyName{
-      margin:0;
-      font-size:1.14rem;
-      font-weight:900;
-      line-height:1.2;
-      color:#fff;
-      user-select:text;
-      -webkit-user-select:text
-    }
+    .lobbyName{margin:0}
+    .lobbyTitleBtn{padding:0;background:transparent;color:#fff;text-align:left;font-size:1.14rem;font-weight:900;line-height:1.2;user-select:text;-webkit-user-select:text}
     .lobbyMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
-    .tag{
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:.79rem;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      color:#fff
-    }
+    .tag{padding:7px 10px;border-radius:999px;font-size:.79rem;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:#fff}
     .tag.accent{border-color:rgba(37,237,198,.24); color:var(--accent)}
     .tag.danger{border-color:rgba(255,115,137,.26); color:#ffb9c4}
     .tag.soft{color:rgba(245,248,252,.86)}
-    .lobbyDesc{
-      margin:10px 0 0;
-      color:rgba(245,248,252,.74);
-      line-height:1.55;
-      font-size:.93rem;
-      white-space:pre-wrap;
-      word-break:break-word;
-      user-select:text;
-      -webkit-user-select:text
-    }
-    .lobbyFooter{
-      margin-top:12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap
-    }
-    .lobbyCode{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-      color:#fff;
-      font-weight:800
-    }
-    .codeText{
-      padding:9px 12px;
-      background:rgba(0,0,0,.26);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;
-      letter-spacing:1px;
-      user-select:text;
-      -webkit-user-select:text
-    }
-    .codeBtn{
-      padding:9px 12px;
-      border-radius:14px;
-      border:1px solid rgba(37,237,198,.18);
-      background:rgba(37,237,198,.10);
-      color:var(--accent);
-      font-weight:900
-    }
-    .codeBtn:disabled{
-      cursor:not-allowed;
-      opacity:.42;
-      filter:saturate(.3);
-      transform:none !important;
-      background:rgba(255,255,255,.05);
-      color:rgba(245,248,252,.55);
-      border-color:rgba(255,255,255,.08);
-    }
-    .switchBtn{
-      padding:10px 13px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.05);
-      color:#fff
-    }
+    .lobbyDesc{margin:10px 0 0;color:rgba(245,248,252,.74);line-height:1.55;font-size:.93rem;white-space:pre-wrap;word-break:break-word;user-select:text;-webkit-user-select:text}
+    .lobbyFooter{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .lobbyCode{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;font-weight:800}
+    .codeText{padding:9px 12px;background:rgba(0,0,0,.26);border:1px solid rgba(255,255,255,.08);border-radius:14px;letter-spacing:1px;user-select:text;-webkit-user-select:text}
+    .codeBtn{padding:9px 12px;border-radius:14px;border:1px solid rgba(37,237,198,.18);background:rgba(37,237,198,.10);color:var(--accent);font-weight:900}
+    .codeBtn:disabled{cursor:not-allowed;opacity:.42;filter:saturate(.3);transform:none !important;background:rgba(255,255,255,.05);color:rgba(245,248,252,.55);border-color:rgba(255,255,255,.08)}
+    .switchBtn{padding:10px 13px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:#fff}
     .switchBtn.on{border-color:rgba(37,237,198,.35);background:rgba(37,237,198,.13);color:var(--accent)}
     .switchBtn.off{border-color:rgba(255,115,137,.28);background:rgba(255,115,137,.10);color:#ffbcc7}
-
-    .emptyState{
-      padding:28px;
-      text-align:center;
-      color:var(--muted);
-      border-radius:22px;
-      border:1px dashed rgba(255,255,255,.10);
-      background:rgba(255,255,255,.03)
-    }
+    .emptyState{padding:28px;text-align:center;color:var(--muted);border-radius:22px;border:1px dashed rgba(255,255,255,.10);background:rgba(255,255,255,.03)}
     .smallMutedBlock{margin-top:10px;color:var(--muted);font-size:.84rem}
-
-    .modalBack{
-      position:fixed;
-      inset:0;
-      background:rgba(2,4,8,.72);
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:100
-    }
+    .modalBack{position:fixed;inset:0;background:rgba(2,4,8,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}
     .modalBack.show{display:flex;animation: fadeIn .18s ease}
-    .modal{
-      width:min(760px,100%);
-      max-height:min(92vh,900px);
-      overflow:auto;
-      border-radius:30px;
-      background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(6,8,13,.96));
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 24px 80px rgba(0,0,0,.60);
-      transform:translateY(10px) scale(.985);
-      opacity:0;
-      animation: modalUp .25s ease forwards
-    }
-    .modalHead{
-      padding:18px 18px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      border-bottom:1px solid rgba(255,255,255,.07);
-      position:sticky;
-      top:0;
-      background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(13,17,28,.92));
-      z-index:1
-    }
+    .modal{width:min(760px,100%);max-height:min(92vh,900px);overflow:auto;border-radius:30px;background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(6,8,13,.96));border:1px solid rgba(255,255,255,.10);box-shadow:0 24px 80px rgba(0,0,0,.60);transform:translateY(10px) scale(.985);opacity:0;animation: modalUp .25s ease forwards}
+    .modalHead{padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(13,17,28,.92));z-index:1}
     .modalTitle{margin:0;font-size:1.08rem;color:#fff}
     .modalBody{padding:18px}
-    .modalHero{
-      display:grid;
-      grid-template-columns:88px 1fr;
-      gap:14px;
-      align-items:center;
-      margin-bottom:14px
-    }
-    .modalHero .heroPic{
-      width:88px;height:88px;border-radius:24px;overflow:hidden;background:#111;
-      border:1px solid rgba(255,255,255,.10);box-shadow:0 12px 24px rgba(0,0,0,.25)
-    }
+    .modalHero{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:center;margin-bottom:14px}
+    .modalHero .heroPic{width:88px;height:88px;border-radius:24px;overflow:hidden;background:#111;border:1px solid rgba(255,255,255,.10);box-shadow:0 12px 24px rgba(0,0,0,.25)}
     .modalHero .heroPic img{width:100%;height:100%;object-fit:cover;display:block}
     .modalHero h2{margin:0 0 6px;font-size:1.28rem;color:var(--accent)}
     .modalHero p{margin:0;color:var(--muted);line-height:1.5}
-    .subtleLine{
-      height:1px;
-      background:linear-gradient(90deg, transparent, rgba(37,237,198,.20), transparent);
-      margin:14px 0
-    }
+    .subtleLine{height:1px;background:linear-gradient(90deg, transparent, rgba(37,237,198,.20), transparent);margin:14px 0}
     .authActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-    .noteBox{
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:rgba(37,237,198,.08);
-      border:1px solid rgba(37,237,198,.16);
-      color:#d8fff8;
-      font-size:.9rem;
-      line-height:1.5
-    }
-
-    .toastWrap{
-      position:fixed;
-      right:14px;
-      bottom:14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      z-index:120
-    }
-    .toast{
-      min-width:240px;
-      max-width:340px;
-      border-radius:18px;
-      background:rgba(9,13,22,.94);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:var(--shadow);
-      padding:12px 14px;
-      color:#fff;
-      transform:translateY(10px);
-      opacity:0;
-      animation:toastIn .22s ease forwards
-    }
+    .noteBox{margin-top:12px;padding:12px 14px;border-radius:16px;background:rgba(37,237,198,.08);border:1px solid rgba(37,237,198,.16);color:#d8fff8;font-size:.9rem;line-height:1.5}
+    .profileRow{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;margin-bottom:12px}
+    .profilePfp{width:110px;height:110px;border-radius:28px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#111;box-shadow:0 14px 30px rgba(0,0,0,.25)}
+    .profilePfp img{width:100%;height:100%;object-fit:cover;display:block}
+    .profileName{margin:0;font-size:1.35rem;color:var(--accent)}
+    .profileInfo{margin-top:8px;color:var(--muted);line-height:1.5;font-size:.94rem;white-space:pre-wrap}
+    .profileActionRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .toastWrap{position:fixed;right:14px;bottom:14px;display:flex;flex-direction:column;gap:10px;z-index:120}
+    .toast{min-width:240px;max-width:340px;border-radius:18px;background:rgba(9,13,22,.94);border:1px solid rgba(255,255,255,.10);box-shadow:var(--shadow);padding:12px 14px;color:#fff;transform:translateY(10px);opacity:0;animation:toastIn .22s ease forwards}
     .toast.ok{border-color:rgba(37,237,198,.24)}
     .toast.err{border-color:rgba(255,115,137,.28)}
     .toast .t1{font-weight:900;font-size:.95rem;margin-bottom:3px}
     .toast .t2{font-size:.86rem;color:var(--muted);line-height:1.35}
     .hidden{display:none !important}
-
     *::-webkit-scrollbar{width:10px;height:10px}
     *::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
-    *::-webkit-scrollbar-thumb{
-      background:linear-gradient(180deg, rgba(37,237,198,.42), rgba(18,196,163,.30));
-      border-radius:999px;border:2px solid rgba(0,0,0,.22)
-    }
-    *::-webkit-scrollbar-thumb:hover{
-      background:linear-gradient(180deg, rgba(37,237,198,.54), rgba(18,196,163,.38))
-    }
-
+    *::-webkit-scrollbar-thumb{background:linear-gradient(180deg, rgba(37,237,198,.42), rgba(18,196,163,.30));border-radius:999px;border:2px solid rgba(0,0,0,.22)}
+    *::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, rgba(37,237,198,.54), rgba(18,196,163,.38))}
     @keyframes rise{to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     @keyframes modalUp{to{transform:translateY(0) scale(1);opacity:1}}
     @keyframes cardIn{to{transform:translateY(0) scale(1);opacity:1}}
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
     @keyframes drift{0%{transform:translate3d(-1%, -1%, 0) scale(1)}100%{transform:translate3d(1.5%, 1.5%, 0) scale(1.03)}}
-    @keyframes floaty{
-      0%,100%{transform:translateY(0px) translateX(0px)}
-      50%{transform:translateY(-12px) translateX(8px)}
-    }
-
-    .floatOrb{
-      position:fixed;
-      border-radius:999px;
-      filter:blur(18px);
-      opacity:.3;
-      pointer-events:none;
-      z-index:-4;
-      animation: floaty 8s ease-in-out infinite;
-      background:radial-gradient(circle, rgba(37,237,198,.65), rgba(37,237,198,0) 70%);
-    }
+    @keyframes floaty{0%,100%{transform:translateY(0px) translateX(0px)}50%{transform:translateY(-12px) translateX(8px)}}
+    @keyframes toastIn{to{opacity:1;transform:translateY(0)}}
+    .floatOrb{position:fixed;border-radius:999px;filter:blur(18px);opacity:.3;pointer-events:none;z-index:-4;animation: floaty 8s ease-in-out infinite;background:radial-gradient(circle, rgba(37,237,198,.65), rgba(37,237,198,0) 70%)}
     .orb1{width:170px;height:170px;top:8%;left:4%}
     .orb2{width:220px;height:220px;top:65%;right:2%;animation-delay:1.2s}
     .orb3{width:120px;height:120px;bottom:12%;left:26%;animation-delay:2s}
-
-    @media (min-width: 880px){
-      .gridTop{grid-template-columns:.92fr 1.18fr}
-    }
+    @media (min-width: 880px){.gridTop{grid-template-columns:.92fr 1.18fr}}
     @media (max-width: 760px){
-      .topbar{padding:14px}
-      .logoBox{width:48px;height:48px;border-radius:16px}
-      .cardBody,.modalBody{padding:14px}
-      .lobbyCard{grid-template-columns:1fr}
-      .lobbyThumb{width:100%;height:180px}
-      .grid2,.grid3{grid-template-columns:1fr}
-      .modal{max-height:94vh}
-      .brand{align-items:flex-start}
-      .pillRow{justify-content:flex-start}
-      .modalHero{grid-template-columns:1fr;justify-items:start}
-      .modalHero .heroPic{width:76px;height:76px;border-radius:20px}
+      .topbar{padding:14px}.logoBox{width:48px;height:48px;border-radius:16px}.cardBody,.modalBody{padding:14px}
+      .lobbyCard{grid-template-columns:1fr}.lobbyThumb{width:100%;height:180px}.grid2,.grid3{grid-template-columns:1fr}.modal{max-height:94vh}
+      .brand{align-items:flex-start}.pillRow{justify-content:flex-start}.modalHero,.profileRow{grid-template-columns:1fr;justify-items:start}
+      .modalHero .heroPic,.profilePfp{width:76px;height:76px;border-radius:20px}
     }
   </style>
 </head>
@@ -570,14 +209,8 @@
         </div>
       </div>
       <div class="pillRow">
-        <div class="pill">
-          <span class="statusDot"></span>
-          <span id="activeViewerText">0 viewers in this page</span>
-        </div>
-        <div class="pill">
-          <span class="statusDot"></span>
-          <span id="liveStatusText">1.0.2</span>
-        </div>
+        <div class="pill"><span class="statusDot"></span><span id="activeViewerText">0 viewers in this page</span></div>
+        <div class="pill"><span class="statusDot"></span><span id="liveStatusText">1.0.2</span></div>
       </div>
     </div>
 
@@ -589,7 +222,7 @@
               <h3>Menu</h3>
               <span>Host Here</span>
             </div>
-            <div class="hint">Lobbies automatically get auto deleted if remains unchanged! | Tap Create to Host a lobby! | SkyeMoz 🦊 | Also you can check how many people are viewing this website rn, look above! "active viewer" 🔥 .</div>
+            <div class="hint">Lobbies automatically get auto deleted if they stay unchanged. Tap Create to host a lobby. Click a lobby title to open the player info card.</div>
           </div>
           <button class="btn" id="hostBtn" type="button">Create</button>
         </div>
@@ -613,13 +246,51 @@
         <div class="card">
           <div class="cardHead">
             <h2 class="cardTitle">Active Lobbies</h2>
-            <span class="smallMuted"> 🟢</span>
+            <span class="smallMuted">🟢</span>
           </div>
           <div class="cardBody">
             <div id="lobbyList" class="lobbyList"></div>
             <div id="emptyState" class="emptyState hidden">No lobbies yet. Host one first.</div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modalBack" id="signInModal">
+    <div class="modal">
+      <div class="modalHead">
+        <h3 class="modalTitle">Sign In</h3>
+        <button class="btnMini" id="closeSignInBtn" type="button">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="modalHero">
+          <div class="heroPic"><img id="signInPreview" src="https://placehold.co/300x300/111111/25EDC6?text=Profile" alt="Profile Preview" /></div>
+          <div>
+            <h2>Enter your profile</h2>
+            <p>Pick a username and a profile picture. Usernames are unique, so taken names will be blocked.</p>
+          </div>
+        </div>
+
+        <label class="fieldLabel">Username</label>
+        <input id="signInUsername" class="input" type="text" maxlength="20" placeholder="Enter Username" />
+
+        <div style="margin-top:12px;">
+          <label class="fieldLabel">Pick Profile</label>
+          <div class="fileBox">
+            <label class="pickerBtn" for="signInThumbInput">
+              <div class="pickerThumb"><img id="signInThumbThumb" src="https://placehold.co/200x200/111111/25EDC6?text=Pick" alt="Pick profile" /></div>
+              <div class="pickerTitle">Media Picker</div>
+            </label>
+            <input id="signInThumbInput" type="file" accept="image/*" class="hidden" />
+          </div>
+        </div>
+
+        <div class="authActions">
+          <button class="btn" id="assignBtn" type="button">Assign</button>
+        </div>
+
+        <div class="noteBox">This profile will stay signed in on this device. If the username is already taken, you will need to choose another one.</div>
       </div>
     </div>
   </div>
@@ -644,10 +315,7 @@
         <div class="grid2">
           <div>
             <label class="fieldLabel">Public</label>
-            <select id="publicInput" class="select">
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
+            <select id="publicInput" class="select"><option value="yes">Yes</option><option value="no">No</option></select>
           </div>
           <div>
             <label class="fieldLabel">Name</label>
@@ -659,10 +327,7 @@
           <div>
             <label class="fieldLabel">Type</label>
             <select id="typeInput" class="select">
-              <option>Modded</option>
-              <option>Regular</option>
-              <option>Sns</option>
-              <option>Hide And Seek</option>
+              <option>Modded</option><option>Regular</option><option>Sns</option><option>Hide And Seek</option>
             </select>
           </div>
           <div>
@@ -684,9 +349,7 @@
             <label class="fieldLabel">Thumbnail</label>
             <div class="fileBox">
               <label class="pickerBtn" for="lobbyThumbInput">
-                <div class="pickerThumb">
-                  <img id="pickerThumbImg" src="media/Thumbnail.png" alt="Pick thumbnail" onerror="this.src='https://placehold.co/200x200/111111/25EDC6?text=Pick'" />
-                </div>
+                <div class="pickerThumb"><img id="pickerThumbImg" src="media/Thumbnail.png" alt="Pick thumbnail" onerror="this.src='https://placehold.co/200x200/111111/25EDC6?text=Pick'" /></div>
                 <div class="pickerTitle">Choose image</div>
               </label>
               <input id="lobbyThumbInput" type="file" accept="image/*" class="hidden" />
@@ -697,17 +360,11 @@
         <div class="grid2" style="margin-top:12px;align-items:center;">
           <div>
             <label class="fieldLabel">Is Streamer</label>
-            <select id="streamerInput" class="select">
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
+            <select id="streamerInput" class="select"><option value="yes">Yes</option><option value="no">No</option></select>
           </div>
           <div>
             <label class="fieldLabel">Expiration</label>
-            <select id="expirationMode" class="select">
-              <option value="never">Never</option>
-              <option value="set">Set Time</option>
-            </select>
+            <select id="expirationMode" class="select"><option value="never">Never</option><option value="set">Set Time</option></select>
           </div>
         </div>
 
@@ -716,12 +373,30 @@
           <div><label class="fieldLabel">Minutes</label><input id="expireMinutes" class="input" type="number" min="1" value="30" /></div>
         </div>
 
-        <div class="authActions">
-          <button class="btn" id="hostNowBtn" type="button">Host Now</button>
-        </div>
+        <div class="authActions"><button class="btn" id="hostNowBtn" type="button">Host Now</button></div>
+        <div class="noteBox">Hosted lobbies sync live for everyone. If you set an expiration, the lobby auto-removes after that time. If there are no changes for 1 hour, it auto-deletes too.</div>
+      </div>
+    </div>
+  </div>
 
-        <div class="noteBox">
-          Hosted lobbies sync live for everyone. If you set an expiration, the lobby auto-removes after that time. If there are no changes for 1 hour, it auto-deletes too.
+  <div class="modalBack" id="profileModal">
+    <div class="modal">
+      <div class="modalHead">
+        <h3 class="modalTitle">Player Info</h3>
+        <button class="btnMini" id="closeProfileBtn" type="button">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="profileRow">
+          <div class="profilePfp"><img id="profilePfpImg" src="https://placehold.co/300x300/111111/25EDC6?text=User" alt="Player PFP" /></div>
+          <div>
+            <h2 class="profileName" id="profileUsername">Username</h2>
+            <div class="profileInfo" id="profileDetails">Date Joined: --
+Status: --</div>
+          </div>
+        </div>
+        <div class="profileActionRow">
+          <button class="btn" id="continueBtn" type="button">Continue</button>
+          <button class="profileLinkBtn" id="addFriendBtn" type="button">Add Friend</button>
         </div>
       </div>
     </div>
@@ -736,7 +411,6 @@
       collection,
       doc,
       onSnapshot,
-      addDoc,
       setDoc,
       updateDoc,
       deleteDoc,
@@ -744,6 +418,8 @@
       orderBy,
       where,
       getDocs,
+      getDoc,
+      runTransaction,
       serverTimestamp,
       Timestamp,
       increment
@@ -762,7 +438,9 @@
     const db = getFirestore(app);
 
     const STORAGE = {
-      ownerKey: 'amongus_hosting_owner_key_live_v1'
+      ownerKey: 'amongus_hosting_owner_key_live_v1',
+      session: 'amongus_user_session_v1',
+      claimPrefix: 'amongus_username_claim_'
     };
 
     const PRESENCE = {
@@ -775,13 +453,21 @@
     };
 
     const DEFAULT_THUMB = 'media/Thumbnail.png';
+    const DEFAULT_PROFILE = 'https://placehold.co/300x300/111111/25EDC6?text=Profile';
     const ONE_HOUR_MS = 60 * 60 * 1000;
 
     const els = {
       hostModal: document.getElementById('hostModal'),
+      signInModal: document.getElementById('signInModal'),
+      profileModal: document.getElementById('profileModal'),
       hostBtn: document.getElementById('hostBtn'),
       closeHostBtn: document.getElementById('closeHostBtn'),
       hostNowBtn: document.getElementById('hostNowBtn'),
+      closeSignInBtn: document.getElementById('closeSignInBtn'),
+      assignBtn: document.getElementById('assignBtn'),
+      closeProfileBtn: document.getElementById('closeProfileBtn'),
+      continueBtn: document.getElementById('continueBtn'),
+      addFriendBtn: document.getElementById('addFriendBtn'),
       searchInput: document.getElementById('searchInput'),
       lobbyList: document.getElementById('lobbyList'),
       emptyState: document.getElementById('emptyState'),
@@ -802,19 +488,31 @@
       expirationFields: document.getElementById('expirationFields'),
       expireHours: document.getElementById('expireHours'),
       expireMinutes: document.getElementById('expireMinutes'),
-      toastWrap: document.getElementById('toastWrap')
+      toastWrap: document.getElementById('toastWrap'),
+      signInUsername: document.getElementById('signInUsername'),
+      signInThumbInput: document.getElementById('signInThumbInput'),
+      signInPreview: document.getElementById('signInPreview'),
+      signInThumbThumb: document.getElementById('signInThumbThumb'),
+      profilePfpImg: document.getElementById('profilePfpImg'),
+      profileUsername: document.getElementById('profileUsername'),
+      profileDetails: document.getElementById('profileDetails')
     };
 
     const state = {
       ownerKey: null,
+      user: null,
       lobbies: [],
       selectedThumbDataURL: '',
+      selectedProfileDataURL: '',
       unsubLobbies: null,
       unsubPresence: null,
       localPresenceInterval: null,
       localViewerCleanupInterval: null,
       localViewerListenerBound: false,
-      currentViewerMode: 'unknown'
+      currentViewerMode: 'unknown',
+      activeUserIds: new Set(),
+      activeUsersMap: new Map(),
+      profileTarget: null
     };
 
     function escapeHtml(str=''){
@@ -834,43 +532,36 @@
       });
     }
 
+    function normalizeUsername(name=''){
+      return String(name).trim().replace(/\s+/g, ' ');
+    }
+
+    function usernameKey(name=''){
+      return normalizeUsername(name).toLowerCase();
+    }
+
     function getOwnerKey(){
       try{
         let key = localStorage.getItem(STORAGE.ownerKey);
-        if (!key){
-          key = safeUUID();
-          localStorage.setItem(STORAGE.ownerKey, key);
-        }
+        if (!key){ key = safeUUID(); localStorage.setItem(STORAGE.ownerKey, key); }
         return key;
-      }catch{
-        return safeUUID();
-      }
+      }catch{ return safeUUID(); }
     }
 
     function getPresenceId(){
       try{
         let id = sessionStorage.getItem(PRESENCE.key);
-        if (!id){
-          id = safeUUID();
-          sessionStorage.setItem(PRESENCE.key, id);
-        }
+        if (!id){ id = safeUUID(); sessionStorage.setItem(PRESENCE.key, id); }
         return id;
-      }catch{
-        return safeUUID();
-      }
+      }catch{ return safeUUID(); }
     }
 
     function getLocalViewerId(){
       try{
         let id = sessionStorage.getItem('amongus_local_viewer_id');
-        if (!id){
-          id = safeUUID();
-          sessionStorage.setItem('amongus_local_viewer_id', id);
-        }
+        if (!id){ id = safeUUID(); sessionStorage.setItem('amongus_local_viewer_id', id); }
         return id;
-      }catch{
-        return safeUUID();
-      }
+      }catch{ return safeUUID(); }
     }
 
     function genLobbyCode(len=6){
@@ -880,15 +571,8 @@
       return s;
     }
 
-    function openModal(el){
-      el.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(el){
-      el.classList.remove('show');
-      if (!els.hostModal.classList.contains('show')) document.body.style.overflow = '';
-    }
+    function openModal(el){ el.classList.add('show'); document.body.style.overflow = 'hidden'; }
+    function closeModal(el){ el.classList.remove('show'); if (!els.hostModal.classList.contains('show') && !els.signInModal.classList.contains('show') && !els.profileModal.classList.contains('show')) document.body.style.overflow = ''; }
 
     function showToast(title, message, type='ok', ms=2400){
       const el = document.createElement('div');
@@ -902,9 +586,7 @@
       }, ms);
     }
 
-    function setLiveStatus(text){
-      if (els.liveStatusText) els.liveStatusText.textContent = text;
-    }
+    function setLiveStatus(text){ if (els.liveStatusText) els.liveStatusText.textContent = text; }
 
     function readFileAsDataURL(file){
       return new Promise((resolve, reject) => {
@@ -970,18 +652,9 @@
       return explicitAt || inactivityAt;
     }
 
-    function formatAutoDelete(lobby){
-      return formatDate(getAutoDeleteAt(lobby));
-    }
-
-    function formatAutoDeleteRemaining(lobby){
-      return formatRelative(getAutoDeleteAt(lobby));
-    }
-
-    function isExpired(lobby){
-      const d = getAutoDeleteAt(lobby);
-      return !!d && d.getTime() <= Date.now();
-    }
+    function formatAutoDelete(lobby){ return formatDate(getAutoDeleteAt(lobby)); }
+    function formatAutoDeleteRemaining(lobby){ return formatRelative(getAutoDeleteAt(lobby)); }
+    function isExpired(lobby){ const d = getAutoDeleteAt(lobby); return !!d && d.getTime() <= Date.now(); }
 
     function fallbackThumbForName(name='Lobby'){
       const label = `${(name || 'Lobby').trim() || 'Lobby'} Lobby`;
@@ -994,6 +667,10 @@
         id: lobby.id || safeUUID(),
         collectionId: lobby.collectionId || lobby.id || safeUUID(),
         ownerKey: lobby.ownerKey || '',
+        ownerUserId: lobby.ownerUserId || '',
+        ownerUsername: lobby.ownerUsername || '',
+        ownerPfp: lobby.ownerPfp || '',
+        ownerJoinedAt: lobby.ownerJoinedAt || null,
         public: !!lobby.public,
         name: baseName,
         type: lobby.type || 'Regular',
@@ -1011,12 +688,21 @@
       };
     }
 
-    function updateExpirationFields(){
-      els.expirationFields.classList.toggle('hidden', els.expirationMode.value !== 'set');
+    function normalizeUser(user, fallbackId=''){
+      if (!user) return null;
+      return {
+        userId: user.userId || fallbackId || '',
+        username: normalizeUsername(user.username || ''),
+        usernameLower: usernameKey(user.username || ''),
+        pfpUrl: user.pfpUrl || user.photoURL || '',
+        joinedAt: user.joinedAt || null,
+        lastSeen: user.lastSeen || null,
+        active: user.active !== false
+      };
     }
 
-    function isOwner(lobby){
-      return !!state.ownerKey && lobby.ownerKey === state.ownerKey;
+    function updateExpirationFields(){
+      els.expirationFields.classList.toggle('hidden', els.expirationMode.value !== 'set');
     }
 
     function resetHostForm(){
@@ -1037,72 +723,140 @@
       updateExpirationFields();
     }
 
+    function resetSignInForm(){
+      els.signInUsername.value = '';
+      els.signInThumbInput.value = '';
+      els.signInPreview.src = DEFAULT_PROFILE;
+      els.signInThumbThumb.src = 'https://placehold.co/200x200/111111/25EDC6?text=Pick';
+      state.selectedProfileDataURL = '';
+    }
+
+    function saveUserSession(user){
+      try{ localStorage.setItem(STORAGE.session, JSON.stringify(user)); }catch{}
+    }
+
+    function loadUserSession(){
+      try{
+        const raw = localStorage.getItem(STORAGE.session);
+        return raw ? normalizeUser(JSON.parse(raw)) : null;
+      }catch{ return null; }
+    }
+
+    function verifyStoredSession(){
+      const stored = loadUserSession();
+      return stored?.userId ? normalizeUser(stored) : null;
+    }
+
+    function setCurrentUser(user){
+      state.user = normalizeUser(user);
+      if (state.user) saveUserSession(state.user);
+      updateHostButtonState();
+    }
+
+    function isLoggedIn(){ return !!state.user?.userId; }
+
+    async function ensureSignedInBeforeCreate(){
+      if (isLoggedIn()) {
+        openModal(els.hostModal);
+        return;
+      }
+      resetSignInForm();
+      openModal(els.signInModal);
+    }
+
+    async function claimUsername({ username, pfpUrl }){
+      const clean = normalizeUsername(username);
+      const lower = usernameKey(clean);
+      if (!clean) throw new Error('Enter a username.');
+      if (clean.length < 3) throw new Error('Username must be at least 3 characters.');
+
+      const userId = state.user?.userId || safeUUID();
+      const user = {
+        userId,
+        username: clean,
+        usernameLower: lower,
+        pfpUrl: pfpUrl || DEFAULT_PROFILE,
+        joinedAt: state.user?.joinedAt || serverTimestamp(),
+        lastSeen: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        active: true
+      };
+
+      const claimRef = doc(db, 'usernameClaims', lower);
+      await setDoc(claimRef, {
+        userId,
+        username: clean,
+        usernameLower: lower,
+        pfpUrl: pfpUrl || DEFAULT_PROFILE,
+        joinedAt: user.joinedAt,
+        updatedAt: serverTimestamp(),
+        createdAt: state.user?.joinedAt || serverTimestamp()
+      }, { merge: false });
+
+      return user;
+    }
+
+    async function signInNow(){
+      const username = normalizeUsername(els.signInUsername.value);
+      const pfpUrl = state.selectedProfileDataURL || DEFAULT_PROFILE;
+      const user = await claimUsername({ username, pfpUrl });
+      setCurrentUser({ userId: user.userId, username: user.username, pfpUrl: user.pfpUrl, joinedAt: user.joinedAt, lastSeen: user.lastSeen, active: true });
+      resetSignInForm();
+      closeModal(els.signInModal);
+      showToast('Signed in', `Welcome, ${user.username}.`, 'ok');
+      openModal(els.hostModal);
+      await touchUserPresence();
+    }
+
+    async function touchUserPresence(){
+      const id = getPresenceId();
+      const payload = {
+        sessionId: id,
+        page: 'website',
+        ownerKey: state.ownerKey || '',
+        userId: state.user?.userId || '',
+        username: state.user?.username || '',
+        pfpUrl: state.user?.pfpUrl || '',
+        lastSeenClient: Date.now(),
+        updatedAt: serverTimestamp(),
+        createdAt: serverTimestamp()
+      };
+      await setDoc(doc(db, 'presence', id), payload, { merge: true });
+    }
+
+    function isOwner(lobby){
+      if (!state.user) return false;
+      return !!((lobby.ownerUserId && lobby.ownerUserId === state.user.userId) || (lobby.ownerKey && lobby.ownerKey === state.ownerKey));
+    }
+
     async function ensureOwnerLobbyLimit(){
-      const snap = await getDocs(query(collection(db, 'lobbies'), where('ownerKey', '==', state.ownerKey)));
-      const current = snap.docs
-        .map(d => normalizeLobby({ id: d.id, ...d.data() }))
-        .find(l => !isExpired(l));
+      if (!state.user?.userId) return null;
+      const snap = await getDocs(query(collection(db, 'lobbies'), where('ownerUserId', '==', state.user.userId)));
+      const current = snap.docs.map(d => normalizeLobby({ id: d.id, ...d.data() })).find(l => !isExpired(l));
       return current || null;
     }
 
     async function copyCode(lobby){
-      if (!lobby.active){
-        showToast('Inactive lobby', 'Active lobbies only can be copied.', 'err');
-        return;
-      }
-
+      if (!lobby.active){ showToast('Inactive lobby', 'Active lobbies only can be copied.', 'err'); return; }
       const code = String(lobby.lobbyCode || '').trim();
-      if (!code){
-        showToast('Copy failed', 'No code found.', 'err');
-        return;
-      }
-
+      if (!code){ showToast('Copy failed', 'No code found.', 'err'); return; }
       try{
-        if (navigator.clipboard?.writeText){
-          await navigator.clipboard.writeText(code);
-        } else {
+        if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(code);
+        else {
           const ta = document.createElement('textarea');
-          ta.value = code;
-          ta.style.position = 'fixed';
-          ta.style.left = '-9999px';
-          ta.style.top = '0';
-          document.body.appendChild(ta);
-          ta.focus();
-          ta.select();
-          document.execCommand('copy');
-          ta.remove();
+          ta.value = code; ta.style.position = 'fixed'; ta.style.left = '-9999px'; ta.style.top = '0'; document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); ta.remove();
         }
-
         const lobbyRef = doc(db, 'lobbies', lobby.id);
-        await setDoc(lobbyRef, {
-          viewCount: increment(1),
-          updatedAt: serverTimestamp(),
-          lastModifiedAt: serverTimestamp()
-        }, { merge: true });
-
+        await setDoc(lobbyRef, { viewCount: increment(1), updatedAt: serverTimestamp(), lastModifiedAt: serverTimestamp() }, { merge: true });
         showToast('Copied', `Lobby code ${code} copied. +1 view.`, 'ok');
-      }catch(err){
-        console.error(err);
-        showToast('Copy failed', code, 'err');
-      }
+      }catch(err){ console.error(err); showToast('Copy failed', code, 'err'); }
     }
 
     function filterLobbies(list){
       const term = els.searchInput.value.trim().toLowerCase();
       if (!term) return list;
       return list.filter(l => {
-        const hay = [
-          l.name,
-          l.description,
-          l.lobbyCode,
-          l.type,
-          l.public ? 'public' : 'private',
-          l.isStreamer ? 'streamer' : '',
-          l.active ? 'active' : 'inactive',
-          l.ownerKey || '',
-          String(l.viewCount || 0),
-          String(l.collectionId || '')
-        ].join(' ').toLowerCase();
+        const hay = [l.name,l.description,l.lobbyCode,l.type,l.public ? 'public' : 'private',l.isStreamer ? 'streamer' : '',l.active ? 'active' : 'inactive',l.ownerKey || '',l.ownerUsername || '',String(l.viewCount || 0),String(l.collectionId || '')].join(' ').toLowerCase();
         return hay.includes(term);
       });
     }
@@ -1114,14 +868,26 @@
     }
 
     function updateHostButtonState(){
-      const ownLobby = state.lobbies.find(lobby => isOwner(lobby) && !isExpired(lobby));
-      if (ownLobby){
-        els.hostBtn.textContent = 'One Lobby Only';
-        els.hostBtn.disabled = true;
-      } else {
+      if (!isLoggedIn()) {
         els.hostBtn.textContent = 'Create';
         els.hostBtn.disabled = false;
+        return;
       }
+      const ownLobby = state.lobbies.find(lobby => isOwner(lobby) && !isExpired(lobby));
+      if (ownLobby){ els.hostBtn.textContent = 'One Lobby Only'; els.hostBtn.disabled = true; }
+      else { els.hostBtn.textContent = 'Create'; els.hostBtn.disabled = false; }
+    }
+
+    function openPlayerProfileModal(lobby){
+      const username = lobby.ownerUsername || lobby.ownerKey || 'Unknown';
+      const pfp = lobby.ownerPfp || DEFAULT_PROFILE;
+      const joinedAt = lobby.ownerJoinedAt || null;
+      const active = lobby.ownerUserId ? state.activeUserIds.has(lobby.ownerUserId) : false;
+      state.profileTarget = lobby;
+      els.profilePfpImg.src = pfp;
+      els.profileUsername.textContent = username;
+      els.profileDetails.textContent = `Username: ${username}\nDate Joined: ${formatDate(joinedAt)}\nStatus: ${active ? 'Active' : 'Offline'}`;
+      openModal(els.profileModal);
     }
 
     function renderLobbies(){
@@ -1133,20 +899,17 @@
           return bT - aT;
         });
 
-      els.lobbyCountText.textContent = `${visible.length} lobby${visible.length === 1 ? '' : 'ies'}`;
+      els.lobbyCountText.textContent = `${visible.length} lobby${visible.length === 1 ? '' : 's'}`;
       els.lobbyList.innerHTML = '';
       els.emptyState.classList.toggle('hidden', visible.length !== 0);
       updateHostButtonState();
 
       visible.forEach((lobby, index) => {
-        const thumb = lobby.thumbnailUrl && lobby.thumbnailUrl.trim()
-          ? lobby.thumbnailUrl
-          : fallbackThumbForName(lobby.name);
-
+        const thumb = lobby.thumbnailUrl && lobby.thumbnailUrl.trim() ? lobby.thumbnailUrl : fallbackThumbForName(lobby.name);
         const card = document.createElement('div');
         card.className = 'lobbyCard';
         card.style.setProperty('--i', index);
-
+        const canOpenProfile = !!lobby.ownerUserId && lobby.active;
         card.innerHTML = `
           <div class="lobbyThumb">
             <img src="${escapeHtml(thumb)}" alt="thumbnail" onerror="this.src='${escapeHtml(fallbackThumbForName(lobby.name))}'" />
@@ -1154,7 +917,9 @@
           <div class="lobbyMain">
             <div class="lobbyTop">
               <div>
-                <h3 class="lobbyName">${escapeHtml(lobby.name || 'Untitled Lobby')}</h3>
+                <h3 class="lobbyName">
+                  <button class="lobbyTitleBtn" ${canOpenProfile ? `data-player-id="${escapeHtml(lobby.ownerUserId)}"` : 'disabled'} type="button">${escapeHtml(lobby.name || 'Untitled Lobby')}</button>
+                </h3>
                 <div class="lobbyMeta">
                   <span class="tag accent">${escapeHtml(lobby.type || 'Regular')}</span>
                   <span class="tag soft">max: ${escapeHtml(String(lobby.maxPlayers ?? 10))}</span>
@@ -1166,7 +931,6 @@
                   <span class="tag soft">Auto: ${escapeHtml(formatAutoDeleteRemaining(lobby))}</span>
                 </div>
               </div>
-              ${isOwner(lobby) ? `<div class="ownerFlag">You</div>` : ''}
             </div>
 
             <p class="lobbyDesc">${escapeHtml(lobby.description || 'No description added.')}</p>
@@ -1178,7 +942,7 @@
                 <button class="codeBtn" ${lobby.active ? '' : 'disabled'} data-code-id="${escapeHtml(lobby.id)}" type="button">${lobby.active ? 'Copy' : 'Inactive'}</button>
               </div>
 
-              <div class="pillToggleRow" style="display:flex;gap:10px;flex-wrap:wrap">
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
                 ${isOwner(lobby) ? `<button class="switchBtn ${lobby.active ? 'on' : 'off'}" data-active="${lobby.id}" type="button">${lobby.active ? '🟢 Active' : '🔴 Active'}</button>` : ''}
                 ${isOwner(lobby) ? `<button class="btnDanger btnMini" data-delete="${lobby.id}" type="button">Delete</button>` : ''}
               </div>
@@ -1189,32 +953,36 @@
             </div>
           </div>
         `;
-
         els.lobbyList.appendChild(card);
       });
 
       els.lobbyList.querySelectorAll('[data-active]').forEach(btn => {
         btn.addEventListener('click', () => toggleActive(btn.getAttribute('data-active')));
       });
-
       els.lobbyList.querySelectorAll('[data-delete]').forEach(btn => {
         btn.addEventListener('click', () => {
           const lobby = state.lobbies.find(x => x.id === btn.getAttribute('data-delete'));
           if (lobby && confirm(`Delete ${lobby.name || 'this lobby'}?`)) deleteLobby(lobby.id);
         });
       });
-
       els.lobbyList.querySelectorAll('[data-code-id]').forEach(btn => {
         btn.addEventListener('click', () => {
           const lobby = state.lobbies.find(x => x.id === btn.getAttribute('data-code-id'));
           if (lobby) copyCode(lobby);
         });
       });
+      els.lobbyList.querySelectorAll('[data-player-id]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const targetId = btn.getAttribute('data-player-id');
+          const lobby = state.lobbies.find(x => x.ownerUserId === targetId);
+          if (!lobby) return;
+          openPlayerProfileModal(lobby);
+        });
+      });
     }
 
     function startLiveListener(){
       if (state.unsubLobbies) state.unsubLobbies();
-
       const q = query(collection(db, 'lobbies'), orderBy('createdAt', 'desc'));
       state.unsubLobbies = onSnapshot(q, async snap => {
         const items = snap.docs.map(d => normalizeLobby({ id: d.id, ...d.data() }));
@@ -1229,13 +997,9 @@
     }
 
     async function hostLobby(){
+      if (!isLoggedIn()) throw new Error('Please sign in first.');
       const existing = await ensureOwnerLobbyLimit();
-      if (existing){
-        showToast('One lobby only', 'Delete your current lobby before creating a new one.', 'err');
-        closeModal(els.hostModal);
-        return;
-      }
-
+      if (existing){ showToast('One lobby only', 'Delete your current lobby before creating a new one.', 'err'); closeModal(els.hostModal); return; }
       const publicValue = els.publicInput.value === 'yes';
       const name = els.lobbyNameInput.value.trim() || 'Lobby';
       const type = els.typeInput.value;
@@ -1243,20 +1007,21 @@
       const maxPlayers = Math.max(1, Math.min(15, parseInt(els.maxPlayersInput.value || '10', 10)));
       const description = els.lobbyDescInput.value.trim();
       const isStreamer = els.streamerInput.value === 'yes';
-
       let expiresAt = null;
       if (els.expirationMode.value === 'set'){
         const hours = Math.max(0, parseInt(els.expireHours.value || '0', 10));
         const mins = Math.max(1, parseInt(els.expireMinutes.value || '30', 10));
         expiresAt = Timestamp.fromDate(new Date(Date.now() + ((hours * 60) + mins) * 60000));
       }
-
       const thumbUrl = state.selectedThumbDataURL || fallbackThumbForName(name);
-
       const lobbyRef = doc(collection(db, 'lobbies'));
       await setDoc(lobbyRef, {
         collectionId: lobbyRef.id,
         ownerKey: state.ownerKey,
+        ownerUserId: state.user.userId,
+        ownerUsername: state.user.username,
+        ownerPfp: state.user.pfpUrl || DEFAULT_PROFILE,
+        ownerJoinedAt: state.user.joinedAt || serverTimestamp(),
         public: publicValue,
         name,
         type,
@@ -1272,7 +1037,6 @@
         lastModifiedAt: serverTimestamp(),
         expiresAt
       });
-
       resetHostForm();
       showToast('Lobby hosted', `${name} is live now.`, 'ok');
       closeModal(els.hostModal);
@@ -1281,11 +1045,7 @@
     async function toggleActive(lobbyId){
       const lobby = state.lobbies.find(x => x.id === lobbyId);
       if (!lobby || !isOwner(lobby)) return;
-      await updateDoc(doc(db, 'lobbies', lobbyId), {
-        active: !lobby.active,
-        updatedAt: serverTimestamp(),
-        lastModifiedAt: serverTimestamp()
-      });
+      await updateDoc(doc(db, 'lobbies', lobbyId), { active: !lobby.active, updatedAt: serverTimestamp(), lastModifiedAt: serverTimestamp() });
     }
 
     async function deleteLobby(lobbyId){
@@ -1301,209 +1061,82 @@
       await Promise.allSettled(expired.map(lobby => deleteDoc(doc(db, 'lobbies', lobby.id))));
     }
 
-    function copyDefaultCodeIfNeeded(){
-      if (!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
-    }
+    function copyDefaultCodeIfNeeded(){ if (!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode(); }
 
     function startBackground(){
       const c = document.getElementById('bgCanvas');
       const ctx = c.getContext('2d', { alpha: true });
       let w = 0, h = 0, particles = [];
       let rafId = 0;
-
       const resize = () => {
         const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
         w = c.width = Math.floor(window.innerWidth * dpr);
         h = c.height = Math.floor(window.innerHeight * dpr);
         c.style.width = window.innerWidth + 'px';
         c.style.height = window.innerHeight + 'px';
-
         const count = Math.min(72, Math.max(28, Math.floor(window.innerWidth / 22)));
-        particles = Array.from({length: count}, () => ({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: (Math.random() * 1.8 + .4) * dpr,
-          vx: (Math.random() - .5) * .22 * dpr,
-          vy: (Math.random() - .5) * .22 * dpr,
-          a: Math.random() * .55 + .12
-        }));
+        particles = Array.from({length: count}, () => ({ x: Math.random() * w, y: Math.random() * h, r: (Math.random() * 1.8 + .4) * dpr, vx: (Math.random() - .5) * .22 * dpr, vy: (Math.random() - .5) * .22 * dpr, a: Math.random() * .55 + .12 }));
       };
-
       window.addEventListener('resize', resize, { passive:true });
       resize();
-
       const tick = () => {
         ctx.clearRect(0,0,w,h);
         for (const p of particles){
-          p.x += p.vx;
-          p.y += p.vy;
+          p.x += p.vx; p.y += p.vy;
           if (p.x < -20) p.x = w + 20;
           if (p.x > w + 20) p.x = -20;
           if (p.y < -20) p.y = h + 20;
           if (p.y > h + 20) p.y = -20;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(37,237,198,${p.a})`;
-          ctx.fill();
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(37,237,198,${p.a})`; ctx.fill();
         }
         rafId = requestAnimationFrame(tick);
       };
-
       tick();
-
-      window.addEventListener('beforeunload', () => {
-        if (rafId) cancelAnimationFrame(rafId);
-      });
+      window.addEventListener('beforeunload', () => { if (rafId) cancelAnimationFrame(rafId); });
     }
 
     function setupGlobalErrorHandling(){
-      window.addEventListener('error', e => {
-        console.error(e.error || e.message);
-        showToast('Script error', e.message || 'Unknown error', 'err', 4000);
-      });
-      window.addEventListener('unhandledrejection', e => {
-        console.error(e.reason);
-        showToast('Promise error', e.reason?.message || String(e.reason || 'Unknown error'), 'err', 4000);
-      });
+      window.addEventListener('error', e => { console.error(e.error || e.message); showToast('Script error', e.message || 'Unknown error', 'err', 4000); });
+      window.addEventListener('unhandledrejection', e => { console.error(e.reason); showToast('Promise error', e.reason?.message || String(e.reason || 'Unknown error'), 'err', 4000); });
     }
 
-    function getLocalViewerState(){
-      try{
-        const raw = localStorage.getItem('amongus_local_viewer_state_v1');
-        return raw ? JSON.parse(raw) : {};
-      }catch{
-        return {};
-      }
-    }
-
-    function setLocalViewerState(next){
-      try{
-        localStorage.setItem('amongus_local_viewer_state_v1', JSON.stringify(next));
-      }catch{}
-    }
-
-    function touchLocalViewer(){
-      const id = getLocalViewerId();
-      const all = getLocalViewerState();
-      all[id] = Date.now();
-      setLocalViewerState(all);
-    }
-
-    function countLocalViewers(){
-      const all = getLocalViewerState();
-      const now = Date.now();
-      let count = 0;
-      for (const [id, ts] of Object.entries(all)){
-        if (now - Number(ts || 0) <= PRESENCE.localStaleMs){
-          count++;
-        }
-      }
-      return Math.max(1, count);
-    }
+    function getLocalViewerState(){ try{ const raw = localStorage.getItem('amongus_local_viewer_state_v1'); return raw ? JSON.parse(raw) : {}; }catch{ return {}; } }
+    function setLocalViewerState(next){ try{ localStorage.setItem('amongus_local_viewer_state_v1', JSON.stringify(next)); }catch{} }
+    function touchLocalViewer(){ const id = getLocalViewerId(); const all = getLocalViewerState(); all[id] = Date.now(); setLocalViewerState(all); }
+    function countLocalViewers(){ const all = getLocalViewerState(); const now = Date.now(); let count = 0; for (const [id, ts] of Object.entries(all)){ if (now - Number(ts || 0) <= PRESENCE.localStaleMs) count++; } return Math.max(1, count); }
 
     function startLocalViewerFallback(){
       state.currentViewerMode = 'local';
-      const update = () => {
-        touchLocalViewer();
-        els.activeViewerText.textContent = `${countLocalViewers()} active viewer${countLocalViewers() === 1 ? '' : 's'}`;
-      };
-
+      const update = () => { touchLocalViewer(); els.activeViewerText.textContent = `${countLocalViewers()} active viewer${countLocalViewers() === 1 ? '' : 's'}`; };
       if (state.localPresenceInterval) clearInterval(state.localPresenceInterval);
       if (state.localViewerCleanupInterval) clearInterval(state.localViewerCleanupInterval);
-
       update();
       state.localPresenceInterval = setInterval(update, PRESENCE.localHeartbeatMs);
-
       state.localViewerCleanupInterval = setInterval(() => {
         try{
-          const all = getLocalViewerState();
-          const now = Date.now();
-          let changed = false;
+          const all = getLocalViewerState(); const now = Date.now(); let changed = false;
           for (const [id, ts] of Object.entries(all)){
-            if (now - Number(ts || 0) > (PRESENCE.localStaleMs * 2)){
-              delete all[id];
-              changed = true;
-            }
+            if (now - Number(ts || 0) > (PRESENCE.localStaleMs * 2)){ delete all[id]; changed = true; }
           }
           if (changed) setLocalViewerState(all);
           els.activeViewerText.textContent = `${countLocalViewers()} active viewer${countLocalViewers() === 1 ? '' : 's'}`;
         }catch{}
       }, 15000);
-
       if (!state.localViewerListenerBound){
-        window.addEventListener('storage', e => {
-          if (e.key === 'amongus_local_viewer_state_v1'){
-            els.activeViewerText.textContent = `${countLocalViewers()} active viewer${countLocalViewers() === 1 ? '' : 's'}`;
-          }
-        });
+        window.addEventListener('storage', e => { if (e.key === 'amongus_local_viewer_state_v1'){ els.activeViewerText.textContent = `${countLocalViewers()} active viewer${countLocalViewers() === 1 ? '' : 's'}`; } });
         state.localViewerListenerBound = true;
       }
-
-      window.addEventListener('beforeunload', () => {
-        try{
-          const all = getLocalViewerState();
-          delete all[getLocalViewerId()];
-          setLocalViewerState(all);
-        }catch{}
-      });
-    }
-
-    async function touchPresence(){
-      const id = getPresenceId();
-      await setDoc(doc(db, 'presence', id), {
-        sessionId: id,
-        page: 'website',
-        ownerKey: state.ownerKey || '',
-        lastSeenClient: Date.now(),
-        updatedAt: serverTimestamp(),
-        createdAt: serverTimestamp()
-      }, { merge: true });
-    }
-
-    function startPresenceTracker(){
-      const ping = () => touchPresence().catch(() => {});
-      ping();
-      setInterval(ping, PRESENCE.heartbeatMs);
-
-      window.addEventListener('beforeunload', () => {
-        try{
-          deleteDoc(doc(db, 'presence', getPresenceId()));
-        }catch{}
-      });
-    }
-
-    function startPresenceListener(){
-      if (state.unsubPresence) state.unsubPresence();
-
-      state.unsubPresence = onSnapshot(collection(db, 'presence'), snap => {
-        const now = Date.now();
-        const active = snap.docs.filter(d => {
-          const data = d.data() || {};
-          const seen = Number(data.lastSeenClient || 0);
-          return seen && (now - seen) <= PRESENCE.staleMs;
-        }).length;
-
-        state.currentViewerMode = 'firestore';
-        els.activeViewerText.textContent = `${active} active viewer${active === 1 ? '' : 's'}`;
-      }, err => {
-        console.error(err);
-        startLocalViewerFallback();
-      });
+      window.addEventListener('beforeunload', () => { try{ const all = getLocalViewerState(); delete all[getLocalViewerId()]; setLocalViewerState(all); }catch{} });
     }
 
     async function cleanupStalePresence(){
       try{
         const snap = await getDocs(collection(db, 'presence'));
         const now = Date.now();
-        await Promise.allSettled(
-          snap.docs.map(d => {
-            const data = d.data() || {};
-            const seen = Number(data.lastSeenClient || 0);
-            if (!seen || (now - seen) > (PRESENCE.staleMs * 2)){
-              return deleteDoc(doc(db, 'presence', d.id));
-            }
-          })
-        );
+        await Promise.allSettled(snap.docs.map(d => {
+          const data = d.data() || {}; const seen = Number(data.lastSeenClient || 0);
+          if (!seen || (now - seen) > (PRESENCE.staleMs * 2)) return deleteDoc(doc(db, 'presence', d.id));
+        }));
       }catch{}
     }
 
@@ -1511,89 +1144,114 @@
       try{
         const snap = await getDocs(collection(db, 'lobbies'));
         await Promise.allSettled(snap.docs.map(async d => {
-          const data = d.data() || {};
-          const updates = {};
+          const data = d.data() || {}; const updates = {};
           if (!data.collectionId) updates.collectionId = d.id;
           if (!data.lastModifiedAt && data.createdAt) updates.lastModifiedAt = data.createdAt;
-          if (Object.keys(updates).length){
-            updates.updatedAt = serverTimestamp();
-            await updateDoc(doc(db, 'lobbies', d.id), updates);
-          }
+          if (Object.keys(updates).length){ updates.updatedAt = serverTimestamp(); await updateDoc(doc(db, 'lobbies', d.id), updates); }
         }));
-      }catch(err){
-        console.error(err);
-      }
+      }catch(err){ console.error(err); }
+    }
+
+    async function startPresenceTracker(){
+      const ping = () => touchUserPresence().catch(() => {});
+      ping();
+      setInterval(ping, PRESENCE.heartbeatMs);
+      window.addEventListener('beforeunload', () => {
+        try{ deleteDoc(doc(db, 'presence', getPresenceId())); }catch{}
+      });
+    }
+
+    function startPresenceListener(){
+      if (state.unsubPresence) state.unsubPresence();
+      state.unsubPresence = onSnapshot(collection(db, 'presence'), snap => {
+        const now = Date.now();
+        const activeUsers = new Set();
+        const activeMap = new Map();
+        const activeSessions = snap.docs.filter(d => {
+          const data = d.data() || {};
+          const seen = Number(data.lastSeenClient || 0);
+          const active = seen && (now - seen) <= PRESENCE.staleMs;
+          if (active && data.userId) {
+            activeUsers.add(String(data.userId));
+            activeMap.set(String(data.userId), {
+              userId: String(data.userId),
+              username: data.username || '',
+              pfpUrl: data.pfpUrl || ''
+            });
+          }
+          return active;
+        }).length;
+        state.activeUserIds = activeUsers;
+        state.activeUsersMap = activeMap;
+        state.currentViewerMode = 'firestore';
+        els.activeViewerText.textContent = `${activeSessions} active viewer${activeSessions === 1 ? '' : 's'}`;
+      }, err => { console.error(err); startLocalViewerFallback(); });
+    }
+
+    function startUserLiveSync(){
+      setInterval(() => {
+        if (state.user?.userId) {
+          saveUserSession(state.user);
+          touchUserPresence().catch(() => {});
+        }
+      }, 30000);
     }
 
     function bindEvents(){
       els.expirationMode.addEventListener('change', updateExpirationFields);
-
-      els.lobbyThumbInput.addEventListener('change', async e => {
+      els.signInThumbInput.addEventListener('change', async e => {
         const file = e.target.files?.[0] || null;
         if (file){
-          state.selectedThumbDataURL = await readFileAsDataURL(file);
-          els.lobbyThumbPreview.src = state.selectedThumbDataURL;
-          els.pickerThumbImg.src = state.selectedThumbDataURL;
+          state.selectedProfileDataURL = await readFileAsDataURL(file);
+          els.signInPreview.src = state.selectedProfileDataURL;
+          els.signInThumbThumb.src = state.selectedProfileDataURL;
         } else {
-          state.selectedThumbDataURL = '';
-          els.lobbyThumbPreview.src = DEFAULT_THUMB;
-          els.pickerThumbImg.src = DEFAULT_THUMB;
+          state.selectedProfileDataURL = '';
+          els.signInPreview.src = DEFAULT_PROFILE;
+          els.signInThumbThumb.src = 'https://placehold.co/200x200/111111/25EDC6?text=Pick';
         }
       });
-
-      els.hostBtn.addEventListener('click', async () => {
-        const ownLobby = await ensureOwnerLobbyLimit();
-        if (ownLobby){
-          showToast('One lobby only', 'Delete your current lobby before creating a new one.', 'err');
-          return;
-        }
-        resetHostForm();
-        copyDefaultCodeIfNeeded();
-        openModal(els.hostModal);
+      els.lobbyThumbInput.addEventListener('change', async e => {
+        const file = e.target.files?.[0] || null;
+        if (file){ state.selectedThumbDataURL = await readFileAsDataURL(file); els.lobbyThumbPreview.src = state.selectedThumbDataURL; els.pickerThumbImg.src = state.selectedThumbDataURL; }
+        else { state.selectedThumbDataURL = ''; els.lobbyThumbPreview.src = DEFAULT_THUMB; els.pickerThumbImg.src = DEFAULT_THUMB; }
       });
-
+      els.hostBtn.addEventListener('click', ensureSignedInBeforeCreate);
       els.closeHostBtn.addEventListener('click', () => closeModal(els.hostModal));
-
-      els.hostNowBtn.addEventListener('click', async () => {
-        try{
-          await hostLobby();
-        }catch(err){
-          console.error(err);
-          showToast('Host failed', err.message || 'Unknown error', 'err');
-        }
+      els.closeSignInBtn.addEventListener('click', () => closeModal(els.signInModal));
+      els.closeProfileBtn.addEventListener('click', () => closeModal(els.profileModal));
+      els.continueBtn.addEventListener('click', () => closeModal(els.profileModal));
+      els.addFriendBtn.addEventListener('click', () => showToast('Add friend', 'No logic yet.', 'ok'));
+      els.assignBtn.addEventListener('click', async () => {
+        try{ await signInNow(); }
+        catch(err){ console.error(err); showToast('Sign in failed', err.message || 'Unknown error', 'err', 3500); }
       });
-
+      els.hostNowBtn.addEventListener('click', async () => { try{ await hostLobby(); }catch(err){ console.error(err); showToast('Host failed', err.message || 'Unknown error', 'err'); } });
       els.searchInput.addEventListener('input', renderLobbies);
-
-      window.addEventListener('keydown', e => {
-        if (e.key === 'Escape') closeModal(els.hostModal);
-      });
-
-      document.addEventListener('pointerdown', e => {
-        if (e.target.tagName === 'BUTTON') e.target.blur();
-      });
+      window.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(els.hostModal); closeModal(els.signInModal); closeModal(els.profileModal); } });
+      document.addEventListener('pointerdown', e => { if (e.target.tagName === 'BUTTON') e.target.blur(); });
     }
 
-    function seedInitialState(){
+    async function seedInitialState(){
       state.ownerKey = getOwnerKey();
       setLiveStatus('V1.0.2');
       updateExpirationFields();
       copyDefaultCodeIfNeeded();
+      const sessionUser = verifyStoredSession();
+      if (sessionUser) setCurrentUser(sessionUser);
     }
 
     async function boot(){
       startBackground();
       setupGlobalErrorHandling();
       bindEvents();
-      seedInitialState();
+      await seedInitialState();
       repairMissingCollectionIds().catch(() => {});
-      startPresenceTracker();
+      await startPresenceTracker();
       startPresenceListener();
+      startUserLiveSync();
       startLiveListener();
-      setInterval(() => {
-        cleanupOneExpiredNow().catch(() => {});
-        cleanupStalePresence().catch(() => {});
-      }, 60000);
+      setInterval(() => { cleanupOneExpiredNow().catch(() => {}); cleanupStalePresence().catch(() => {}); }, 60000);
     }
 
     boot();

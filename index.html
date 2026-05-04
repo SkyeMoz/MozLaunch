@@ -22,8 +22,12 @@
       --radius-lg:30px;
     }
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{height:100%}
+    html{
+      height:100%;
+      background:#030409;
+    }
     body{
+      min-height:100%;
       margin:0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color:var(--text);
@@ -32,6 +36,7 @@
         radial-gradient(circle at 85% 20%, rgba(255,255,255,.08), transparent 14%),
         radial-gradient(circle at 50% 90%, rgba(37,237,198,.08), transparent 18%),
         linear-gradient(180deg, #060912 0%, #030409 100%);
+      background-attachment: fixed;
       overflow-x:hidden;
       user-select:none;
       -webkit-user-select:none;
@@ -39,6 +44,7 @@
     }
     ::selection{background:rgba(37,237,198,.28);color:#fff}
     ::-moz-selection{background:rgba(37,237,198,.28);color:#fff}
+
     body::before{
       content:"";
       position:fixed;
@@ -53,15 +59,39 @@
       animation: drift 16s ease-in-out infinite alternate;
       z-index:-3;
     }
-    #bgCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none}
-    .wrap{width:min(1220px, calc(100% - 20px));margin:0 auto;padding:18px 0 42px}
+
+    #bgCanvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:-2;
+      pointer-events:none;
+    }
+
+    .wrap{
+      width:min(1220px, calc(100% - 20px));
+      margin:0 auto;
+      padding:18px 0 42px;
+      position:relative;
+      z-index:1;
+    }
+
     .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:16px 18px;border:1px solid var(--stroke);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:16px 18px;
+      border:1px solid var(--stroke);
       background:linear-gradient(180deg, rgba(14,18,28,.78), rgba(5,7,12,.70));
-      border-radius:28px;box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-      position:sticky;top:12px;z-index:20;
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      position:sticky;
+      top:12px;
+      z-index:20;
       animation: rise .65s ease both;
     }
     .brand{display:flex;align-items:center;gap:14px;min-width:0}
@@ -74,7 +104,8 @@
     .logoBox img{display:block;width:100%;height:100%;object-fit:cover}
     .titleWrap{min-width:0}
     .title{
-      margin:0;font-size:clamp(1.18rem, 2.7vw, 1.85rem);
+      margin:0;
+      font-size:clamp(1.18rem, 2.7vw, 1.85rem);
       color:var(--accent);
       text-shadow:0 0 24px rgba(37,237,198,.24);
       letter-spacing:.2px;
@@ -82,9 +113,16 @@
     .desc{margin:6px 0 0;color:var(--muted);font-size:.92rem;line-height:1.38}
     .pillRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
     .pill{
-      padding:10px 14px;border-radius:999px;border:1px solid var(--stroke);
-      background:rgba(255,255,255,.04);color:var(--muted);font-size:.86rem;
-      display:inline-flex;align-items:center;gap:8px;white-space:nowrap
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:.86rem;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
     }
     .statusDot{
       width:10px;height:10px;border-radius:999px;background:var(--accent);
@@ -94,12 +132,14 @@
 
     .containerGrid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
     .gridTop{display:grid;grid-template-columns:1fr;gap:16px}
+
     .card{
       border-radius:var(--radius-lg);
       background:linear-gradient(180deg, rgba(12,15,23,.82), rgba(5,7,12,.70));
       border:1px solid var(--stroke);
       box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
       overflow:hidden;
       position:relative;
       transform:translateY(8px);
@@ -110,16 +150,28 @@
     .card:nth-child(2){animation-delay:.12s}
     .card:nth-child(3){animation-delay:.18s}
     .card::after{
-      content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      pointer-events:none;
       box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
     }
     .card:hover{transform:translateY(-2px);border-color:rgba(37,237,198,.18)}
     .cardHead{
-      padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:18px 18px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
       border-bottom:1px solid rgba(255,255,255,.06)
     }
     .cardTitle{
-      margin:0;font-size:1.03rem;font-weight:800;color:#fff;letter-spacing:.2px
+      margin:0;
+      font-size:1.03rem;
+      font-weight:800;
+      color:#fff;
+      letter-spacing:.2px
     }
     .cardBody{padding:18px}
     .sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
@@ -128,9 +180,11 @@
     .hint{font-size:.84rem;color:var(--muted);line-height:1.5}
     .actionBar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .searchRow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+
     .input,.select,.textarea{
       width:100%;
-      border:none;outline:none;
+      border:none;
+      outline:none;
       color:#fff;
       border-radius:18px;
       background:rgba(255,255,255,.05);
@@ -143,7 +197,10 @@
       -webkit-user-select:text;
       box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
     }
-    .input:hover,.select:hover,.textarea:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.06)}
+    .input:hover,.select:hover,.textarea:hover{
+      border-color:rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06)
+    }
     .input:focus,.select:focus,.textarea:focus{
       border-color:var(--stroke-2);
       box-shadow:0 0 0 4px rgba(37,237,198,.10), inset 0 1px 0 rgba(255,255,255,.03);
@@ -153,17 +210,28 @@
     .fieldLabel{display:block;margin:0 0 8px;font-size:.86rem;color:rgba(245,248,252,.82)}
     .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
     .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-    .btn,.btnGhost,.btnDanger,.btnMini,.switchBtn,.codeBtn,.heartBtn,.pickerBtn{
-      border:none;outline:none;cursor:pointer;border-radius:16px;font-weight:800;
-      transition:.2s ease;-webkit-tap-highlight-color:transparent;user-select:none;
-      position:relative;overflow:hidden;
+
+    .btn,.btnGhost,.btnDanger,.btnMini,.switchBtn,.codeBtn,.pickerBtn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      border-radius:16px;
+      font-weight:800;
+      transition:.2s ease;
+      -webkit-tap-highlight-color:transparent;
+      user-select:none;
+      position:relative;
+      overflow:hidden;
     }
-    .btn::before,.btnGhost::before,.btnDanger::before,.btnMini::before,.switchBtn::before,.codeBtn::before,.heartBtn::before,.pickerBtn::before{
-      content:"";position:absolute;inset:0;background:linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);
+    .btn::before,.btnGhost::before,.btnDanger::before,.btnMini::before,.switchBtn::before,.codeBtn::before,.pickerBtn::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);
       transform:translateX(-120%);
       transition:transform .55s ease;
     }
-    .btn:hover::before,.btnGhost:hover::before,.btnDanger:hover::before,.btnMini:hover::before,.switchBtn:hover::before,.codeBtn:hover::before,.heartBtn:hover::before,.pickerBtn:hover::before{
+    .btn:hover::before,.btnGhost:hover::before,.btnDanger:hover::before,.btnMini:hover::before,.switchBtn:hover::before,.codeBtn:hover::before,.pickerBtn:hover::before{
       transform:translateX(120%);
     }
     .btn{
@@ -174,7 +242,13 @@
       transform:translateY(0);
     }
     .btn:hover{transform:translateY(-2px);filter:brightness(1.03)}
-    .btn:active,.btnGhost:active,.btnDanger:active,.btnMini:active,.switchBtn:active,.codeBtn:active,.heartBtn:active,.pickerBtn:active{
+    .btn:disabled{
+      cursor:not-allowed;
+      opacity:.55;
+      filter:saturate(.65);
+      transform:none !important;
+    }
+    .btn:active,.btnGhost:active,.btnDanger:active,.btnMini:active,.switchBtn:active,.codeBtn:active,.pickerBtn:active{
       transform:translateY(1px) scale(.99);
     }
     .btnGhost,.btnMini,.pickerBtn{
@@ -182,7 +256,10 @@
       color:#fff;
       border:1px solid rgba(255,255,255,.10);
     }
-    .btnGhost:hover,.btnMini:hover,.pickerBtn:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
+    .btnGhost:hover,.btnMini:hover,.pickerBtn:hover{
+      background:rgba(255,255,255,.07);
+      border-color:rgba(255,255,255,.16)
+    }
     .btnDanger{
       background:rgba(255,115,137,.13);
       color:#ffd9df;
@@ -191,8 +268,12 @@
     .btnDanger:hover{background:rgba(255,115,137,.20)}
     .btnMini{padding:10px 12px;border-radius:14px;font-size:.88rem}
     .pickerBtn{
-      display:inline-flex;align-items:center;justify-content:center;
-      min-height:48px;padding:0 14px;gap:10px
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 14px;
+      gap:10px
     }
     .pickerBtn input{display:none}
     .pickerTitle{display:flex;align-items:center;gap:10px;font-size:.92rem}
@@ -204,17 +285,14 @@
     }
     .pickerThumb img{width:100%;height:100%;object-fit:cover;display:block}
     .fileBox{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .preview{
-      width:76px;height:76px;border-radius:20px;overflow:hidden;flex:none;
-      border:1px solid rgba(255,255,255,.12);
-      background:#0c1016;
-      box-shadow:0 12px 24px rgba(0,0,0,.22);
-    }
-    .preview img{width:100%;height:100%;object-fit:cover;display:block}
+
     .lobbyList{display:flex;flex-direction:column;gap:14px}
     .lobbyCard{
-      display:grid;grid-template-columns:124px 1fr;gap:14px;
-      padding:14px;border-radius:24px;
+      display:grid;
+      grid-template-columns:124px 1fr;
+      gap:14px;
+      padding:14px;
+      border-radius:24px;
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.08);
       box-shadow:0 12px 32px rgba(0,0,0,.18);
@@ -232,33 +310,68 @@
     .lobbyMain{min-width:0}
     .lobbyTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
     .lobbyName{
-      margin:0;font-size:1.14rem;font-weight:900;line-height:1.2;color:#fff;
-      user-select:text;-webkit-user-select:text
+      margin:0;
+      font-size:1.14rem;
+      font-weight:900;
+      line-height:1.2;
+      color:#fff;
+      user-select:text;
+      -webkit-user-select:text
     }
     .lobbyMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
     .tag{
-      padding:7px 10px;border-radius:999px;font-size:.79rem;border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);color:#fff
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:.79rem;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:#fff
     }
     .tag.accent{border-color:rgba(37,237,198,.24); color:var(--accent)}
     .tag.danger{border-color:rgba(255,115,137,.26); color:#ffb9c4}
     .tag.soft{color:rgba(245,248,252,.86)}
     .lobbyDesc{
-      margin:10px 0 0;color:rgba(245,248,252,.74);line-height:1.55;font-size:.93rem;
-      white-space:pre-wrap;word-break:break-word;user-select:text;-webkit-user-select:text
+      margin:10px 0 0;
+      color:rgba(245,248,252,.74);
+      line-height:1.55;
+      font-size:.93rem;
+      white-space:pre-wrap;
+      word-break:break-word;
+      user-select:text;
+      -webkit-user-select:text
     }
     .lobbyFooter{
-      margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap
     }
-    .lobbyCode{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;font-weight:800}
+    .lobbyCode{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:#fff;
+      font-weight:800
+    }
     .codeText{
-      padding:9px 12px;background:rgba(0,0,0,.26);
-      border:1px solid rgba(255,255,255,.08);border-radius:14px;
-      letter-spacing:1px;user-select:text;-webkit-user-select:text
+      padding:9px 12px;
+      background:rgba(0,0,0,.26);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      letter-spacing:1px;
+      user-select:text;
+      -webkit-user-select:text
     }
     .codeBtn{
-      padding:9px 12px;border-radius:14px;border:1px solid rgba(37,237,198,.18);
-      background:rgba(37,237,198,.10);color:var(--accent);font-weight:900
+      padding:9px 12px;
+      border-radius:14px;
+      border:1px solid rgba(37,237,198,.18);
+      background:rgba(37,237,198,.10);
+      color:var(--accent);
+      font-weight:900
     }
     .codeBtn:disabled{
       cursor:not-allowed;
@@ -270,41 +383,69 @@
       border-color:rgba(255,255,255,.08);
     }
     .switchBtn{
-      padding:10px 13px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:#fff
+      padding:10px 13px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.05);
+      color:#fff
     }
     .switchBtn.on{border-color:rgba(37,237,198,.35);background:rgba(37,237,198,.13);color:var(--accent)}
     .switchBtn.off{border-color:rgba(255,115,137,.28);background:rgba(255,115,137,.10);color:#ffbcc7}
-    .heartBtn{
-      padding:9px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);color:#fff;display:inline-flex;align-items:center;gap:7px
-    }
-    .heartBtn.liked{border-color:rgba(37,237,198,.25);background:rgba(37,237,198,.10);color:var(--accent)}
+
     .emptyState{
-      padding:28px;text-align:center;color:var(--muted);
-      border-radius:22px;border:1px dashed rgba(255,255,255,.10);background:rgba(255,255,255,.03)
+      padding:28px;
+      text-align:center;
+      color:var(--muted);
+      border-radius:22px;
+      border:1px dashed rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03)
     }
     .smallMutedBlock{margin-top:10px;color:var(--muted);font-size:.84rem}
+
     .modalBack{
-      position:fixed;inset:0;background:rgba(2,4,8,.72);
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-      display:none;align-items:center;justify-content:center;padding:18px;z-index:100
+      position:fixed;
+      inset:0;
+      background:rgba(2,4,8,.72);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:100
     }
     .modalBack.show{display:flex;animation: fadeIn .18s ease}
     .modal{
-      width:min(760px,100%);max-height:min(92vh,900px);overflow:auto;border-radius:30px;
+      width:min(760px,100%);
+      max-height:min(92vh,900px);
+      overflow:auto;
+      border-radius:30px;
       background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(6,8,13,.96));
-      border:1px solid rgba(255,255,255,.10);box-shadow:0 24px 80px rgba(0,0,0,.60);
-      transform:translateY(10px) scale(.985);opacity:0;animation: modalUp .25s ease forwards
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 24px 80px rgba(0,0,0,.60);
+      transform:translateY(10px) scale(.985);
+      opacity:0;
+      animation: modalUp .25s ease forwards
     }
     .modalHead{
-      padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;
-      border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;
-      background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(13,17,28,.92));z-index:1
+      padding:18px 18px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      position:sticky;
+      top:0;
+      background:linear-gradient(180deg, rgba(13,17,28,.98), rgba(13,17,28,.92));
+      z-index:1
     }
     .modalTitle{margin:0;font-size:1.08rem;color:#fff}
     .modalBody{padding:18px}
     .modalHero{
-      display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:center;margin-bottom:14px
+      display:grid;
+      grid-template-columns:88px 1fr;
+      gap:14px;
+      align-items:center;
+      margin-bottom:14px
     }
     .modalHero .heroPic{
       width:88px;height:88px;border-radius:24px;overflow:hidden;background:#111;
@@ -314,24 +455,43 @@
     .modalHero h2{margin:0 0 6px;font-size:1.28rem;color:var(--accent)}
     .modalHero p{margin:0;color:var(--muted);line-height:1.5}
     .subtleLine{
-      height:1px;background:linear-gradient(90deg, transparent, rgba(37,237,198,.20), transparent);
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(37,237,198,.20), transparent);
       margin:14px 0
-    }
-    .ownerFlag{
-      padding:7px 11px;border-radius:999px;border:1px solid rgba(37,237,198,.20);
-      color:var(--accent);background:rgba(37,237,198,.08);font-size:.78rem;font-weight:900
     }
     .authActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
     .noteBox{
-      margin-top:12px;padding:12px 14px;border-radius:16px;
-      background:rgba(37,237,198,.08);border:1px solid rgba(37,237,198,.16);
-      color:#d8fff8;font-size:.9rem;line-height:1.5
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:rgba(37,237,198,.08);
+      border:1px solid rgba(37,237,198,.16);
+      color:#d8fff8;
+      font-size:.9rem;
+      line-height:1.5
     }
-    .toastWrap{position:fixed;right:14px;bottom:14px;display:flex;flex-direction:column;gap:10px;z-index:120}
+
+    .toastWrap{
+      position:fixed;
+      right:14px;
+      bottom:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:120
+    }
     .toast{
-      min-width:240px;max-width:340px;border-radius:18px;background:rgba(9,13,22,.94);
-      border:1px solid rgba(255,255,255,.10);box-shadow:var(--shadow);padding:12px 14px;color:#fff;
-      transform:translateY(10px);opacity:0;animation:toastIn .22s ease forwards
+      min-width:240px;
+      max-width:340px;
+      border-radius:18px;
+      background:rgba(9,13,22,.94);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);
+      padding:12px 14px;
+      color:#fff;
+      transform:translateY(10px);
+      opacity:0;
+      animation:toastIn .22s ease forwards
     }
     .toast.ok{border-color:rgba(37,237,198,.24)}
     .toast.err{border-color:rgba(255,115,137,.28)}
@@ -345,7 +505,9 @@
       background:linear-gradient(180deg, rgba(37,237,198,.42), rgba(18,196,163,.30));
       border-radius:999px;border:2px solid rgba(0,0,0,.22)
     }
-    *::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, rgba(37,237,198,.54), rgba(18,196,163,.38))}
+    *::-webkit-scrollbar-thumb:hover{
+      background:linear-gradient(180deg, rgba(37,237,198,.54), rgba(18,196,163,.38))
+    }
 
     @keyframes rise{to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -359,7 +521,12 @@
     }
 
     .floatOrb{
-      position:fixed;border-radius:999px;filter:blur(18px);opacity:.3;pointer-events:none;z-index:-4;
+      position:fixed;
+      border-radius:999px;
+      filter:blur(18px);
+      opacity:.3;
+      pointer-events:none;
+      z-index:-4;
       animation: floaty 8s ease-in-out infinite;
       background:radial-gradient(circle, rgba(37,237,198,.65), rgba(37,237,198,0) 70%);
     }
@@ -398,12 +565,19 @@
           <img id="topLogo" src="media/Thumbnail.png" alt="Among Us Hosting" onerror="this.src='https://placehold.co/200x200/111111/25EDC6?text=AU'" />
         </div>
         <div class="titleWrap">
-          <h1 class="title">Among Us Hosting</h1>
-          <p class="desc">A website free-hosting lobby code, easier, cleaner, and live-synced!</p>
+          <h1 class="title">SkeldUs Host</h1>
+          <p class="desc">Moz Studio 🦊</p>
         </div>
       </div>
       <div class="pillRow">
-        <div class="pill"><span class="statusDot"></span><span>Live lobby feed</span></div>
+        <div class="pill">
+          <span class="statusDot"></span>
+          <span id="activeViewerText">0 viewers in this page</span>
+        </div>
+        <div class="pill">
+          <span class="statusDot"></span>
+          <span id="liveStatusText">1.0.2</span>
+        </div>
       </div>
     </div>
 
@@ -411,10 +585,13 @@
       <div class="card">
         <div class="cardBody actionBar">
           <div>
-            <div class="sectionTitle" style="margin-bottom:6px;"><h3>Main</h3><span>Host your lobby</span></div>
-            <div class="hint">Tap Host to publish a lobby with glassy cards, live hearts, and owner controls.</div>
+            <div class="sectionTitle" style="margin-bottom:6px;">
+              <h3>Menu</h3>
+              <span>Host Here</span>
+            </div>
+            <div class="hint">Lobbies automatically get auto deleted if remains unchanged! | Tap Create to Host a lobby! | SkyeMoz 🦊 | Also you can check how many people are viewing this website rn, look above! "active viewer" 🔥 .</div>
           </div>
-          <button class="btn" id="hostBtn" type="button">Host</button>
+          <button class="btn" id="hostBtn" type="button">Create</button>
         </div>
       </div>
 
@@ -426,7 +603,7 @@
           </div>
           <div class="cardBody">
             <div class="searchRow">
-              <input id="searchInput" class="input" type="text" placeholder="Search lobby name, code, description, type..." />
+              <input id="searchInput" class="input" type="text" placeholder="Search lobby..." />
             </div>
             <div class="subtleLine"></div>
             <div class="hint">Live search updates while you type.</div>
@@ -435,8 +612,8 @@
 
         <div class="card">
           <div class="cardHead">
-            <h2 class="cardTitle">Hosting Lobbies</h2>
-            <span class="smallMuted">Live feed</span>
+            <h2 class="cardTitle">Active Lobbies</h2>
+            <span class="smallMuted"> 🟢</span>
           </div>
           <div class="cardBody">
             <div id="lobbyList" class="lobbyList"></div>
@@ -507,7 +684,9 @@
             <label class="fieldLabel">Thumbnail</label>
             <div class="fileBox">
               <label class="pickerBtn" for="lobbyThumbInput">
-                <div class="pickerThumb"><img id="pickerThumbImg" src="media/Thumbnail.png" alt="Pick thumbnail" onerror="this.src='https://placehold.co/200x200/111111/25EDC6?text=Pick'" /></div>
+                <div class="pickerThumb">
+                  <img id="pickerThumbImg" src="media/Thumbnail.png" alt="Pick thumbnail" onerror="this.src='https://placehold.co/200x200/111111/25EDC6?text=Pick'" />
+                </div>
                 <div class="pickerTitle">Choose image</div>
               </label>
               <input id="lobbyThumbInput" type="file" accept="image/*" class="hidden" />
@@ -542,7 +721,7 @@
         </div>
 
         <div class="noteBox">
-          Hosted lobbies sync live for everyone. If you set an expiration, the lobby auto-removes after that time.
+          Hosted lobbies sync live for everyone. If you set an expiration, the lobby auto-removes after that time. If there are no changes for 1 hour, it auto-deletes too.
         </div>
       </div>
     </div>
@@ -550,7 +729,6 @@
 
   <div class="toastWrap" id="toastWrap"></div>
 
-  
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import {
@@ -559,17 +737,16 @@
       doc,
       onSnapshot,
       addDoc,
+      setDoc,
       updateDoc,
       deleteDoc,
       query,
       orderBy,
+      where,
+      getDocs,
       serverTimestamp,
       Timestamp,
-      runTransaction,
-      increment,
-      arrayUnion,
-      arrayRemove,
-      getDoc,
+      increment
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -588,7 +765,17 @@
       ownerKey: 'amongus_hosting_owner_key_live_v1'
     };
 
+    const PRESENCE = {
+      key: 'amongus_presence_tab_v1',
+      heartbeatMs: 20000,
+      staleMs: 70000,
+      localPrefix: 'amongus_local_viewer_',
+      localHeartbeatMs: 10000,
+      localStaleMs: 30000
+    };
+
     const DEFAULT_THUMB = 'media/Thumbnail.png';
+    const ONE_HOUR_MS = 60 * 60 * 1000;
 
     const els = {
       hostModal: document.getElementById('hostModal'),
@@ -599,6 +786,8 @@
       lobbyList: document.getElementById('lobbyList'),
       emptyState: document.getElementById('emptyState'),
       lobbyCountText: document.getElementById('lobbyCountText'),
+      activeViewerText: document.getElementById('activeViewerText'),
+      liveStatusText: document.getElementById('liveStatusText'),
       publicInput: document.getElementById('publicInput'),
       lobbyNameInput: document.getElementById('lobbyNameInput'),
       typeInput: document.getElementById('typeInput'),
@@ -620,7 +809,12 @@
       ownerKey: null,
       lobbies: [],
       selectedThumbDataURL: '',
-      unsubLobbies: null
+      unsubLobbies: null,
+      unsubPresence: null,
+      localPresenceInterval: null,
+      localViewerCleanupInterval: null,
+      localViewerListenerBound: false,
+      currentViewerMode: 'unknown'
     };
 
     function escapeHtml(str=''){
@@ -653,6 +847,32 @@
       }
     }
 
+    function getPresenceId(){
+      try{
+        let id = sessionStorage.getItem(PRESENCE.key);
+        if (!id){
+          id = safeUUID();
+          sessionStorage.setItem(PRESENCE.key, id);
+        }
+        return id;
+      }catch{
+        return safeUUID();
+      }
+    }
+
+    function getLocalViewerId(){
+      try{
+        let id = sessionStorage.getItem('amongus_local_viewer_id');
+        if (!id){
+          id = safeUUID();
+          sessionStorage.setItem('amongus_local_viewer_id', id);
+        }
+        return id;
+      }catch{
+        return safeUUID();
+      }
+    }
+
     function genLobbyCode(len=6){
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       let s = '';
@@ -664,6 +884,7 @@
       el.classList.add('show');
       document.body.style.overflow = 'hidden';
     }
+
     function closeModal(el){
       el.classList.remove('show');
       if (!els.hostModal.classList.contains('show')) document.body.style.overflow = '';
@@ -682,8 +903,7 @@
     }
 
     function setLiveStatus(text){
-      const pillText = document.querySelector('.pillRow .pill span:last-child');
-      if (pillText) pillText.textContent = text;
+      if (els.liveStatusText) els.liveStatusText.textContent = text;
     }
 
     function readFileAsDataURL(file){
@@ -712,39 +932,81 @@
       return d.toLocaleString([], { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
     }
 
-    function formatRemaining(expiresAt){
-      const d = toDate(expiresAt);
+    function formatRelative(value){
+      const d = toDate(value);
       if (!d) return 'Never';
       const diff = d.getTime() - Date.now();
-      if (diff <= 0) return 'Expired';
-      const totalMins = Math.floor(diff / 60000);
-      const h = Math.floor(totalMins / 60);
-      const m = totalMins % 60;
-      return h > 0 ? `${h}h ${m}m` : `${m}m`;
+      const past = diff < 0;
+      const abs = Math.abs(diff);
+      const mins = Math.floor(abs / 60000);
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      if (mins < 1) return past ? 'just now' : 'soon';
+      return past ? `${h > 0 ? `${h}h ` : ''}${m}m ago` : `in ${h > 0 ? `${h}h ` : ''}${m}m`;
+    }
+
+    function formatAge(createdAt){
+      const d = toDate(createdAt);
+      if (!d) return 'Unknown';
+      const diff = Date.now() - d.getTime();
+      if (diff < 0) return 'just now';
+      const mins = Math.floor(diff / 60000);
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      if (mins < 1) return 'just now';
+      return h > 0 ? `${h}h ${m}m ago` : `${m}m ago`;
+    }
+
+    function getInactivityDeleteAt(lobby){
+      const base = toDate(lobby.lastModifiedAt) || toDate(lobby.createdAt);
+      if (!base) return null;
+      return new Date(base.getTime() + ONE_HOUR_MS);
+    }
+
+    function getAutoDeleteAt(lobby){
+      const inactivityAt = getInactivityDeleteAt(lobby);
+      const explicitAt = toDate(lobby.expiresAt);
+      if (explicitAt && inactivityAt) return explicitAt.getTime() < inactivityAt.getTime() ? explicitAt : inactivityAt;
+      return explicitAt || inactivityAt;
+    }
+
+    function formatAutoDelete(lobby){
+      return formatDate(getAutoDeleteAt(lobby));
+    }
+
+    function formatAutoDeleteRemaining(lobby){
+      return formatRelative(getAutoDeleteAt(lobby));
     }
 
     function isExpired(lobby){
-      const d = toDate(lobby.expiresAt);
+      const d = getAutoDeleteAt(lobby);
       return !!d && d.getTime() <= Date.now();
     }
 
+    function fallbackThumbForName(name='Lobby'){
+      const label = `${(name || 'Lobby').trim() || 'Lobby'} Lobby`;
+      return `https://placehold.co/400x400/111111/25EDC6?text=${encodeURIComponent(label)}`;
+    }
+
     function normalizeLobby(lobby){
+      const baseName = lobby.name || 'Lobby';
       return {
         id: lobby.id || safeUUID(),
+        collectionId: lobby.collectionId || lobby.id || safeUUID(),
         ownerKey: lobby.ownerKey || '',
         public: !!lobby.public,
-        name: lobby.name || '',
+        name: baseName,
         type: lobby.type || 'Regular',
         lobbyCode: String(lobby.lobbyCode || '').toUpperCase(),
         maxPlayers: Math.max(1, Math.min(15, parseInt(lobby.maxPlayers || 10, 10))),
         description: lobby.description || '',
-        thumbnailUrl: lobby.thumbnailUrl || DEFAULT_THUMB,
+        thumbnailUrl: lobby.thumbnailUrl || '',
         isStreamer: !!lobby.isStreamer,
         active: lobby.active !== false,
-        heartCount: Math.max(0, parseInt(lobby.heartCount || 0, 10)),
-        hearts: Array.isArray(lobby.hearts) ? lobby.hearts : [],
+        viewCount: Math.max(0, parseInt(lobby.viewCount || 0, 10)),
         createdAt: lobby.createdAt || null,
         updatedAt: lobby.updatedAt || null,
+        lastModifiedAt: lobby.lastModifiedAt || lobby.updatedAt || lobby.createdAt || null,
         expiresAt: lobby.expiresAt || null
       };
     }
@@ -757,33 +1019,71 @@
       return !!state.ownerKey && lobby.ownerKey === state.ownerKey;
     }
 
-    function hasLiked(lobby){
-      return (lobby.hearts || []).includes(state.ownerKey);
+    function resetHostForm(){
+      els.publicInput.value = 'yes';
+      els.lobbyNameInput.value = '';
+      els.typeInput.value = 'Modded';
+      els.lobbyCodeInput.value = '';
+      els.maxPlayersInput.value = '10';
+      els.lobbyDescInput.value = '';
+      els.streamerInput.value = 'yes';
+      els.expirationMode.value = 'never';
+      els.expireHours.value = '0';
+      els.expireMinutes.value = '30';
+      els.lobbyThumbInput.value = '';
+      els.lobbyThumbPreview.src = DEFAULT_THUMB;
+      els.pickerThumbImg.src = DEFAULT_THUMB;
+      state.selectedThumbDataURL = '';
+      updateExpirationFields();
     }
 
-    async function copyCode(text, lobby){
+    async function ensureOwnerLobbyLimit(){
+      const snap = await getDocs(query(collection(db, 'lobbies'), where('ownerKey', '==', state.ownerKey)));
+      const current = snap.docs
+        .map(d => normalizeLobby({ id: d.id, ...d.data() }))
+        .find(l => !isExpired(l));
+      return current || null;
+    }
+
+    async function copyCode(lobby){
       if (!lobby.active){
         showToast('Inactive lobby', 'Active lobbies only can be copied.', 'err');
         return;
       }
+
+      const code = String(lobby.lobbyCode || '').trim();
+      if (!code){
+        showToast('Copy failed', 'No code found.', 'err');
+        return;
+      }
+
       try{
         if (navigator.clipboard?.writeText){
-          await navigator.clipboard.writeText(text);
+          await navigator.clipboard.writeText(code);
         } else {
           const ta = document.createElement('textarea');
-          ta.value = text;
+          ta.value = code;
           ta.style.position = 'fixed';
           ta.style.left = '-9999px';
+          ta.style.top = '0';
           document.body.appendChild(ta);
           ta.focus();
           ta.select();
           document.execCommand('copy');
           ta.remove();
         }
-        showToast('Copied', `Lobby code ${text} copied.`, 'ok');
+
+        const lobbyRef = doc(db, 'lobbies', lobby.id);
+        await setDoc(lobbyRef, {
+          viewCount: increment(1),
+          updatedAt: serverTimestamp(),
+          lastModifiedAt: serverTimestamp()
+        }, { merge: true });
+
+        showToast('Copied', `Lobby code ${code} copied. +1 view.`, 'ok');
       }catch(err){
         console.error(err);
-        showToast('Copy failed', text, 'err');
+        showToast('Copy failed', code, 'err');
       }
     }
 
@@ -792,11 +1092,16 @@
       if (!term) return list;
       return list.filter(l => {
         const hay = [
-          l.name, l.description, l.lobbyCode, l.type,
+          l.name,
+          l.description,
+          l.lobbyCode,
+          l.type,
           l.public ? 'public' : 'private',
           l.isStreamer ? 'streamer' : '',
           l.active ? 'active' : 'inactive',
-          l.ownerKey || ''
+          l.ownerKey || '',
+          String(l.viewCount || 0),
+          String(l.collectionId || '')
         ].join(' ').toLowerCase();
         return hay.includes(term);
       });
@@ -806,6 +1111,17 @@
       const expired = list.filter(isExpired);
       if (!expired.length) return;
       await Promise.allSettled(expired.map(lobby => deleteDoc(doc(db, 'lobbies', lobby.id))));
+    }
+
+    function updateHostButtonState(){
+      const ownLobby = state.lobbies.find(lobby => isOwner(lobby) && !isExpired(lobby));
+      if (ownLobby){
+        els.hostBtn.textContent = 'One Lobby Only';
+        els.hostBtn.disabled = true;
+      } else {
+        els.hostBtn.textContent = 'Create';
+        els.hostBtn.disabled = false;
+      }
     }
 
     function renderLobbies(){
@@ -820,15 +1136,20 @@
       els.lobbyCountText.textContent = `${visible.length} lobby${visible.length === 1 ? '' : 'ies'}`;
       els.lobbyList.innerHTML = '';
       els.emptyState.classList.toggle('hidden', visible.length !== 0);
+      updateHostButtonState();
 
       visible.forEach((lobby, index) => {
+        const thumb = lobby.thumbnailUrl && lobby.thumbnailUrl.trim()
+          ? lobby.thumbnailUrl
+          : fallbackThumbForName(lobby.name);
+
         const card = document.createElement('div');
         card.className = 'lobbyCard';
         card.style.setProperty('--i', index);
-        const liked = hasLiked(lobby);
+
         card.innerHTML = `
           <div class="lobbyThumb">
-            <img src="${escapeHtml(lobby.thumbnailUrl || DEFAULT_THUMB)}" alt="thumbnail" onerror="this.src='https://placehold.co/400x400/111111/25EDC6?text=Lobby'" />
+            <img src="${escapeHtml(thumb)}" alt="thumbnail" onerror="this.src='${escapeHtml(fallbackThumbForName(lobby.name))}'" />
           </div>
           <div class="lobbyMain">
             <div class="lobbyTop">
@@ -840,7 +1161,9 @@
                   <span class="tag ${lobby.public ? 'accent' : 'danger'}">${lobby.public ? 'Public' : 'Private'}</span>
                   <span class="tag soft">${lobby.isStreamer ? 'Streamer' : 'Normal'}</span>
                   <span class="tag ${lobby.active ? 'accent' : 'danger'}">${lobby.active ? '🟢 Active' : '🔴 Inactive'}</span>
-                  <span class="tag soft">Exp: ${escapeHtml(formatRemaining(lobby.expiresAt))}</span>
+                  <span class="tag soft">👁 ${escapeHtml(String(lobby.viewCount || 0))} views</span>
+                  <span class="tag soft">Created: ${escapeHtml(formatAge(lobby.createdAt))}</span>
+                  <span class="tag soft">Auto: ${escapeHtml(formatAutoDeleteRemaining(lobby))}</span>
                 </div>
               </div>
               ${isOwner(lobby) ? `<div class="ownerFlag">You</div>` : ''}
@@ -852,49 +1175,52 @@
               <div class="lobbyCode">
                 <span>Code:</span>
                 <span class="codeText">${escapeHtml(lobby.lobbyCode || '------')}</span>
-                <button class="codeBtn" ${lobby.active ? '' : 'disabled'} data-code="${escapeHtml(lobby.lobbyCode || '')}" type="button">${lobby.active ? 'Copy' : 'Inactive'}</button>
+                <button class="codeBtn" ${lobby.active ? '' : 'disabled'} data-code-id="${escapeHtml(lobby.id)}" type="button">${lobby.active ? 'Copy' : 'Inactive'}</button>
               </div>
 
               <div class="pillToggleRow" style="display:flex;gap:10px;flex-wrap:wrap">
-                <button class="heartBtn ${liked ? 'liked' : ''}" data-heart="${lobby.id}" type="button">❤ ${Number(lobby.heartCount || 0)}</button>
                 ${isOwner(lobby) ? `<button class="switchBtn ${lobby.active ? 'on' : 'off'}" data-active="${lobby.id}" type="button">${lobby.active ? '🟢 Active' : '🔴 Active'}</button>` : ''}
                 ${isOwner(lobby) ? `<button class="btnDanger btnMini" data-delete="${lobby.id}" type="button">Delete</button>` : ''}
               </div>
             </div>
 
-            <div class="smallMutedBlock">Expiration date: ${escapeHtml(formatDate(lobby.expiresAt))}</div>
+            <div class="smallMutedBlock">
+              Auto delete at: ${escapeHtml(formatAutoDelete(lobby))} · Collection ID: ${escapeHtml(lobby.collectionId || lobby.id)}
+            </div>
           </div>
         `;
+
         els.lobbyList.appendChild(card);
       });
 
-      els.lobbyList.querySelectorAll('[data-heart]').forEach(btn => {
-        btn.addEventListener('click', () => toggleHeart(btn.getAttribute('data-heart')));
-      });
       els.lobbyList.querySelectorAll('[data-active]').forEach(btn => {
         btn.addEventListener('click', () => toggleActive(btn.getAttribute('data-active')));
       });
+
       els.lobbyList.querySelectorAll('[data-delete]').forEach(btn => {
         btn.addEventListener('click', () => {
           const lobby = state.lobbies.find(x => x.id === btn.getAttribute('data-delete'));
           if (lobby && confirm(`Delete ${lobby.name || 'this lobby'}?`)) deleteLobby(lobby.id);
         });
       });
-      els.lobbyList.querySelectorAll('[data-code]').forEach(btn => {
+
+      els.lobbyList.querySelectorAll('[data-code-id]').forEach(btn => {
         btn.addEventListener('click', () => {
-          const lobby = state.lobbies.find(x => x.lobbyCode === btn.getAttribute('data-code'));
-          if (lobby) copyCode(lobby.lobbyCode, lobby);
+          const lobby = state.lobbies.find(x => x.id === btn.getAttribute('data-code-id'));
+          if (lobby) copyCode(lobby);
         });
       });
     }
 
     function startLiveListener(){
       if (state.unsubLobbies) state.unsubLobbies();
+
       const q = query(collection(db, 'lobbies'), orderBy('createdAt', 'desc'));
       state.unsubLobbies = onSnapshot(q, async snap => {
-        state.lobbies = snap.docs.map(d => normalizeLobby({ id: d.id, ...d.data() }));
+        const items = snap.docs.map(d => normalizeLobby({ id: d.id, ...d.data() }));
+        state.lobbies = items;
         renderLobbies();
-        cleanupExpiredLobbies().catch(() => {});
+        cleanupExpiredLobbies(items).catch(() => {});
       }, err => {
         console.error(err);
         setLiveStatus('Live feed error');
@@ -903,6 +1229,13 @@
     }
 
     async function hostLobby(){
+      const existing = await ensureOwnerLobbyLimit();
+      if (existing){
+        showToast('One lobby only', 'Delete your current lobby before creating a new one.', 'err');
+        closeModal(els.hostModal);
+        return;
+      }
+
       const publicValue = els.publicInput.value === 'yes';
       const name = els.lobbyNameInput.value.trim() || 'Lobby';
       const type = els.typeInput.value;
@@ -910,7 +1243,6 @@
       const maxPlayers = Math.max(1, Math.min(15, parseInt(els.maxPlayersInput.value || '10', 10)));
       const description = els.lobbyDescInput.value.trim();
       const isStreamer = els.streamerInput.value === 'yes';
-      const thumbUrl = state.selectedThumbDataURL || DEFAULT_THUMB;
 
       let expiresAt = null;
       if (els.expirationMode.value === 'set'){
@@ -919,7 +1251,11 @@
         expiresAt = Timestamp.fromDate(new Date(Date.now() + ((hours * 60) + mins) * 60000));
       }
 
-      await addDoc(collection(db, 'lobbies'), {
+      const thumbUrl = state.selectedThumbDataURL || fallbackThumbForName(name);
+
+      const lobbyRef = doc(collection(db, 'lobbies'));
+      await setDoc(lobbyRef, {
+        collectionId: lobbyRef.id,
         ownerKey: state.ownerKey,
         public: publicValue,
         name,
@@ -930,35 +1266,16 @@
         thumbnailUrl: thumbUrl,
         isStreamer,
         active: true,
-        heartCount: 0,
-        hearts: [],
+        viewCount: 0,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
+        lastModifiedAt: serverTimestamp(),
         expiresAt
       });
 
-      els.lobbyThumbInput.value = '';
-      state.selectedThumbDataURL = '';
-      els.lobbyThumbPreview.src = DEFAULT_THUMB;
-      els.pickerThumbImg.src = DEFAULT_THUMB;
+      resetHostForm();
       showToast('Lobby hosted', `${name} is live now.`, 'ok');
       closeModal(els.hostModal);
-    }
-
-    async function toggleHeart(lobbyId){
-      const lobbyRef = doc(db, 'lobbies', lobbyId);
-      await runTransaction(db, async tx => {
-        const snap = await tx.get(lobbyRef);
-        if (!snap.exists()) return;
-        const data = snap.data();
-        const hearts = Array.isArray(data.hearts) ? data.hearts : [];
-        const already = hearts.includes(state.ownerKey);
-        tx.update(lobbyRef, {
-          hearts: already ? arrayRemove(state.ownerKey) : arrayUnion(state.ownerKey),
-          heartCount: increment(already ? -1 : 1),
-          updatedAt: serverTimestamp()
-        });
-      });
     }
 
     async function toggleActive(lobbyId){
@@ -966,7 +1283,8 @@
       if (!lobby || !isOwner(lobby)) return;
       await updateDoc(doc(db, 'lobbies', lobbyId), {
         active: !lobby.active,
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
+        lastModifiedAt: serverTimestamp()
       });
     }
 
@@ -983,28 +1301,34 @@
       await Promise.allSettled(expired.map(lobby => deleteDoc(doc(db, 'lobbies', lobby.id))));
     }
 
-    async function copyDefaultCodeIfNeeded(){
+    function copyDefaultCodeIfNeeded(){
       if (!els.lobbyCodeInput.value.trim()) els.lobbyCodeInput.value = genLobbyCode();
     }
 
     function startBackground(){
       const c = document.getElementById('bgCanvas');
-      const ctx = c.getContext('2d');
+      const ctx = c.getContext('2d', { alpha: true });
       let w = 0, h = 0, particles = [];
+      let rafId = 0;
+
       const resize = () => {
-        w = c.width = window.innerWidth * devicePixelRatio;
-        h = c.height = window.innerHeight * devicePixelRatio;
+        const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+        w = c.width = Math.floor(window.innerWidth * dpr);
+        h = c.height = Math.floor(window.innerHeight * dpr);
         c.style.width = window.innerWidth + 'px';
         c.style.height = window.innerHeight + 'px';
-        particles = Array.from({length: Math.min(72, Math.floor(window.innerWidth / 17))}, () => ({
+
+        const count = Math.min(72, Math.max(28, Math.floor(window.innerWidth / 22)));
+        particles = Array.from({length: count}, () => ({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: (Math.random() * 1.8 + .4) * devicePixelRatio,
-          vx: (Math.random() - .5) * .22 * devicePixelRatio,
-          vy: (Math.random() - .5) * .22 * devicePixelRatio,
+          r: (Math.random() * 1.8 + .4) * dpr,
+          vx: (Math.random() - .5) * .22 * dpr,
+          vy: (Math.random() - .5) * .22 * dpr,
           a: Math.random() * .55 + .12
         }));
       };
+
       window.addEventListener('resize', resize, { passive:true });
       resize();
 
@@ -1022,9 +1346,14 @@
           ctx.fillStyle = `rgba(37,237,198,${p.a})`;
           ctx.fill();
         }
-        requestAnimationFrame(tick);
+        rafId = requestAnimationFrame(tick);
       };
+
       tick();
+
+      window.addEventListener('beforeunload', () => {
+        if (rafId) cancelAnimationFrame(rafId);
+      });
     }
 
     function setupGlobalErrorHandling(){
@@ -1036,6 +1365,164 @@
         console.error(e.reason);
         showToast('Promise error', e.reason?.message || String(e.reason || 'Unknown error'), 'err', 4000);
       });
+    }
+
+    function getLocalViewerState(){
+      try{
+        const raw = localStorage.getItem('amongus_local_viewer_state_v1');
+        return raw ? JSON.parse(raw) : {};
+      }catch{
+        return {};
+      }
+    }
+
+    function setLocalViewerState(next){
+      try{
+        localStorage.setItem('amongus_local_viewer_state_v1', JSON.stringify(next));
+      }catch{}
+    }
+
+    function touchLocalViewer(){
+      const id = getLocalViewerId();
+      const all = getLocalViewerState();
+      all[id] = Date.now();
+      setLocalViewerState(all);
+    }
+
+    function countLocalViewers(){
+      const all = getLocalViewerState();
+      const now = Date.now();
+      let count = 0;
+      for (const [id, ts] of Object.entries(all)){
+        if (now - Number(ts || 0) <= PRESENCE.localStaleMs){
+          count++;
+        }
+      }
+      return Math.max(1, count);
+    }
+
+    function startLocalViewerFallback(){
+      state.currentViewerMode = 'local';
+      const update = () => {
+        touchLocalViewer();
+        els.activeViewerText.textContent = `${countLocalViewers()} active viewer${countLocalViewers() === 1 ? '' : 's'}`;
+      };
+
+      if (state.localPresenceInterval) clearInterval(state.localPresenceInterval);
+      if (state.localViewerCleanupInterval) clearInterval(state.localViewerCleanupInterval);
+
+      update();
+      state.localPresenceInterval = setInterval(update, PRESENCE.localHeartbeatMs);
+
+      state.localViewerCleanupInterval = setInterval(() => {
+        try{
+          const all = getLocalViewerState();
+          const now = Date.now();
+          let changed = false;
+          for (const [id, ts] of Object.entries(all)){
+            if (now - Number(ts || 0) > (PRESENCE.localStaleMs * 2)){
+              delete all[id];
+              changed = true;
+            }
+          }
+          if (changed) setLocalViewerState(all);
+          els.activeViewerText.textContent = `${countLocalViewers()} active viewer${countLocalViewers() === 1 ? '' : 's'}`;
+        }catch{}
+      }, 15000);
+
+      if (!state.localViewerListenerBound){
+        window.addEventListener('storage', e => {
+          if (e.key === 'amongus_local_viewer_state_v1'){
+            els.activeViewerText.textContent = `${countLocalViewers()} active viewer${countLocalViewers() === 1 ? '' : 's'}`;
+          }
+        });
+        state.localViewerListenerBound = true;
+      }
+
+      window.addEventListener('beforeunload', () => {
+        try{
+          const all = getLocalViewerState();
+          delete all[getLocalViewerId()];
+          setLocalViewerState(all);
+        }catch{}
+      });
+    }
+
+    async function touchPresence(){
+      const id = getPresenceId();
+      await setDoc(doc(db, 'presence', id), {
+        sessionId: id,
+        page: 'website',
+        ownerKey: state.ownerKey || '',
+        lastSeenClient: Date.now(),
+        updatedAt: serverTimestamp(),
+        createdAt: serverTimestamp()
+      }, { merge: true });
+    }
+
+    function startPresenceTracker(){
+      const ping = () => touchPresence().catch(() => {});
+      ping();
+      setInterval(ping, PRESENCE.heartbeatMs);
+
+      window.addEventListener('beforeunload', () => {
+        try{
+          deleteDoc(doc(db, 'presence', getPresenceId()));
+        }catch{}
+      });
+    }
+
+    function startPresenceListener(){
+      if (state.unsubPresence) state.unsubPresence();
+
+      state.unsubPresence = onSnapshot(collection(db, 'presence'), snap => {
+        const now = Date.now();
+        const active = snap.docs.filter(d => {
+          const data = d.data() || {};
+          const seen = Number(data.lastSeenClient || 0);
+          return seen && (now - seen) <= PRESENCE.staleMs;
+        }).length;
+
+        state.currentViewerMode = 'firestore';
+        els.activeViewerText.textContent = `${active} active viewer${active === 1 ? '' : 's'}`;
+      }, err => {
+        console.error(err);
+        startLocalViewerFallback();
+      });
+    }
+
+    async function cleanupStalePresence(){
+      try{
+        const snap = await getDocs(collection(db, 'presence'));
+        const now = Date.now();
+        await Promise.allSettled(
+          snap.docs.map(d => {
+            const data = d.data() || {};
+            const seen = Number(data.lastSeenClient || 0);
+            if (!seen || (now - seen) > (PRESENCE.staleMs * 2)){
+              return deleteDoc(doc(db, 'presence', d.id));
+            }
+          })
+        );
+      }catch{}
+    }
+
+    async function repairMissingCollectionIds(){
+      try{
+        const snap = await getDocs(collection(db, 'lobbies'));
+        await Promise.allSettled(snap.docs.map(async d => {
+          const data = d.data() || {};
+          const updates = {};
+          if (!data.collectionId) updates.collectionId = d.id;
+          if (!data.lastModifiedAt && data.createdAt) updates.lastModifiedAt = data.createdAt;
+          if (Object.keys(updates).length){
+            updates.updatedAt = serverTimestamp();
+            await updateDoc(doc(db, 'lobbies', d.id), updates);
+          }
+        }));
+      }catch(err){
+        console.error(err);
+      }
     }
 
     function bindEvents(){
@@ -1055,11 +1542,18 @@
       });
 
       els.hostBtn.addEventListener('click', async () => {
-        await copyDefaultCodeIfNeeded();
-        if (!els.lobbyNameInput.value.trim()) els.lobbyNameInput.value = 'Lobby';
+        const ownLobby = await ensureOwnerLobbyLimit();
+        if (ownLobby){
+          showToast('One lobby only', 'Delete your current lobby before creating a new one.', 'err');
+          return;
+        }
+        resetHostForm();
+        copyDefaultCodeIfNeeded();
         openModal(els.hostModal);
       });
+
       els.closeHostBtn.addEventListener('click', () => closeModal(els.hostModal));
+
       els.hostNowBtn.addEventListener('click', async () => {
         try{
           await hostLobby();
@@ -1082,7 +1576,7 @@
 
     function seedInitialState(){
       state.ownerKey = getOwnerKey();
-      setLiveStatus('Live feed connected');
+      setLiveStatus('V1.0.2');
       updateExpirationFields();
       copyDefaultCodeIfNeeded();
     }
@@ -1092,14 +1586,17 @@
       setupGlobalErrorHandling();
       bindEvents();
       seedInitialState();
+      repairMissingCollectionIds().catch(() => {});
+      startPresenceTracker();
+      startPresenceListener();
       startLiveListener();
       setInterval(() => {
         cleanupOneExpiredNow().catch(() => {});
+        cleanupStalePresence().catch(() => {});
       }, 60000);
     }
 
     boot();
   </script>
-
 </body>
 </html>
